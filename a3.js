@@ -147,7 +147,7 @@ let teamTimelineSpecs =
 
     YAxis: "W",
 
-    selected: null,
+    selected: [],
 
     data: [],
 
@@ -183,7 +183,7 @@ let hitterTimelineSpecs =
 
     YAxis: "HR",
 
-    selected: null,
+    selected: [],
 
     data: [],
 
@@ -219,7 +219,7 @@ let pitcherTimelineSpecs =
 
     YAxis: "W",
 
-    selected: null,
+    selected: [],
 
     data: [],
 
@@ -336,7 +336,7 @@ function timelineData(specs)
         .call(d3.axisLeft(yScale));
 
     // if no team is selected, don't actually plot anything
-    if (specs.selected === null) { return }
+    if (specs.selected.length == 0) { return }
 
     // filter data down to only the selected entity
     let data = specs.data.filter(d => d[specs.idField] === specs.selected) 
@@ -497,7 +497,7 @@ function scatterplotData(specs)
         .attr("cx", function(d) {return xScale(d[specs.XAxis])})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
         .attr("r", 4)
-        .attr("fill", function(d) {return d.id === specs.selected ? "yellow" : colorScale(d[specs.Color])})
+        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
 
@@ -506,7 +506,7 @@ function scatterplotData(specs)
         .attr("cx", function(d) {return xScale(d[specs.XAxis])})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
         .attr("r", 4)
-        .attr("fill", function(d) {return d.id === specs.selected ? "yellow" : colorScale(d[specs.Color])})
+        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
 
@@ -876,31 +876,30 @@ function getFilteredData(specs)
     // filter the data from specs
     let data = specs.data.filter(function (d) 
     {
-        // if there are teams selected
-        if (teamPlotSpecs.selected.length > 0)
+        // if we are in hitter or pitcher plot, gotta check for teams if any are selected
+        if (teamPlotSpecs.selected.length > 0 && (specs.selector === hitterPlotSpecs.selector || specs.selector === pitcherPlotSpecs.selector))
         {
             let inTeams = false
 
-            // if we are in hitter or pitcher plot, gotta check for teams
-            if (specs.selector === hitterPlotSpecs.selector || specs.selector === pitcherPlotSpecs.selector)
+            // loop through all the selected teams
+            for (let i = 0; i < teamPlotSpecs.selected.length; i++)
             {
-                // loop through all the selected teams
-                for (let i = 0; i < teamPlotSpecs.selected.length; i++)
+                // check if player was on team
+                let f = teamPlotSpecs.selected[i]
+                if (`${d.teamID}-${d.yearID}` === f)
                 {
-                    // check if player was on team
-                    let f = teamPlotSpecs.selected[i]
-                    if (`${d.teamID}-${d.yearID}` === f)
-                    {
-                        // if player was, we good
-                        inTeams = true
-                        break
-                    }
+                    // if player was, we good
+                    inTeams = true
+                    break
                 }
             }
 
             // if false at this point, player was not on any selected teams
             if (!inTeams) { return false }
         }
+
+        
+        
 
         // loop through every filter in the filters
         for (let i = 0; i < specs.filters.length; i++)
