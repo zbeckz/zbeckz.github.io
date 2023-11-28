@@ -999,6 +999,7 @@ function select(specs, i)
         timelineData(pitcherTimelineSpecs)
     }
 }
+
 // behavior for unselecting a point in a scatterplot
 function unselect(specs)
 {
