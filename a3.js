@@ -33,7 +33,7 @@ let teamPlotSpecs =
 
     data: [],
 
-    selected: null,
+    selected: [],
 
     sliderStat: "W",
 
@@ -76,7 +76,9 @@ let hitterPlotSpecs =
 
     sliderStat: "PA",
 
-    positions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"]
+    positions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
+
+    selected: [],
 }
 
 let pitcherPlotSpecs =
@@ -115,7 +117,9 @@ let pitcherPlotSpecs =
 
     sliderStat: "IP",
 
-    positions: ["All", "SP", "RP"]
+    positions: ["All", "SP", "RP"],
+
+    selected: [],
 }
 
 let teamTimelineSpecs = 
@@ -540,30 +544,68 @@ function scatterplotData(specs)
         })
         .on("click", function(d, i) 
         {
-            if (i.id == specs.selected)
+            // if selected
+            if (specs.selected.includes(i.id))
             {
-                // turn back to normal, unselect
+                // turn back to normal color
                 d3.select(this).attr("fill", function(d) {return colorScale(d[specs.Color])})
-                specs.selected = null
 
-                unselect(specs)
-            }
-            else
-            {
-                // unselect whichever is currently selected
-                svg.selectAll("circle").each(function(d1, i1) 
+                // remove from selected
+                specs.selected.splice(specs.selected.indexOf(i.id) ,1)
+
+                if (specs.selector === teamPlotSpecs.selector)
                 {
-                    if (d1.id == specs.selected)
-                    {
-                        d3.select(this).attr("fill", function(d2) {return colorScale(d2[specs.Color])})
-                    }
-                })
+                    // redraw the hitter and pitcher views with the filtered data
+                    scatterplotData(hitterPlotSpecs)
+                    scatterplotData(pitcherPlotSpecs)
 
-                // turn yellow, select
+                    // remove team timeline and redraw
+                    teamTimelineSpecs.selected = specs.selected
+                    timelineData(teamTimelineSpecs)
+                }
+                else if (specs.selector === hitterPlotSpecs.selector)
+                {
+                    // remove hitter timeline and redraw
+                    hitterTimelineSpecs.selected = specs.selected
+                    timelineData(hitterTimelineSpecs)
+                }
+                else 
+                {
+                    // remove pitcher timeline and redraw
+                    pitcherTimelineSpecs.selected = specs.selected
+                    timelineData(pitcherTimelineSpecs)
+                }
+            }
+            else // if not selected
+            {
+                // turn yellow
                 d3.select(this).attr("fill","yellow")
-                specs.selected = i.id
+ 
+                // add to selected
+                specs.selected.push(i.id)
 
-                select(specs, i)
+                if (specs.selector === teamPlotSpecs.selector)
+                {
+                    // redraw the hitter and pitcher views
+                    scatterplotData(hitterPlotSpecs)
+                    scatterplotData(pitcherPlotSpecs)
+
+                    // select on timeline, redraw
+                    teamTimelineSpecs.selected = specs.selected
+                    timelineData(teamTimelineSpecs)
+                }
+                else if (specs.selector === hitterPlotSpecs.selector)
+                {
+                    // select on hitter timeline, redraw
+                    hitterTimelineSpecs.selected = specs.selected
+                    timelineData(hitterTimelineSpecs)
+                }
+                else 
+                {
+                    // select on pitcher timeline, redraw
+                    pitcherTimelineSpecs.selected = specs.selected
+                    timelineData(pitcherTimelineSpecs)
+                }
             }
         })
 }
@@ -834,6 +876,32 @@ function getFilteredData(specs)
     // filter the data from specs
     let data = specs.data.filter(function (d) 
     {
+        // if there are teams selected
+        if (teamPlotSpecs.selected.length > 0)
+        {
+            let inTeams = false
+
+            // if we are in hitter or pitcher plot, gotta check for teams
+            if (specs.selector === hitterPlotSpecs.selector || specs.selector === pitcherPlotSpecs.selector)
+            {
+                // loop through all the selected teams
+                for (let i = 0; i < teamPlotSpecs.selected.length; i++)
+                {
+                    // check if player was on team
+                    let f = teamPlotSpecs.selected[i]
+                    if (`${d.teamID}-${d.yearID}` === f)
+                    {
+                        // if player was, we good
+                        inTeams = true
+                        break
+                    }
+                }
+            }
+
+            // if false at this point, player was not on any selected teams
+            if (!inTeams) { return false }
+        }
+
         // loop through every filter in the filters
         for (let i = 0; i < specs.filters.length; i++)
         {
@@ -950,100 +1018,4 @@ function combineYears(specs, data)
             return acc
         }
     }, [init])
-}
-
-// behavior for selecting a point in a scatterplot
-function select(specs, i)
-{
-    if (specs.selector === teamPlotSpecs.selector)
-    {
-        // since a team has been selected, add team filter to hitter and pitcher
-        addFilter(hitterPlotSpecs, "equal", "teamID", [i.teamID])
-        addFilter(pitcherPlotSpecs, "equal", "teamID", [i.teamID])
-
-        // since this is a team AND a year, also add the year
-        addFilter(hitterPlotSpecs, "equal", "yearID", [i.yearID])
-        addFilter(pitcherPlotSpecs, "equal", "yearID", [i.yearID])
-
-        // redraw the hitter and pitcher views with the filtered data
-        scatterplotData(hitterPlotSpecs)
-        scatterplotData(pitcherPlotSpecs)
-
-        // update hitter and pitcher plot titles
-        document.getElementById("hittersPlotTitle").innerHTML = `Hitter Statistics: ${i.yearID} ${i.teamID}`
-        document.getElementById("pitchersPlotTitle").innerHTML = `Pitcher Statistics: ${i.yearID} ${i.teamID}`
-
-        // update team timeline plot title
-        document.getElementById("teamTimelinePlotTitle").innerHTML = `Team Timeline: ${i.teamID}`
-
-        // select on timeline, redraw
-        teamTimelineSpecs.selected = i.teamID
-        timelineData(teamTimelineSpecs)
-    }
-    else if (specs.selector === hitterPlotSpecs.selector)
-    {
-        // update timeline title
-        document.getElementById("hitterTimelinePlotTitle").innerHTML = `Hitter Timeline: ${i.nameFirst} ${i.nameLast}`
-
-        // select on hitter timeline, redraw
-        hitterTimelineSpecs.selected = i.playerID
-        timelineData(hitterTimelineSpecs)
-    }
-    else 
-    {
-        // update timeline title
-        document.getElementById("pitcherTimelinePlotTitle").innerHTML = `Pitcher Timeline: ${i.nameFirst} ${i.nameLast}`
-
-        // select on pitcher timeline, redraw
-        pitcherTimelineSpecs.selected = i.playerID
-        timelineData(pitcherTimelineSpecs)
-    }
-}
-
-// behavior for unselecting a point in a scatterplot
-function unselect(specs)
-{
-    if (specs.selector === teamPlotSpecs.selector)
-    {
-        // since a team has been unselected, remove team filter from hitter and pitcher
-        removeFilter(hitterPlotSpecs, "teamID")
-        removeFilter(pitcherPlotSpecs, "teamID")
-
-        // since this is a team AND a year, also remove the year
-        removeFilter(hitterPlotSpecs, "yearID")
-        removeFilter(pitcherPlotSpecs, "yearID")
-
-        // redraw the hitter and pitcher views with the filtered data
-        scatterplotData(hitterPlotSpecs)
-        scatterplotData(pitcherPlotSpecs)
-
-        // update hitter and pitcher plot titles
-        document.getElementById("hittersPlotTitle").innerHTML = `Hitter Statistics`
-        document.getElementById("pitchersPlotTitle").innerHTML = `Pitcher Statistics`
-
-        // update team timeline plot title
-        document.getElementById("teamTimelinePlotTitle").innerHTML = `Team Timeline`
-
-        // remove team timeline and redraw
-        teamTimelineSpecs.selected = null
-        timelineData(teamTimelineSpecs)
-    }
-    else if (specs.selector === hitterPlotSpecs.selector)
-    {
-        // update timeline title
-        document.getElementById("hitterTimelinePlotTitle").innerHTML = `Hitter Timeline`
-
-        // remove hitter timeline and redraw
-        hitterTimelineSpecs.selected = null
-        timelineData(hitterTimelineSpecs)
-    }
-    else 
-    {
-        // update timeline title
-        document.getElementById("pitcherTimelinePlotTitle").innerHTML = `Pitcher Timeline`
-
-        // remove pitcher timeline and redraw
-        pitcherTimelineSpecs.selected = null
-        timelineData(pitcherTimelineSpecs)
-    }
 }
