@@ -124,6 +124,8 @@ let teamTimelineSpecs =
 
     selector: "teamTimeline",
 
+    idField: "teamID",
+
     margin: 
     {
         top: 20, 
@@ -136,6 +138,66 @@ let teamTimelineSpecs =
     height: 300,
 
     fields: ["G", "W", "L", "R", "PA", "AB", "H", "2B", "3B", "HR", "TB", "BB", "SO", "SB", "CS", "SB%", "HBP", "SF", "AVG", "OBP", "SLG", "OPS", "RA", "ER", "ERA", "CG", "SHO", "SV", "HA", "HRA", "BBA", "SOA", "DP", "Rank"],
+
+    YAxis: "W",
+
+    selected: null,
+
+    data: [],
+
+    averages: []
+}
+
+let hitterTimelineSpecs = 
+{
+    type: "timeline",
+
+    selector: "hitterTimeline",
+
+    idField: "playerID",
+
+    margin: 
+    {
+        top: 20, 
+        right: 20, 
+        bottom: 20, 
+        left: 40
+    },
+
+    width: 350,
+    height: 300,
+
+    fields: ["G", "PA", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "SB%", "BB", "SO", "TB", "AVG", "OBP", "SLG", "OPS", "IBB", "HBP", "SF"],
+
+    YAxis: "HR",
+
+    selected: null,
+
+    data: [],
+
+    averages: []
+}
+
+let pitcherTimelineSpecs = 
+{
+    type: "timeline",
+
+    selector: "pitcherTimeline",
+
+    idField: "playerID",
+
+    margin: 
+    {
+        top: 20, 
+        right: 20, 
+        bottom: 20, 
+        left: 40
+    },
+
+    width: 350,
+    height: 300,
+
+    fields: ["W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "IP"],
 
     YAxis: "W",
 
@@ -161,25 +223,35 @@ async function initialize()
   pitcherPlotSpecs.data = cleanData(pitchers, pitcherPlotSpecs, "yes")
   teamPlotSpecs.data = cleanData(teams, teamPlotSpecs, "Y")
 
-  // setup timeline data
-  teamTimelineSpecs.data = teamPlotSpecs.data
-  calculateAverage(teamTimelineSpecs)
-
   // set up scatter plots
   plotSetup(teamPlotSpecs)
   plotSetup(hitterPlotSpecs)
   plotSetup(pitcherPlotSpecs)
-
-  // set up timeline plots
-  plotSetup(teamTimelineSpecs)
 
   // add intial data to the scatter plots with no filters
   scatterplotData(teamPlotSpecs)
   scatterplotData(hitterPlotSpecs)
   scatterplotData(pitcherPlotSpecs)
 
+  // setup timeline data
+  teamTimelineSpecs.data = teamPlotSpecs.data
+  hitterTimelineSpecs.data = hitterPlotSpecs.data
+  pitcherTimelineSpecs.data = pitcherPlotSpecs.data
+
+  // calculate averages for timelines
+  calculateAverage(teamTimelineSpecs)
+  calculateAverage(hitterTimelineSpecs)
+  calculateAverage(pitcherTimelineSpecs)
+
+  // set up timeline plots
+  plotSetup(teamTimelineSpecs)
+  plotSetup(hitterTimelineSpecs)
+  plotSetup(pitcherTimelineSpecs)
+
   // add initial data to timeline plots (should be blank to start)
   timelineData(teamTimelineSpecs)
+  timelineData(hitterTimelineSpecs)
+  timelineData(pitcherTimelineSpecs)
 }
 
 // can set up any of the plots given specs
@@ -243,8 +315,12 @@ function timelineData(specs)
     // if no team is selected, don't actually plot anything
     if (specs.selected === null) { return }
 
-    // filter data down to only the selected team
-    let data = specs.data.filter(d => d.teamID === specs.selected) 
+    // filter data down to only the selected entity
+    let data = specs.data.filter(d => d[specs.idField] === specs.selected) 
+
+    // sort by year
+    data = data.sort((a, b) => a.yearID - b.yearID)
+    console.log(data)
 
     // add the timeline
     svg.append("path")
@@ -255,6 +331,17 @@ function timelineData(specs)
       .attr("d", d3.line()
                     .x(function(d) { return xScale(d.yearID) })
                     .y(function(d) { return yScale(d[specs.YAxis]) }))
+
+    // add the average timeline
+    data = specs.averages.filter(d => d.field === specs.YAxis)
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "orange")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+                    .x(function(d) { return xScale(d.yearID) })
+                    .y(function(d) { return yScale(d.value) }))
 
     
 }
@@ -358,29 +445,42 @@ function scatterplotData(specs)
         })
         .on("click", function(d, i) 
         {
-            if (specs.selector !== teamPlotSpecs.selector) { return }
-
             if (i.id == specs.selected)
             {
                 // turn back to normal, unselect
                 d3.select(this).attr("fill", function(d) {return colorScale(d[specs.Color])})
                 specs.selected = null
 
-                // since a team has been unselected, remove team filter from hitter and pitcher
-                removeFilter(hitterPlotSpecs, "teamID")
-                removeFilter(pitcherPlotSpecs, "teamID")
+                if (specs.selector === teamPlotSpecs.selector)
+                {
+                    // since a team has been unselected, remove team filter from hitter and pitcher
+                    removeFilter(hitterPlotSpecs, "teamID")
+                    removeFilter(pitcherPlotSpecs, "teamID")
 
-                // since this is a team AND a year, also remove the year
-                removeFilter(hitterPlotSpecs, "yearID")
-                removeFilter(pitcherPlotSpecs, "yearID")
+                    // since this is a team AND a year, also remove the year
+                    removeFilter(hitterPlotSpecs, "yearID")
+                    removeFilter(pitcherPlotSpecs, "yearID")
 
-                // redraw the hitter and pitcher views with the filtered data
-                scatterplotData(hitterPlotSpecs)
-                scatterplotData(pitcherPlotSpecs)
+                    // redraw the hitter and pitcher views with the filtered data
+                    scatterplotData(hitterPlotSpecs)
+                    scatterplotData(pitcherPlotSpecs)
 
-                // remove team timeline and redraw
-                teamTimelineSpecs.selected = null
-                timelineData(teamTimelineSpecs)
+                    // remove team timeline and redraw
+                    teamTimelineSpecs.selected = null
+                    timelineData(teamTimelineSpecs)
+                }
+                else if (specs.selector === hitterPlotSpecs.selector)
+                {
+                    // remove hitter timeline and redraw
+                    hitterTimelineSpecs.selected = null
+                    timelineData(hitterTimelineSpecs)
+                }
+                else 
+                {
+                    // remove pitcher timeline and redraw
+                    pitcherTimelineSpecs.selected = null
+                    timelineData(pitcherTimelineSpecs)
+                }
             }
             else
             {
@@ -397,21 +497,36 @@ function scatterplotData(specs)
                 d3.select(this).attr("fill","yellow")
                 specs.selected = i.id
 
-                // since a team has been selected, add team filter to hitter and pitcher
-                addFilter(hitterPlotSpecs, "equal", "teamID", [i.teamID])
-                addFilter(pitcherPlotSpecs, "equal", "teamID", [i.teamID])
+                if (specs.selector === teamPlotSpecs.selector)
+                {
+                    // since a team has been selected, add team filter to hitter and pitcher
+                    addFilter(hitterPlotSpecs, "equal", "teamID", [i.teamID])
+                    addFilter(pitcherPlotSpecs, "equal", "teamID", [i.teamID])
 
-                // since this is a team AND a year, also add the year
-                addFilter(hitterPlotSpecs, "equal", "yearID", [i.yearID])
-                addFilter(pitcherPlotSpecs, "equal", "yearID", [i.yearID])
+                    // since this is a team AND a year, also add the year
+                    addFilter(hitterPlotSpecs, "equal", "yearID", [i.yearID])
+                    addFilter(pitcherPlotSpecs, "equal", "yearID", [i.yearID])
 
-                // redraw the hitter and pitcher views with the filtered data
-                scatterplotData(hitterPlotSpecs)
-                scatterplotData(pitcherPlotSpecs)
+                    // redraw the hitter and pitcher views with the filtered data
+                    scatterplotData(hitterPlotSpecs)
+                    scatterplotData(pitcherPlotSpecs)
 
-                // select on timeline, redraw
-                teamTimelineSpecs.selected = i.teamID
-                timelineData(teamTimelineSpecs)
+                    // select on timeline, redraw
+                    teamTimelineSpecs.selected = i.teamID
+                    timelineData(teamTimelineSpecs)
+                }
+                else if (specs.selector === hitterPlotSpecs.selector)
+                {
+                    // select on hitter timeline, redraw
+                    hitterTimelineSpecs.selected = i.playerID
+                    timelineData(hitterTimelineSpecs)
+                }
+                else 
+                {
+                    // select on pitcher timeline, redraw
+                    pitcherTimelineSpecs.selected = i.playerID
+                    timelineData(pitcherTimelineSpecs)
+                }
             }
         })
 }
@@ -480,7 +595,7 @@ function calculateAverage(specs)
             specs.averages.push
             ({
                 field: f,
-                year: y,
+                yearID: y,
                 value: value
             })
         }
@@ -746,3 +861,4 @@ function pitchersCheckbox(cb)
     // redraw the data
     scatterplotData(pitcherPlotSpecs)
 }
+
