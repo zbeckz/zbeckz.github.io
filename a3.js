@@ -992,7 +992,7 @@ function select(specs, i)
     else 
     {
         // update timeline title
-        document.getElementById("pitcherTimelinePlotTitle").innerHTML = `Hitter Timeline: ${i.nameFirst} ${i.nameLast}`
+        document.getElementById("pitcherTimelinePlotTitle").innerHTML = `Pitcher Timeline: ${i.nameFirst} ${i.nameLast}`
 
         // select on pitcher timeline, redraw
         pitcherTimelineSpecs.selected = i.playerID
