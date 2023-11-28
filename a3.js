@@ -150,9 +150,9 @@ initialize()
 async function initialize() 
 {
   // read in the data
-  let hitters = await d3.csv("../data/Hitters2010s.csv");
-  let pitchers = await d3.csv("../data/Pitchers2010s.csv");
-  let teams = await d3.csv("../data/Teams2010s.csv");
+  let hitters = await d3.csv("data/Hitters2010s.csv");
+  let pitchers = await d3.csv("data/Pitchers2010s.csv");
+  let teams = await d3.csv("data/Teams2010s.csv");
 
   // now that we have the data, clean it
   hitterPlotSpecs.data = cleanData(hitters, hitterPlotSpecs, "yes")
