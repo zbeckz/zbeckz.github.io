@@ -141,7 +141,9 @@ let teamTimelineSpecs =
 
     selected: null,
 
-    data: []
+    data: [],
+
+    averages: []
 }
 
 initialize()
@@ -154,11 +156,14 @@ async function initialize()
   let pitchers = await d3.csv("data/Pitchers2010s.csv");
   let teams = await d3.csv("data/Teams2010s.csv");
 
-  // now that we have the data, clean it
+  // now that we have the data, clean it for scatterplots
   hitterPlotSpecs.data = cleanData(hitters, hitterPlotSpecs, "yes")
   pitcherPlotSpecs.data = cleanData(pitchers, pitcherPlotSpecs, "yes")
   teamPlotSpecs.data = cleanData(teams, teamPlotSpecs, "Y")
+
+  // setup timeline data
   teamTimelineSpecs.data = teamPlotSpecs.data
+  calculateAverage(teamTimelineSpecs)
 
   // set up scatter plots
   plotSetup(teamPlotSpecs)
@@ -203,6 +208,7 @@ function plotSetup(specs)
     }
 }
 
+// given specs, makes the appropriate timeline plot
 function timelineData(specs)
 {
     // get the chart
@@ -237,12 +243,6 @@ function timelineData(specs)
     // if no team is selected, don't actually plot anything
     if (specs.selected === null) { return }
 
-    // get the average data
-    let avg = specs.data.reduce(function(acc, d) 
-    {
-        console.log(acc)
-    }, [])
-
     // filter data down to only the selected team
     let data = specs.data.filter(d => d.teamID === specs.selected) 
 
@@ -259,7 +259,7 @@ function timelineData(specs)
     
 }
 
-// given data and plot specs, makes the appropriate scatterplot
+// given specs, makes the appropriate scatterplot
 function scatterplotData(specs)
 {
     // get filtered data
@@ -455,6 +455,38 @@ function addFilter(specs, type, field, values)
     })
 }
 
+// calculate averages of every stat per year for given timeline specs
+function calculateAverage(specs)
+{
+    // loop through all the possible fields to show
+    for (let i = 0; i < specs.fields.length; i++)
+    {
+        // get the field
+        let f = specs.fields[i]
+
+        // loop through each year
+        for (let y = 2010; y <= 2019; y++)
+        {
+            // filter by year
+            let yearData = specs.data.filter(d => d.yearID === y)
+
+            // get average
+            let value = yearData.reduce((acc, d) => acc + d[f], 0) / yearData.length
+
+            // truncate
+            if (!Number.isInteger(value)) { value = +value.toFixed(3)}
+
+            // figure out the average for this stat for this year
+            specs.averages.push
+            ({
+                field: f,
+                year: y,
+                value: value
+            })
+        }
+    }
+}
+
 // takes a raw dataset and cleans it according to the specs
 function cleanData(dataset, specs, yesString)
 {
@@ -468,7 +500,7 @@ function cleanData(dataset, specs, yesString)
     for (let j = 0; j < specs.fields.quantitative.length; j++)
     {
         let num = +d[specs.fields.quantitative[j]]
-        if (!Number.isInteger(num)) { num = num.toFixed(3)}
+        if (!Number.isInteger(num)) { num = +num.toFixed(3)}
         d[specs.fields.quantitative[j]] = +num
     }
 

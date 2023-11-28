@@ -11,8 +11,8 @@
 
 /* each rectangle in the grid */
 .view {
-    width: 375px;
-    height: 375px;
+    width: 100%;
+    height: 100%;
     border: 2px solid black;
     display: flex;
     flex-direction: column;
