@@ -969,18 +969,31 @@ function select(specs, i)
         scatterplotData(hitterPlotSpecs)
         scatterplotData(pitcherPlotSpecs)
 
+        // update hitter and pitcher plot titles
+        document.getElementById("hittersPlotTitle").innerHTML = `Hitter Statistics: ${i.yearID} ${i.teamID}`
+        document.getElementById("pitchersPlotTitle").innerHTML = `Pitcher Statistics: ${i.yearID} ${i.teamID}`
+
+        // update team timeline plot title
+        document.getElementById("teamTimelinePlotTitle").innerHTML = `Team Timeline: ${i.teamID}`
+
         // select on timeline, redraw
         teamTimelineSpecs.selected = i.teamID
         timelineData(teamTimelineSpecs)
     }
     else if (specs.selector === hitterPlotSpecs.selector)
     {
+        // update timeline title
+        document.getElementById("hitterTimelinePlotTitle").innerHTML = `Hitter Timeline: ${i.nameFirst} ${i.nameLast}`
+
         // select on hitter timeline, redraw
         hitterTimelineSpecs.selected = i.playerID
         timelineData(hitterTimelineSpecs)
     }
     else 
     {
+        // update timeline title
+        document.getElementById("pitcherTimelinePlotTitle").innerHTML = `Hitter Timeline: ${i.nameFirst} ${i.nameLast}`
+
         // select on pitcher timeline, redraw
         pitcherTimelineSpecs.selected = i.playerID
         timelineData(pitcherTimelineSpecs)
@@ -1003,18 +1016,31 @@ function unselect(specs)
         scatterplotData(hitterPlotSpecs)
         scatterplotData(pitcherPlotSpecs)
 
+        // update hitter and pitcher plot titles
+        document.getElementById("hittersPlotTitle").innerHTML = `Hitter Statistics`
+        document.getElementById("pitchersPlotTitle").innerHTML = `Pitcher Statistics`
+
+        // update team timeline plot title
+        document.getElementById("teamTimelinePlotTitle").innerHTML = `Team Timeline`
+
         // remove team timeline and redraw
         teamTimelineSpecs.selected = null
         timelineData(teamTimelineSpecs)
     }
     else if (specs.selector === hitterPlotSpecs.selector)
     {
+        // update timeline title
+        document.getElementById("hitterTimelinePlotTitle").innerHTML = `Hitter Timeline`
+
         // remove hitter timeline and redraw
         hitterTimelineSpecs.selected = null
         timelineData(hitterTimelineSpecs)
     }
     else 
     {
+        // update timeline title
+        document.getElementById("pitcherTimelinePlotTitle").innerHTML = `Pitcher Timeline`
+
         // remove pitcher timeline and redraw
         pitcherTimelineSpecs.selected = null
         timelineData(pitcherTimelineSpecs)
