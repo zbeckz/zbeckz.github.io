@@ -185,7 +185,7 @@ let hitterTimelineSpecs =
 
     averages: [],
 
-    tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}],
+    tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
 }
 
 let pitcherTimelineSpecs = 
@@ -221,7 +221,7 @@ let pitcherTimelineSpecs =
 
     averages: [],
 
-    tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}],
+    tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
 }
 
 initialize()
