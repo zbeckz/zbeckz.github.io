@@ -139,6 +139,8 @@ let teamTimelineSpecs =
 
     fields: ["G", "W", "L", "R", "PA", "AB", "H", "2B", "3B", "HR", "TB", "BB", "SO", "SB", "CS", "SB%", "HBP", "SF", "AVG", "OBP", "SLG", "OPS", "RA", "ER", "ERA", "CG", "SHO", "SV", "HA", "HRA", "BBA", "SOA", "DP", "Rank"],
 
+    rateFields: [],
+
     YAxis: "W",
 
     selected: null,
@@ -169,6 +171,10 @@ let hitterTimelineSpecs =
 
     fields: ["G", "PA", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "SB%", "BB", "SO", "TB", "AVG", "OBP", "SLG", "OPS", "IBB", "HBP", "SF"],
 
+    rateFields: ["SB%", "AVG", "OBP", "SLG", "OPS"],
+
+    rateWeightField: ["PA"],
+
     YAxis: "HR",
 
     selected: null,
@@ -198,6 +204,10 @@ let pitcherTimelineSpecs =
     height: 300,
 
     fields: ["W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "IP"],
+
+    rateFields: ["BAOpp", "ERA"],
+
+    rateWeightField: ["IP"],
 
     YAxis: "W",
 
@@ -319,8 +329,48 @@ function timelineData(specs)
     let data = specs.data.filter(d => d[specs.idField] === specs.selected) 
 
     // sort by year
-    data = data.sort((a, b) => a.yearID - b.yearID)
-    console.log(data)
+    data.sort((a, b) => a.yearID - b.yearID)
+
+    // ensure players who played for mulitple teams in a given year have combined stats
+    if (specs.rateFields.length > 0)
+    {
+        let init = data.shift()
+        data = data.reduce(function(acc, d)
+        {
+            let prevData = acc[acc.length - 1]
+            let newData = d
+
+            // if still same year, need to combine stats
+            if (prevData.yearID === d.yearID)
+            {
+                // loop through all the fields in this data
+                for (let i = 0; i < specs.fields.length; i++)
+                {
+                    // get the field
+                    let f = specs.fields[i]
+
+                    // if its a rate stat, need to do weighted average
+                    if (specs.rateFields.includes(f))
+                    {
+                        newData[f] = (prevData[f]*prevData[specs.rateWeightField] + d[f]*d[specs.rateWeightField]) / (prevData[specs.rateWeightField] + d[specs.rateWeightField])
+                    }
+                    else // if not, can add as normal
+                    {
+                        newData[f] = prevData[f] + d[f]
+                    }
+                }
+
+                // now that fields are updated, replace prev obj with this new one
+                acc[acc.length - 1] = newData
+                return acc
+            }
+            else // not same year, can add as normal
+            {
+                acc.push(d)
+                return acc
+            }
+        }, [init])
+    }
 
     // add the timeline
     svg.append("path")
@@ -398,7 +448,7 @@ function scatterplotData(specs)
         .attr("cx", function(d) {return xScale(d[specs.XAxis])})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
         .attr("r", 4)
-        .attr("fill", function(d) {return d.id === teamPlotSpecs.selected ? "yellow" : colorScale(d[specs.Color])})
+        .attr("fill", function(d) {return d.id === specs.selected ? "yellow" : colorScale(d[specs.Color])})
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
 
@@ -407,7 +457,7 @@ function scatterplotData(specs)
         .attr("cx", function(d) {return xScale(d[specs.XAxis])})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
         .attr("r", 4)
-        .attr("fill", function(d) {return d.id === teamPlotSpecs.selected ? "yellow" : colorScale(d[specs.Color])})
+        .attr("fill", function(d) {return d.id === specs.selected ? "yellow" : colorScale(d[specs.Color])})
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
 
@@ -585,8 +635,20 @@ function calculateAverage(specs)
             // filter by year
             let yearData = specs.data.filter(d => d.yearID === y)
 
+            // to keep track of nan amounts to not incorporate
+            let nanAmount = 0
+
             // get average
-            let value = yearData.reduce((acc, d) => acc + d[f], 0) / yearData.length
+            let value = yearData.reduce(function(acc, d) 
+            {
+                if (isNaN(d[f])) 
+                {
+                    nanAmount++
+                    return acc
+                }
+                return acc + d[f]
+                
+            }, 0) / (yearData.length - nanAmount)
 
             // truncate
             if (!Number.isInteger(value)) { value = +value.toFixed(3)}
