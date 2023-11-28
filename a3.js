@@ -302,6 +302,9 @@ function timelineData(specs)
     // remove existing path
     svg.selectAll("path").remove()
 
+    // remove existing circles
+    svg.selectAll("circle").remove()
+
     // scale based on all teams
     let xScale = d3.scaleLinear()
                     .domain(d3.extent(specs.data, function (d) { return d.yearID }))
@@ -334,45 +337,33 @@ function timelineData(specs)
     // ensure players who played for mulitple teams in a given year have combined stats
     if (specs.rateFields.length > 0)
     {
-        let init = data.shift()
-        data = data.reduce(function(acc, d)
-        {
-            let prevData = acc[acc.length - 1]
-            let newData = d
-
-            // if still same year, need to combine stats
-            if (prevData.yearID === d.yearID)
-            {
-                // loop through all the fields in this data
-                for (let i = 0; i < specs.fields.length; i++)
-                {
-                    // get the field
-                    let f = specs.fields[i]
-
-                    // if its a rate stat, need to do weighted average
-                    if (specs.rateFields.includes(f))
-                    {
-                        newData[f] = (prevData[f]*prevData[specs.rateWeightField] + d[f]*d[specs.rateWeightField]) / (prevData[specs.rateWeightField] + d[specs.rateWeightField])
-                    }
-                    else // if not, can add as normal
-                    {
-                        newData[f] = prevData[f] + d[f]
-                    }
-                }
-
-                // now that fields are updated, replace prev obj with this new one
-                acc[acc.length - 1] = newData
-                return acc
-            }
-            else // not same year, can add as normal
-            {
-                acc.push(d)
-                return acc
-            }
-        }, [init])
+        data = combineYears(specs, data)
     }
 
-    // add the timeline
+    // add the average timeline
+    let avg = specs.averages.filter(d => d.field === specs.YAxis)
+    svg.append("path")
+      .datum(avg)
+      .attr("fill", "none")
+      .attr("stroke", "orange")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+                    .x(function(d) { return xScale(d.yearID) })
+                    .y(function(d) { return yScale(d.value) }))
+
+    // add the average points
+    svg.append("g").selectAll("circle")
+        .data(avg)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {return xScale(d.yearID)})
+        .attr("cy", function(d) {return yScale(d.value)})
+        .attr("r", 4)
+        .attr("fill", "orange")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.5)
+
+    // add the selected timeline
     svg.append("path")
       .datum(data)
       .attr("fill", "none")
@@ -382,17 +373,17 @@ function timelineData(specs)
                     .x(function(d) { return xScale(d.yearID) })
                     .y(function(d) { return yScale(d[specs.YAxis]) }))
 
-    // add the average timeline
-    data = specs.averages.filter(d => d.field === specs.YAxis)
-    svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "orange")
-      .attr("stroke-width", 2)
-      .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d.value) }))
-
+    // add the selected points
+    svg.append("g").selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {return xScale(d.yearID)})
+        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+        .attr("r", 4)
+        .attr("fill", "steelblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.5)
     
 }
 
@@ -647,7 +638,7 @@ function calculateAverage(specs)
                     return acc
                 }
                 return acc + d[f]
-                
+
             }, 0) / (yearData.length - nanAmount)
 
             // truncate
@@ -924,3 +915,43 @@ function pitchersCheckbox(cb)
     scatterplotData(pitcherPlotSpecs)
 }
 
+// takes in data for a timeline, combines it for display when a player played for diff teams during the same year
+function combineYears(specs, data)
+{
+    let init = data.shift()
+    return data.reduce(function(acc, d)
+    {
+        let prevData = acc[acc.length - 1]
+        let newData = d
+
+        // if still same year, need to combine stats
+        if (prevData.yearID === d.yearID)
+        {
+            // loop through all the fields in this data
+            for (let i = 0; i < specs.fields.length; i++)
+            {
+                // get the field
+                let f = specs.fields[i]
+
+                // if its a rate stat, need to do weighted average
+                if (specs.rateFields.includes(f))
+                {
+                    newData[f] = (prevData[f]*prevData[specs.rateWeightField] + d[f]*d[specs.rateWeightField]) / (prevData[specs.rateWeightField] + d[specs.rateWeightField])
+                }
+                else // if not, can add as normal
+                {
+                    newData[f] = prevData[f] + d[f]
+                }
+            }
+
+            // now that fields are updated, replace prev obj with this new one
+            acc[acc.length - 1] = newData
+            return acc
+        }
+        else // not same year, can add as normal
+        {
+            acc.push(d)
+            return acc
+        }
+    }, [init])
+}
