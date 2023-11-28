@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Metadata -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Zach Becker's A3</title>
+    
+    <!-- D3.js, JQuery potentially -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="a3.css" />
+
+    <!-- Main Script -->
+    <script src="a3.js"></script>
+
+  </head>
+
+  <body>
+    <div id="layout">
+
+      <div class="view">
+
+        <div class="plot" id="teamsPlot">
+          <strong>Team Statistics</strong>
+        </div>
+
+        <div class="plotFilters">
+          <label>X Axis:</label>
+          <select id="teamsXAxis"></select>
+
+          <label>Y Axis:</label>
+          <select id="teamsYAxis"></select>
+
+          <label>Color:</label>
+          <select id="teamsColor"> </select>
+
+          <div class="slider">
+            <label>W:</label>
+            <label id="teamsWMin" style="font-weight: bold;"></label>
+            <div name="teamsW" id="teamsW"></div>
+            <label id="teamsWMax" style="font-weight: bold;"></label>
+            <label>Won WS:</label>
+            <input type='checkbox' onclick='worldSeriesCheckbox(this);'>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="view">
+
+        <div class="plot" id="hittersPlot">
+          <strong>Hitter Statistics</strong>
+        </div>
+
+        <div class="plotFilters">
+          <label>X Axis:</label>
+          <select id="hittersXAxis"></select>
+
+          <label>Y Axis:</label>
+          <select id="hittersYAxis"></select>
+
+          <label for="hittersColor">Color:</label>
+          <select id="hittersColor"></select>
+
+          <div class="slider">
+            <label>PA:</label>
+            <label id="hittersPAMin" style="font-weight: bold;"></label>
+            <div name="hittersPA" id="hittersPA"></div>
+            <label id="hittersPAMax" style="font-weight: bold;"></label>
+            <label>Pos:</label>
+            <select id="hittersPos"></select>
+            <label>Allstar:</label>
+            <input type='checkbox' onclick='hittersCheckbox(this);'>
+          </div>
+        </div>
+
+      </div>
+      <div class="view">
+
+        <div class="plot" id="pitchersPlot">
+          <strong>Pitcher Statistics</strong>
+        </div>
+
+        <div class="plotFilters">
+          <label>X Axis:</label>
+          <select id="pitchersXAxis"></select>
+
+          <label>Y Axis:</label>
+          <select id="pitchersYAxis"></select>
+
+          <label>Color:</label>
+          <select id="pitchersColor"></select>
+
+          <div class="slider">
+            <label>IP:</label>
+            <label id="pitchersIPMin" style="font-weight: bold;"></label>
+            <div name="pitchersIP" id="pitchersIP"></div>
+            <label id="pitchersIPMax" style="font-weight: bold;"></label>
+            <label>Pos:</label>
+            <select id="pitchersPos"></select>
+            <label>Allstar:</label>
+            <input type='checkbox' onclick='pitchersCheckbox(this);'>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="view">
+
+        <div class="plot" id="teamTimelinePlot">
+          <strong>Team Timeline</strong>
+        </div>
+
+        <div class="plotFilters">
+
+          <label>Y Axis:</label>
+          <select id="teamTimelineYAxis"></select>
+          
+        </div>
+
+      </div>
+      <div class="view"></div>
+      <div class="view"></div>
+    </div>
+  </body>
+</html>

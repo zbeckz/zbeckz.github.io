@@ -1,0 +1,56 @@
+/* this is the overall structure of the webpage */
+#layout {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 375px 375px 375px;
+    grid-template-rows: 375px 375px;
+    row-gap: 30px;
+    column-gap: 30px;
+    padding-bottom: 300px;
+}
+
+/* each rectangle in the grid */
+.view {
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* the title plus svg */
+.plot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* dropdown select */
+.ui-selectmenu-button {
+    font-size: 0.5em !important;
+    height: 15px !important;
+}
+.ui-selectmenu-text {
+    text-align: center !important;
+}
+
+/* dropdown menu */
+.ui-selectmenu-menu {
+    font-size: 0.75em !important;
+}
+
+ul.ui-menu { 
+    max-height: 150px !important; 
+}
+
+/* slider itself */
+.ui-slider {
+    width: 70px !important;
+}
+
+/* slider plus labels */
+.slider {
+    padding-top: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
