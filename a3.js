@@ -147,7 +147,9 @@ let teamTimelineSpecs =
 
     data: [],
 
-    averages: []
+    averages: [],
+
+    tooltipDisplay: [{name: "Team: ", stat: "teamID"}],
 }
 
 let hitterTimelineSpecs = 
@@ -181,7 +183,9 @@ let hitterTimelineSpecs =
 
     data: [],
 
-    averages: []
+    averages: [],
+
+    tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}],
 }
 
 let pitcherTimelineSpecs = 
@@ -215,7 +219,9 @@ let pitcherTimelineSpecs =
 
     data: [],
 
-    averages: []
+    averages: [],
+
+    tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}],
 }
 
 initialize()
@@ -361,7 +367,28 @@ function timelineData(specs)
         .attr("r", 4)
         .attr("fill", "orange")
         .attr("stroke", "black")
-        .attr("stroke-width", 0.5)
+        .attr("stroke-width", 0)
+        .on('mouseover', function(d, i) 
+        {
+            // create tooltip text
+            let t = `Year: ${i.yearID}\nAverage ${specs.YAxis}: ${i.value}`
+
+            // add new tooltip
+            d3.select(this)
+              .raise()
+              .attr("r", 5)
+              .attr("stroke-width", 0.5)
+              .append("svg:title")
+              .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("r", 4)
+                .attr("stroke-width", 0)
+                .selectAll("*").remove()
+        })
 
     // add the selected timeline
     svg.append("path")
@@ -383,8 +410,35 @@ function timelineData(specs)
         .attr("r", 4)
         .attr("fill", "steelblue")
         .attr("stroke", "black")
-        .attr("stroke-width", 0.5)
-    
+        .attr("stroke-width", 0)
+        .on('mouseover', function(d, i) 
+        {
+            // create tooltip text
+            let t = `Year: ${i.yearID}\n`
+            for (let j = 0; j < specs.tooltipDisplay.length; j++)
+            {
+                t += specs.tooltipDisplay[j].name
+                t += i[specs.tooltipDisplay[j].stat]
+                t += "\n"
+            }
+            t += `${specs.YAxis}: ${i[specs.YAxis]}`
+
+            // add new tooltip
+            d3.select(this)
+              .raise()
+              .attr("r", 5)
+              .attr("stroke-width", 0.5)
+              .append("svg:title")
+              .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("r", 4)
+                .attr("stroke-width", 0)
+                .selectAll("*").remove()
+        })
 }
 
 // given specs, makes the appropriate scatterplot
@@ -492,36 +546,7 @@ function scatterplotData(specs)
                 d3.select(this).attr("fill", function(d) {return colorScale(d[specs.Color])})
                 specs.selected = null
 
-                if (specs.selector === teamPlotSpecs.selector)
-                {
-                    // since a team has been unselected, remove team filter from hitter and pitcher
-                    removeFilter(hitterPlotSpecs, "teamID")
-                    removeFilter(pitcherPlotSpecs, "teamID")
-
-                    // since this is a team AND a year, also remove the year
-                    removeFilter(hitterPlotSpecs, "yearID")
-                    removeFilter(pitcherPlotSpecs, "yearID")
-
-                    // redraw the hitter and pitcher views with the filtered data
-                    scatterplotData(hitterPlotSpecs)
-                    scatterplotData(pitcherPlotSpecs)
-
-                    // remove team timeline and redraw
-                    teamTimelineSpecs.selected = null
-                    timelineData(teamTimelineSpecs)
-                }
-                else if (specs.selector === hitterPlotSpecs.selector)
-                {
-                    // remove hitter timeline and redraw
-                    hitterTimelineSpecs.selected = null
-                    timelineData(hitterTimelineSpecs)
-                }
-                else 
-                {
-                    // remove pitcher timeline and redraw
-                    pitcherTimelineSpecs.selected = null
-                    timelineData(pitcherTimelineSpecs)
-                }
+                unselect(specs)
             }
             else
             {
@@ -538,36 +563,7 @@ function scatterplotData(specs)
                 d3.select(this).attr("fill","yellow")
                 specs.selected = i.id
 
-                if (specs.selector === teamPlotSpecs.selector)
-                {
-                    // since a team has been selected, add team filter to hitter and pitcher
-                    addFilter(hitterPlotSpecs, "equal", "teamID", [i.teamID])
-                    addFilter(pitcherPlotSpecs, "equal", "teamID", [i.teamID])
-
-                    // since this is a team AND a year, also add the year
-                    addFilter(hitterPlotSpecs, "equal", "yearID", [i.yearID])
-                    addFilter(pitcherPlotSpecs, "equal", "yearID", [i.yearID])
-
-                    // redraw the hitter and pitcher views with the filtered data
-                    scatterplotData(hitterPlotSpecs)
-                    scatterplotData(pitcherPlotSpecs)
-
-                    // select on timeline, redraw
-                    teamTimelineSpecs.selected = i.teamID
-                    timelineData(teamTimelineSpecs)
-                }
-                else if (specs.selector === hitterPlotSpecs.selector)
-                {
-                    // select on hitter timeline, redraw
-                    hitterTimelineSpecs.selected = i.playerID
-                    timelineData(hitterTimelineSpecs)
-                }
-                else 
-                {
-                    // select on pitcher timeline, redraw
-                    pitcherTimelineSpecs.selected = i.playerID
-                    timelineData(pitcherTimelineSpecs)
-                }
+                select(specs, i)
             }
         })
 }
@@ -954,4 +950,73 @@ function combineYears(specs, data)
             return acc
         }
     }, [init])
+}
+
+// behavior for selecting a point in a scatterplot
+function select(specs, i)
+{
+    if (specs.selector === teamPlotSpecs.selector)
+    {
+        // since a team has been selected, add team filter to hitter and pitcher
+        addFilter(hitterPlotSpecs, "equal", "teamID", [i.teamID])
+        addFilter(pitcherPlotSpecs, "equal", "teamID", [i.teamID])
+
+        // since this is a team AND a year, also add the year
+        addFilter(hitterPlotSpecs, "equal", "yearID", [i.yearID])
+        addFilter(pitcherPlotSpecs, "equal", "yearID", [i.yearID])
+
+        // redraw the hitter and pitcher views with the filtered data
+        scatterplotData(hitterPlotSpecs)
+        scatterplotData(pitcherPlotSpecs)
+
+        // select on timeline, redraw
+        teamTimelineSpecs.selected = i.teamID
+        timelineData(teamTimelineSpecs)
+    }
+    else if (specs.selector === hitterPlotSpecs.selector)
+    {
+        // select on hitter timeline, redraw
+        hitterTimelineSpecs.selected = i.playerID
+        timelineData(hitterTimelineSpecs)
+    }
+    else 
+    {
+        // select on pitcher timeline, redraw
+        pitcherTimelineSpecs.selected = i.playerID
+        timelineData(pitcherTimelineSpecs)
+    }
+}
+// behavior for unselecting a point in a scatterplot
+function unselect(specs)
+{
+    if (specs.selector === teamPlotSpecs.selector)
+    {
+        // since a team has been unselected, remove team filter from hitter and pitcher
+        removeFilter(hitterPlotSpecs, "teamID")
+        removeFilter(pitcherPlotSpecs, "teamID")
+
+        // since this is a team AND a year, also remove the year
+        removeFilter(hitterPlotSpecs, "yearID")
+        removeFilter(pitcherPlotSpecs, "yearID")
+
+        // redraw the hitter and pitcher views with the filtered data
+        scatterplotData(hitterPlotSpecs)
+        scatterplotData(pitcherPlotSpecs)
+
+        // remove team timeline and redraw
+        teamTimelineSpecs.selected = null
+        timelineData(teamTimelineSpecs)
+    }
+    else if (specs.selector === hitterPlotSpecs.selector)
+    {
+        // remove hitter timeline and redraw
+        hitterTimelineSpecs.selected = null
+        timelineData(hitterTimelineSpecs)
+    }
+    else 
+    {
+        // remove pitcher timeline and redraw
+        pitcherTimelineSpecs.selected = null
+        timelineData(pitcherTimelineSpecs)
+    }
 }
