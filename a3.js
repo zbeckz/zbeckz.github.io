@@ -306,14 +306,11 @@ function timelineData(specs)
     // get the chart
     let svg = d3.select(`#${specs.selector}Plot svg g`)
 
-    // remove existing axes
-    svg.selectAll(".axis").remove()
+    // remove existing circles
+    svg.selectAll("circle").remove()
 
     // remove existing path
     svg.selectAll("path").remove()
-
-    // remove existing circles
-    svg.selectAll("circle").remove()
 
     // scale based on all teams
     let xScale = d3.scaleLinear()
@@ -324,154 +321,24 @@ function timelineData(specs)
                     .domain(d3.extent(specs.data, function (d) { return d[specs.YAxis] }))
                     .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
 
-    // add x axis
-    svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", `translate(0, ${specs.height - specs.margin.top - specs.margin.bottom})`)
-        .call(d3.axisBottom(xScale));
+    // create the axes
+    makeAxes(svg, specs, xScale, yScale)
 
-    // add y axis
-    svg.append("g")
-        .attr("class", "axis")
-        .call(d3.axisLeft(yScale));
+    // create the average timeline and points
+    makeAverageLine(svg, specs, xScale, yScale)
 
-    // if no team is selected, don't actually plot anything
+    // if no team is selected, don't actually plot any data
     if (specs.selected.length == 0) { return }
 
-    // add the average timeline
-    let avg = specs.averages.filter(d => d.field === specs.YAxis)
-    svg.append("path")
-      .datum(avg)
-      .attr("fill", "none")
-      .attr("stroke", "orange")
-      .attr("stroke-width", 2)
-      .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d.value) }))
-
-    // add the average points
-    svg.append("g").selectAll("rect")
-        .data(avg)
-        .enter()
-        .append("rect")
-        .attr("x", function(d) {return xScale(d.yearID) - 2.5})
-        .attr("y", function(d) {return yScale(d.value) - 2.5})
-        .attr("width", 5)
-        .attr("height", 5)
-        .attr("fill", "orange")
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function(d, i) 
-        {
-            // create tooltip text
-            let t = `Year: ${i.yearID}\nAverage ${specs.YAxis}: ${i.value}`
-
-            // add new tooltip
-            d3.select(this)
-              .raise()
-              .attr("x", function(d) {return xScale(d.yearID) - 3})
-              .attr("y", function(d) {return yScale(d.value) - 3})
-              .attr("width", 6)
-              .attr("height", 6)
-              .attr("stroke-width", 0.5)
-              .append("svg:title")
-              .text(t)
-        })
-        .on('mouseout', function(d, i) 
-        {
-            // revert back to previous appearance, remove title
-            d3.select(this)
-                .attr("x", function(d) {return xScale(d.yearID) - 2.5})
-                .attr("y", function(d) {return yScale(d.value) - 2.5})
-                .attr("width", 5)
-                .attr("height", 5)
-                .attr("stroke-width", 0)
-                .selectAll("*").remove()
-        })
-
-    // get unique selected entities
-    let selected = specs.selected.reduce(function(acc, d) 
-    {
-        if (!acc.includes(d)) {acc.push(d)}
-
-        return acc
-    }, [])
-
     // setup array to contain each individual array for each selected entity
-    let paths = []
-
-    // get individual arrays by looping through the selected entities
-    for (let i = 0; i < selected.length; i++)
-    {
-        // filter to only that selection
-        let data = specs.data.filter(d => d[specs.idField] === selected[i])
-  
-        // sort by year
-        data.sort((a, b) => a.yearID - b.yearID)
-        
-        // ensure players who played for mulitple teams in a given year have combined stats
-        if (specs.rateFields.length > 0)
-        {
-            data = combineYears(specs, data)
-        }
-
-        paths.push(data)
-    }
+    let paths = getPaths(specs)
 
     // draw all of the paths
     for (let i = 0; i < paths.length; i++)
     {
         let data = paths[i]
 
-        // add the selected timeline
-        svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2)
-        .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d[specs.YAxis]) }))
-
-        // add the selected points
-        svg.append("g").selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", function(d) {return xScale(d.yearID)})
-            .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-            .attr("r", 3)
-            .attr("fill", "steelblue")
-            .attr("stroke", "black")
-            .attr("stroke-width", 0)
-            .on('mouseover', function(d, i) 
-            {
-                // create tooltip text
-                let t = `Year: ${i.yearID}\n`
-                for (let j = 0; j < specs.tooltipDisplay.length; j++)
-                {
-                    t += specs.tooltipDisplay[j].name
-                    t += i[specs.tooltipDisplay[j].stat]
-                    t += "\n"
-                }
-                t += `${specs.YAxis}: ${i[specs.YAxis]}`
-
-                // add new tooltip
-                d3.select(this)
-                    .raise()
-                    .attr("r", 4)
-                    .attr("stroke-width", 0.5)
-                    .append("svg:title")
-                    .text(t)
-            })
-            .on('mouseout', function(d, i) 
-            {
-                // revert back to previous appearance, remove title
-                d3.select(this)
-                    .attr("r", 3)
-                    .attr("stroke-width", 0)
-                    .selectAll("*").remove()
-            })
+        makeEntityLine(svg, specs, data, xScale, yScale)
     }
 }
 
@@ -483,9 +350,6 @@ function scatterplotData(specs)
 
     // get the chart
     let svg = d3.select(`#${specs.selector}Plot svg g`)
-
-    // remove existing axes
-    svg.selectAll(".axis").remove()
 
     // remove existing titles
     svg.selectAll("title").remove()
@@ -501,143 +365,14 @@ function scatterplotData(specs)
                     .domain(d3.extent(data, function(d) { return d[specs.Color] }))
                     .range(["blue", "red"])
 
-                    
-    // add x axis
-    svg.append("g")
-    .attr("class", "axis")
-    .attr("transform", `translate(0, ${specs.height - specs.margin.top - specs.margin.bottom})`)
-    .call(d3.axisBottom(xScale));
+    // draw axes
+    makeAxes(svg, specs, xScale, yScale)
 
-    // add y axis
-    svg.append("g")
-        .attr("class", "axis")
-        .call(d3.axisLeft(yScale));
+    // draw circles
+    makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
 
-    // add circles for each point
-    let circle = svg.selectAll("circle")
-                .data(data, d => d.id)
-
-    // remove circles that were not connected via id
-    circle.exit().remove()
-
-    // transition the circles that were connected via id
-    circle.transition()
-        .duration(1000)
-        .ease(d3.easeQuadInOut)
-        .attr("cx", function(d) {return xScale(d[specs.XAxis])})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", 4)
-        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
-        .attr("stroke", "black")
-        .attr("stroke-width", 0.5)
-
-    // add circles for the data that was not connected via id
-    circle.enter().append("circle")
-        .attr("cx", function(d) {return xScale(d[specs.XAxis])})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", 4)
-        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
-        .attr("stroke", "black")
-        .attr("stroke-width", 0.5)
-
-    // add interactions for the points
-    svg.selectAll("circle")
-        .on('mouseover', function(d, i) 
-        {
-            // create tooltip text
-            let t = ""
-            for (let j = 0; j < specs.tooltipDisplay.length; j++)
-            {
-                t += specs.tooltipDisplay[j].name
-                t += i[specs.tooltipDisplay[j].stat]
-                t += "\n"
-            }
-            t += `${specs.XAxis}: ${i[specs.XAxis]}\n`
-            t += `${specs.YAxis}: ${i[specs.YAxis]}\n`
-            t += `${specs.Color}: ${i[specs.Color]}`
-
-            // add new tooltip
-            d3.select(this)
-              .raise()
-              .attr("r", 5)
-              .attr("stroke", "yellow")
-              .append("svg:title")
-              .text(t)
-        })
-        .on('mouseout', function(d, i) 
-        {
-            // revert back to previous appearance, remove title
-            d3.select(this)
-                .attr("r", 4)
-                .attr("stroke", "black")
-                .selectAll("*").remove()
-        })
-        .on("click", function(d, i) 
-        {
-            // if selected
-            if (specs.selected.includes(i.id))
-            {
-                // turn back to normal color
-                d3.select(this).attr("fill", function(d) {return colorScale(d[specs.Color])})
-
-                // remove from selected
-                specs.selected.splice(specs.selected.indexOf(i.id) ,1)
-
-                if (specs.selector === teamPlotSpecs.selector)
-                {
-                    // redraw the hitter and pitcher views with the filtered data
-                    scatterplotData(hitterPlotSpecs)
-                    scatterplotData(pitcherPlotSpecs)
-
-                    // remove team timeline and redraw
-                    teamTimelineSpecs.selected.splice(teamTimelineSpecs.selected.indexOf(i.teamID), 1)
-                    timelineData(teamTimelineSpecs)
-                }
-                else if (specs.selector === hitterPlotSpecs.selector)
-                {
-                    // remove hitter timeline and redraw
-                    hitterTimelineSpecs.selected.splice(hitterTimelineSpecs.selected.indexOf(i.playerID), 1)
-                    timelineData(hitterTimelineSpecs)
-                }
-                else 
-                {
-                    // remove pitcher timeline and redraw
-                    pitcherTimelineSpecs.selected.splice(pitcherTimelineSpecs.selected.indexOf(i.playerID), 1)
-                    timelineData(pitcherTimelineSpecs)
-                }
-            }
-            else // if not selected
-            {
-                // turn yellow
-                d3.select(this).attr("fill","yellow")
- 
-                // add to selected
-                specs.selected.push(i.id)
-
-                if (specs.selector === teamPlotSpecs.selector)
-                {
-                    // redraw the hitter and pitcher views
-                    scatterplotData(hitterPlotSpecs)
-                    scatterplotData(pitcherPlotSpecs)
-
-                    // select on timeline and redraw
-                    teamTimelineSpecs.selected.push(i.teamID)
-                    timelineData(teamTimelineSpecs)
-                }
-                else if (specs.selector === hitterPlotSpecs.selector)
-                {
-                    // select on hitter timeline, redraw
-                    hitterTimelineSpecs.selected.push(i.playerID)
-                    timelineData(hitterTimelineSpecs)
-                }
-                else 
-                {
-                    // select on pitcher timeline, redraw
-                    pitcherTimelineSpecs.selected.push(i.playerID)
-                    timelineData(pitcherTimelineSpecs)
-                }
-            }
-        })
+    // add interactions to the circles
+    interactScatterCircles(svg, specs, colorScale)
 }
 
 // remove a filter from specs
@@ -1047,4 +782,301 @@ function combineYears(specs, data)
             return acc
         }
     }, [init])
+}
+
+// make axes given svg and specs and scales
+function makeAxes(svg, specs, xScale, yScale)
+{
+    // remove existing axes
+    svg.selectAll(".axis").remove()
+
+    // add x axis
+    svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", `translate(0, ${specs.height - specs.margin.top - specs.margin.bottom})`)
+    .call(d3.axisBottom(xScale));
+
+    // add y axis
+    svg.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(yScale));
+}
+
+// helper for the scatter plot creation, draws the points
+function makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
+{
+    // add circles for each point
+    let circle = svg.selectAll("circle")
+                .data(data, d => d.id)
+
+    // remove circles that were not connected via id
+    circle.exit().remove()
+
+    // transition the circles that were connected via id
+    circle.transition()
+        .duration(1000)
+        .ease(d3.easeQuadInOut)
+        .attr("cx", function(d) {return xScale(d[specs.XAxis])})
+        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+        .attr("r", 4)
+        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.5)
+
+    // add circles for the data that was not connected via id
+    circle.enter().append("circle")
+        .attr("cx", function(d) {return xScale(d[specs.XAxis])})
+        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+        .attr("r", 4)
+        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.5)
+}
+
+// helper for the scatter plot creation, adds interactive behavior to the points
+function interactScatterCircles(svg, specs, colorScale)
+{
+    svg.selectAll("circle")
+        .on('mouseover', function(d, i) 
+        {
+            // create tooltip text
+            let t = ""
+            for (let j = 0; j < specs.tooltipDisplay.length; j++)
+            {
+                t += specs.tooltipDisplay[j].name
+                t += i[specs.tooltipDisplay[j].stat]
+                t += "\n"
+            }
+            t += `${specs.XAxis}: ${i[specs.XAxis]}\n`
+            t += `${specs.YAxis}: ${i[specs.YAxis]}\n`
+            t += `${specs.Color}: ${i[specs.Color]}`
+
+            // add new tooltip
+            d3.select(this)
+              .raise()
+              .attr("r", 5)
+              .attr("stroke", "yellow")
+              .append("svg:title")
+              .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("r", 4)
+                .attr("stroke", "black")
+                .selectAll("*").remove()
+        })
+        .on("click", function(d, i) 
+        {
+            // if selected
+            if (specs.selected.includes(i.id))
+            {
+                // turn back to normal color
+                d3.select(this).attr("fill", function(d) {return colorScale(d[specs.Color])})
+
+                // remove from selected
+                specs.selected.splice(specs.selected.indexOf(i.id) ,1)
+
+                if (specs.selector === teamPlotSpecs.selector)
+                {
+                    // redraw the hitter and pitcher views with the filtered data
+                    scatterplotData(hitterPlotSpecs)
+                    scatterplotData(pitcherPlotSpecs)
+
+                    // remove team timeline and redraw
+                    teamTimelineSpecs.selected.splice(teamTimelineSpecs.selected.indexOf(i.teamID), 1)
+                    timelineData(teamTimelineSpecs)
+                }
+                else if (specs.selector === hitterPlotSpecs.selector)
+                {
+                    // remove hitter timeline and redraw
+                    hitterTimelineSpecs.selected.splice(hitterTimelineSpecs.selected.indexOf(i.playerID), 1)
+                    timelineData(hitterTimelineSpecs)
+                }
+                else 
+                {
+                    // remove pitcher timeline and redraw
+                    pitcherTimelineSpecs.selected.splice(pitcherTimelineSpecs.selected.indexOf(i.playerID), 1)
+                    timelineData(pitcherTimelineSpecs)
+                }
+            }
+            else // if not selected
+            {
+                // turn yellow
+                d3.select(this).attr("fill","yellow")
+ 
+                // add to selected
+                specs.selected.push(i.id)
+
+                if (specs.selector === teamPlotSpecs.selector)
+                {
+                    // redraw the hitter and pitcher views
+                    scatterplotData(hitterPlotSpecs)
+                    scatterplotData(pitcherPlotSpecs)
+
+                    // select on timeline and redraw
+                    teamTimelineSpecs.selected.push(i.teamID)
+                    timelineData(teamTimelineSpecs)
+                }
+                else if (specs.selector === hitterPlotSpecs.selector)
+                {
+                    // select on hitter timeline, redraw
+                    hitterTimelineSpecs.selected.push(i.playerID)
+                    timelineData(hitterTimelineSpecs)
+                }
+                else 
+                {
+                    // select on pitcher timeline, redraw
+                    pitcherTimelineSpecs.selected.push(i.playerID)
+                    timelineData(pitcherTimelineSpecs)
+                }
+            }
+        })
+}
+
+// helper for timeline plot creation, makes path and squares for the average
+function makeAverageLine(svg, specs, xScale, yScale)
+{
+    // remove existing rects
+    svg.selectAll("rect").remove()
+
+    // add the average timeline
+    let avg = specs.averages.filter(d => d.field === specs.YAxis)
+    svg.append("path")
+      .datum(avg)
+      .attr("fill", "none")
+      .attr("stroke", "orange")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+                    .x(function(d) { return xScale(d.yearID) })
+                    .y(function(d) { return yScale(d.value) }))
+
+    // add the average points
+    svg.append("g").selectAll("rect")
+        .data(avg)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) {return xScale(d.yearID) - 2.5})
+        .attr("y", function(d) {return yScale(d.value) - 2.5})
+        .attr("width", 5)
+        .attr("height", 5)
+        .attr("fill", "orange")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .on('mouseover', function(d, i) 
+        {
+            // create tooltip text
+            let t = `Year: ${i.yearID}\nAverage ${specs.YAxis}: ${i.value}`
+
+            // add new tooltip
+            d3.select(this)
+              .raise()
+              .attr("x", function(d) {return xScale(d.yearID) - 3})
+              .attr("y", function(d) {return yScale(d.value) - 3})
+              .attr("width", 6)
+              .attr("height", 6)
+              .attr("stroke-width", 0.5)
+              .append("svg:title")
+              .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("x", function(d) {return xScale(d.yearID) - 2.5})
+                .attr("y", function(d) {return yScale(d.value) - 2.5})
+                .attr("width", 5)
+                .attr("height", 5)
+                .attr("stroke-width", 0)
+                .selectAll("*").remove()
+        })
+}
+
+// helper for timeline plot creation, gets each selected entity path data
+function getPaths(specs)
+{
+    // reduce to unique values
+    let selected = specs.selected.reduce(function(acc, d) 
+    {
+        if (!acc.includes(d)) {acc.push(d)}
+
+        return acc
+    }, [])
+
+    let paths = []
+
+    // get individual arrays by looping through the selected entities
+    for (let i = 0; i < selected.length; i++)
+    {
+        // filter to only that selection
+        let data = specs.data.filter(d => d[specs.idField] === selected[i])
+  
+        // sort by year
+        data.sort((a, b) => a.yearID - b.yearID)
+        
+        // ensure players who played for mulitple teams in a given year have combined stats
+        if (specs.rateFields.length > 0)
+        {
+            data = combineYears(specs, data)
+        }
+
+        paths.push(data)
+    }
+
+    return paths
+}
+
+// helper for timeline plot creation, draws path and circles for an entity
+function makeEntityLine(svg, specs, data, xScale, yScale)
+{
+    // add the selected timeline
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", d3.line()
+                    .x(function(d) { return xScale(d.yearID) })
+                    .y(function(d) { return yScale(d[specs.YAxis]) }))
+
+    // add the selected points
+    svg.append("g").selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {return xScale(d.yearID)})
+        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+        .attr("r", 3)
+        .attr("fill", "steelblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .on('mouseover', function(d, i) 
+        {
+            // create tooltip text
+            let t = `Year: ${i.yearID}\n`
+            for (let j = 0; j < specs.tooltipDisplay.length; j++)
+            {
+                t += specs.tooltipDisplay[j].name
+                t += i[specs.tooltipDisplay[j].stat]
+                t += "\n"
+            }
+            t += `${specs.YAxis}: ${i[specs.YAxis]}`
+
+            // add new tooltip
+            d3.select(this)
+                .raise()
+                .attr("r", 4)
+                .attr("stroke-width", 0.5)
+                .append("svg:title")
+                .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("r", 3)
+                .attr("stroke-width", 0)
+                .selectAll("*").remove()
+        })
 }
