@@ -772,60 +772,6 @@ function getFilteredData(specs)
     })
 }
 
-// handle the team view checkbox
-function worldSeriesCheckbox(cb)
-{
-    if (cb.checked)
-    {
-        // if checked on, add the filter
-        addFilter(teamScatterplotSpecs, "boolean", "WSWin", [true])
-    }
-    else
-    {
-        // otherwise, remove
-        removeFilter(teamScatterplotSpecs, "WSWin")
-    }
-
-    // redraw the data
-    drawScatterplotData(teamScatterplotSpecs)
-}
-
-// handle the hitters view checkbox
-function hittersCheckbox(cb)
-{
-    if (cb.checked)
-    {
-        // if checked on, add the filter
-        addFilter(hitterScatterplotSpecs, "boolean", "allstar", [true])
-    }
-    else
-    {
-        // otherwise, remove
-        removeFilter(hitterScatterplotSpecs, "allstar")
-    }
-
-    // redraw the data
-    drawScatterplotData(hitterScatterplotSpecs)
-}
-
-// handle the pitchers view checkbox
-function pitchersCheckbox(cb)
-{
-    if (cb.checked)
-    {
-        // if checked on, add the filter
-        addFilter(pitcherScatterplotSpecs, "boolean", "allstar", [true])
-    }
-    else
-    {
-        // otherwise, remove
-        removeFilter(pitcherScatterplotSpecs, "allstar")
-    }
-
-    // redraw the data
-    drawScatterplotData(pitcherScatterplotSpecs)
-}
-
 // takes in data for a timeline, combines it for display when a player played for diff teams during the same year
 function combineYears(specs, data)
 {
@@ -1162,4 +1108,22 @@ function drawDataTimeline(svg, specs, data, xScale, yScale)
                 .attr("stroke-width", 0)
                 .selectAll("*").remove()
         })
+}
+
+// handles checkboxes
+function checkboxHandler(cb, specs, field)
+{
+    if (cb.checked)
+    {
+        // if checked on, add the filter
+        addFilter(specs, "boolean", field, [true])
+    }
+    else
+    {
+        // otherwise, remove
+        removeFilter(specs, field)
+    }
+
+    // redraw the data
+    drawScatterplotData(specs)
 }

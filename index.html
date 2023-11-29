@@ -48,7 +48,9 @@
             <div name="teamsW" id="teamsW"></div>
             <label id="teamsWMax" style="font-weight: bold;"></label>
             <label>Won WS:</label>
-            <input type='checkbox' onclick='worldSeriesCheckbox(this);'>
+            <input type='checkbox' onclick='checkboxHandler(this, teamScatterplotSpecs, "WSWin");'>
+            <label>Won Div:</label>
+            <input type='checkbox' onclick='checkboxHandler(this, teamScatterplotSpecs, "DivWin");'>
           </div>
         </div>
 
@@ -78,7 +80,7 @@
             <label>Pos:</label>
             <select id="hittersPos"></select>
             <label>Allstar:</label>
-            <input type='checkbox' onclick='hittersCheckbox(this);'>
+            <input type='checkbox' onclick='checkboxHandler(this, hitterScatterplotSpecs, "allstar");'>
           </div>
         </div>
 
@@ -107,7 +109,7 @@
             <label>Pos:</label>
             <select id="pitchersPos"></select>
             <label>Allstar:</label>
-            <input type='checkbox' onclick='pitchersCheckbox(this);'>
+            <input type='checkbox' onclick='checkboxHandler(this, pitcherScatterplotSpecs, "allstar");'>
           </div>
         </div>
 
