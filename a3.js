@@ -1,4 +1,4 @@
-// data schema and plot specs
+// plot specifications for use in basically every function!
 let teamPlotSpecs =
 {
     type: "scatter",
@@ -338,18 +338,6 @@ function timelineData(specs)
     // if no team is selected, don't actually plot anything
     if (specs.selected.length == 0) { return }
 
-    // filter data down to only the selected entity
-    let data = specs.data.filter(d => d[specs.idField] === specs.selected) 
-
-    // sort by year
-    data.sort((a, b) => a.yearID - b.yearID)
-
-    // ensure players who played for mulitple teams in a given year have combined stats
-    if (specs.rateFields.length > 0)
-    {
-        data = combineYears(specs, data)
-    }
-
     // add the average timeline
     let avg = specs.averages.filter(d => d.field === specs.YAxis)
     svg.append("path")
@@ -394,55 +382,90 @@ function timelineData(specs)
                 .selectAll("*").remove()
         })
 
-    // add the selected timeline
-    svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 2)
-      .attr("d", d3.line()
+    // get unique selected entities
+    let selected = specs.selected.reduce(function(acc, d) 
+    {
+        if (!acc.includes(d)) {acc.push(d)}
+
+        return acc
+    }, [])
+
+    // setup array to contain each individual array for each selected entity
+    let paths = []
+
+    // get individual arrays by looping through the selected entities
+    for (let i = 0; i < selected.length; i++)
+    {
+        // filter to only that selection
+        let data = specs.data.filter(d => d[specs.idField] === selected[i])
+  
+        // sort by year
+        data.sort((a, b) => a.yearID - b.yearID)
+        
+        // ensure players who played for mulitple teams in a given year have combined stats
+        if (specs.rateFields.length > 0)
+        {
+            data = combineYears(specs, data)
+        }
+
+        paths.push(data)
+    }
+
+    // draw all of the paths
+    for (let i = 0; i < paths.length; i++)
+    {
+        let data = paths[i]
+
+        // add the selected timeline
+        svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", d3.line()
                     .x(function(d) { return xScale(d.yearID) })
                     .y(function(d) { return yScale(d[specs.YAxis]) }))
 
-    // add the selected points
-    svg.append("g").selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", function(d) {return xScale(d.yearID)})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", 4)
-        .attr("fill", "steelblue")
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function(d, i) 
-        {
-            // create tooltip text
-            let t = `Year: ${i.yearID}\n`
-            for (let j = 0; j < specs.tooltipDisplay.length; j++)
+        // add the selected points
+        svg.append("g").selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) {return xScale(d.yearID)})
+            .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+            .attr("r", 4)
+            .attr("fill", "steelblue")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .on('mouseover', function(d, i) 
             {
-                t += specs.tooltipDisplay[j].name
-                t += i[specs.tooltipDisplay[j].stat]
-                t += "\n"
-            }
-            t += `${specs.YAxis}: ${i[specs.YAxis]}`
+                // create tooltip text
+                let t = `Year: ${i.yearID}\n`
+                for (let j = 0; j < specs.tooltipDisplay.length; j++)
+                {
+                    t += specs.tooltipDisplay[j].name
+                    t += i[specs.tooltipDisplay[j].stat]
+                    t += "\n"
+                }
+                t += `${specs.YAxis}: ${i[specs.YAxis]}`
 
-            // add new tooltip
-            d3.select(this)
-              .raise()
-              .attr("r", 5)
-              .attr("stroke-width", 0.5)
-              .append("svg:title")
-              .text(t)
-        })
-        .on('mouseout', function(d, i) 
-        {
-            // revert back to previous appearance, remove title
-            d3.select(this)
-                .attr("r", 4)
-                .attr("stroke-width", 0)
-                .selectAll("*").remove()
-        })
+                // add new tooltip
+                d3.select(this)
+                    .raise()
+                    .attr("r", 5)
+                    .attr("stroke-width", 0.5)
+                    .append("svg:title")
+                    .text(t)
+            })
+            .on('mouseout', function(d, i) 
+            {
+                // revert back to previous appearance, remove title
+                d3.select(this)
+                    .attr("r", 4)
+                    .attr("stroke-width", 0)
+                    .selectAll("*").remove()
+            })
+    }
 }
 
 // given specs, makes the appropriate scatterplot
@@ -560,19 +583,19 @@ function scatterplotData(specs)
                     scatterplotData(pitcherPlotSpecs)
 
                     // remove team timeline and redraw
-                    teamTimelineSpecs.selected = specs.selected
+                    teamTimelineSpecs.selected.splice(teamTimelineSpecs.selected.indexOf(i.teamID), 1)
                     timelineData(teamTimelineSpecs)
                 }
                 else if (specs.selector === hitterPlotSpecs.selector)
                 {
                     // remove hitter timeline and redraw
-                    hitterTimelineSpecs.selected = specs.selected
+                    hitterTimelineSpecs.selected.splice(hitterTimelineSpecs.selected.indexOf(i.playerID), 1)
                     timelineData(hitterTimelineSpecs)
                 }
                 else 
                 {
                     // remove pitcher timeline and redraw
-                    pitcherTimelineSpecs.selected = specs.selected
+                    pitcherTimelineSpecs.selected.splice(pitcherTimelineSpecs.selected.indexOf(i.playerID), 1)
                     timelineData(pitcherTimelineSpecs)
                 }
             }
@@ -590,20 +613,20 @@ function scatterplotData(specs)
                     scatterplotData(hitterPlotSpecs)
                     scatterplotData(pitcherPlotSpecs)
 
-                    // select on timeline, redraw
-                    teamTimelineSpecs.selected = specs.selected
+                    // select on timeline and redraw
+                    teamTimelineSpecs.selected.push(i.teamID)
                     timelineData(teamTimelineSpecs)
                 }
                 else if (specs.selector === hitterPlotSpecs.selector)
                 {
                     // select on hitter timeline, redraw
-                    hitterTimelineSpecs.selected = specs.selected
+                    hitterTimelineSpecs.selected.push(i.playerID)
                     timelineData(hitterTimelineSpecs)
                 }
                 else 
                 {
                     // select on pitcher timeline, redraw
-                    pitcherTimelineSpecs.selected = specs.selected
+                    pitcherTimelineSpecs.selected.push(i.playerID)
                     timelineData(pitcherTimelineSpecs)
                 }
             }
@@ -985,7 +1008,7 @@ function combineYears(specs, data)
     return data.reduce(function(acc, d)
     {
         let prevData = acc[acc.length - 1]
-        let newData = d
+        let newData = JSON.parse(JSON.stringify(d)) // to prevent any changes to newData affecting d
 
         // if still same year, need to combine stats
         if (prevData.yearID === d.yearID)
