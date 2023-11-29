@@ -1,5 +1,5 @@
 // plot specifications for use in basically every function!
-let teamPlotSpecs =
+let teamScatterplotSpecs =
 {
     type: "scatter",
 
@@ -44,7 +44,7 @@ let teamPlotSpecs =
     strokeWidth: 0.5
 }
 
-let hitterPlotSpecs =
+let hitterScatterplotSpecs =
 {
     type: "scatter",
     
@@ -89,7 +89,7 @@ let hitterPlotSpecs =
     strokeWidth: 0.5
 }
 
-let pitcherPlotSpecs =
+let pitcherScatterplotSpecs =
 {
     type: "scatter",
     
@@ -263,43 +263,43 @@ async function initialize()
   let teams = await d3.csv("data/Teams2010s.csv");
 
   // now that we have the data, clean it for scatterplots
-  hitterPlotSpecs.data = cleanData(hitters, hitterPlotSpecs, "yes")
-  pitcherPlotSpecs.data = cleanData(pitchers, pitcherPlotSpecs, "yes")
-  teamPlotSpecs.data = cleanData(teams, teamPlotSpecs, "Y")
+  hitterScatterplotSpecs.data = cleanData(hitters, hitterScatterplotSpecs, "yes")
+  pitcherScatterplotSpecs.data = cleanData(pitchers, pitcherScatterplotSpecs, "yes")
+  teamScatterplotSpecs.data = cleanData(teams, teamScatterplotSpecs, "Y")
 
   // set up scatter plots
-  plotSetup(teamPlotSpecs)
-  plotSetup(hitterPlotSpecs)
-  plotSetup(pitcherPlotSpecs)
+  setupPlot(teamScatterplotSpecs)
+  setupPlot(hitterScatterplotSpecs)
+  setupPlot(pitcherScatterplotSpecs)
 
   // add intial data to the scatter plots with no filters
-  scatterplotData(teamPlotSpecs)
-  scatterplotData(hitterPlotSpecs)
-  scatterplotData(pitcherPlotSpecs)
+  scatterplotData(teamScatterplotSpecs)
+  scatterplotData(hitterScatterplotSpecs)
+  scatterplotData(pitcherScatterplotSpecs)
 
   // setup timeline data
-  teamTimelineSpecs.data = teamPlotSpecs.data
-  hitterTimelineSpecs.data = hitterPlotSpecs.data
-  pitcherTimelineSpecs.data = pitcherPlotSpecs.data
+  teamTimelineSpecs.data = teamScatterplotSpecs.data
+  hitterTimelineSpecs.data = hitterScatterplotSpecs.data
+  pitcherTimelineSpecs.data = pitcherScatterplotSpecs.data
 
   // calculate averages for timelines
-  calculateAverage(teamTimelineSpecs)
-  calculateAverage(hitterTimelineSpecs)
-  calculateAverage(pitcherTimelineSpecs)
+  calculateTimelineAverages(teamTimelineSpecs)
+  calculateTimelineAverages(hitterTimelineSpecs)
+  calculateTimelineAverages(pitcherTimelineSpecs)
 
   // set up timeline plots
-  plotSetup(teamTimelineSpecs)
-  plotSetup(hitterTimelineSpecs)
-  plotSetup(pitcherTimelineSpecs)
+  setupPlot(teamTimelineSpecs)
+  setupPlot(hitterTimelineSpecs)
+  setupPlot(pitcherTimelineSpecs)
 
   // add initial data to timeline plots (should be blank to start)
-  timelineData(teamTimelineSpecs)
-  timelineData(hitterTimelineSpecs)
-  timelineData(pitcherTimelineSpecs)
+  drawTimelineData(teamTimelineSpecs)
+  drawTimelineData(hitterTimelineSpecs)
+  drawTimelineData(pitcherTimelineSpecs)
 }
 
 // can set up any of the plots given specs
-function plotSetup(specs)
+function setupPlot(specs)
 {
     // setup the svg
     d3.select(`#${specs.selector}Plot`)
@@ -325,7 +325,7 @@ function plotSetup(specs)
 }
 
 // given specs, makes the appropriate timeline plot
-function timelineData(specs)
+function drawTimelineData(specs)
 {
     // get the chart
     let svg = d3.select(`#${specs.selector}Plot svg g`)
@@ -349,7 +349,7 @@ function timelineData(specs)
     drawAxes(svg, specs, xScale, yScale)
 
     // create the average timeline and points
-    makeAverageLine(svg, specs, xScale, yScale)
+    drawAverageTimeline(svg, specs, xScale, yScale)
 
     // if no team is selected, don't actually plot any data
     if (specs.selected.length == 0) { return }
@@ -362,7 +362,7 @@ function timelineData(specs)
     {
         let data = paths[i]
 
-        makeEntityLine(svg, specs, data, xScale, yScale)
+        drawDataTimeline(svg, specs, data, xScale, yScale)
     }
 }
 
@@ -393,10 +393,10 @@ function scatterplotData(specs)
     drawAxes(svg, specs, xScale, yScale)
 
     // draw circles
-    makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
+    drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
 
     // add interactions to the circles
-    interactScatterCircles(svg, specs, colorScale)
+    interactScatterplotCircles(svg, specs, colorScale)
 }
 
 // remove a filter from specs
@@ -439,7 +439,7 @@ function addFilter(specs, type, field, values)
 }
 
 // calculate averages of every stat per year for given timeline specs
-function calculateAverage(specs)
+function calculateTimelineAverages(specs)
 {
     // loop through all the possible fields to show
     for (let i = 0; i < specs.fields.length; i++)
@@ -506,11 +506,11 @@ function cleanData(dataset, specs, yesString)
     }
 
     // add id field
-    if (specs.selector === teamPlotSpecs.selector)
+    if (specs.selector === teamScatterplotSpecs.selector)
     {
         d.id = `${d.teamID}-${d.yearID}`
     }
-    else if (specs.selector === hitterPlotSpecs.selector || specs.selector === pitcherPlotSpecs.selector)
+    else if (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector)
     {
         d.id = `${d.nameFirst}${d.nameLast}-${d.teamID}-${d.yearID}`
     }
@@ -547,7 +547,7 @@ function setupTimelineDropdown(specs)
             change: function( event, data ) 
             {
                 specs.YAxis = data.item.value
-                timelineData(specs)
+                drawTimelineData(specs)
             }
         })
     })
@@ -666,15 +666,15 @@ function getFilteredData(specs)
     let data = specs.data.filter(function (d) 
     {
         // if we are in hitter or pitcher plot, gotta check for teams if any are selected
-        if (teamPlotSpecs.selected.length > 0 && (specs.selector === hitterPlotSpecs.selector || specs.selector === pitcherPlotSpecs.selector))
+        if (teamScatterplotSpecs.selected.length > 0 && (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector))
         {
             let inTeams = false
 
             // loop through all the selected teams
-            for (let i = 0; i < teamPlotSpecs.selected.length; i++)
+            for (let i = 0; i < teamScatterplotSpecs.selected.length; i++)
             {
                 // check if player was on team
-                let f = teamPlotSpecs.selected[i]
+                let f = teamScatterplotSpecs.selected[i]
                 if (`${d.teamID}-${d.yearID}` === f)
                 {
                     // if player was, we good
@@ -719,16 +719,16 @@ function worldSeriesCheckbox(cb)
     if (cb.checked)
     {
         // if checked on, add the filter
-        addFilter(teamPlotSpecs, "boolean", "WSWin", [true])
+        addFilter(teamScatterplotSpecs, "boolean", "WSWin", [true])
     }
     else
     {
         // otherwise, remove
-        removeFilter(teamPlotSpecs, "WSWin")
+        removeFilter(teamScatterplotSpecs, "WSWin")
     }
 
     // redraw the data
-    scatterplotData(teamPlotSpecs)
+    scatterplotData(teamScatterplotSpecs)
 }
 
 // handle the hitters view checkbox
@@ -737,16 +737,16 @@ function hittersCheckbox(cb)
     if (cb.checked)
     {
         // if checked on, add the filter
-        addFilter(hitterPlotSpecs, "boolean", "allstar", [true])
+        addFilter(hitterScatterplotSpecs, "boolean", "allstar", [true])
     }
     else
     {
         // otherwise, remove
-        removeFilter(hitterPlotSpecs, "allstar")
+        removeFilter(hitterScatterplotSpecs, "allstar")
     }
 
     // redraw the data
-    scatterplotData(hitterPlotSpecs)
+    scatterplotData(hitterScatterplotSpecs)
 }
 
 // handle the pitchers view checkbox
@@ -755,16 +755,16 @@ function pitchersCheckbox(cb)
     if (cb.checked)
     {
         // if checked on, add the filter
-        addFilter(pitcherPlotSpecs, "boolean", "allstar", [true])
+        addFilter(pitcherScatterplotSpecs, "boolean", "allstar", [true])
     }
     else
     {
         // otherwise, remove
-        removeFilter(pitcherPlotSpecs, "allstar")
+        removeFilter(pitcherScatterplotSpecs, "allstar")
     }
 
     // redraw the data
-    scatterplotData(pitcherPlotSpecs)
+    scatterplotData(pitcherScatterplotSpecs)
 }
 
 // takes in data for a timeline, combines it for display when a player played for diff teams during the same year
@@ -827,7 +827,7 @@ function drawAxes(svg, specs, xScale, yScale)
 }
 
 // helper for the scatter plot creation, draws the points
-function makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
+function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
 {
     // add circles for each point
     let circle = svg.selectAll("circle")
@@ -858,7 +858,7 @@ function makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
 }
 
 // helper for the scatter plot creation, adds interactive behavior to the points
-function interactScatterCircles(svg, specs, colorScale)
+function interactScatterplotCircles(svg, specs, colorScale)
 {
     svg.selectAll("circle")
         .on('mouseover', function(d, i) 
@@ -902,27 +902,27 @@ function interactScatterCircles(svg, specs, colorScale)
                 // remove from selected
                 specs.selected.splice(specs.selected.indexOf(i.id) ,1)
 
-                if (specs.selector === teamPlotSpecs.selector)
+                if (specs.selector === teamScatterplotSpecs.selector)
                 {
                     // redraw the hitter and pitcher views with the filtered data
-                    scatterplotData(hitterPlotSpecs)
-                    scatterplotData(pitcherPlotSpecs)
+                    scatterplotData(hitterScatterplotSpecs)
+                    scatterplotData(pitcherScatterplotSpecs)
 
                     // remove team timeline and redraw
                     teamTimelineSpecs.selected.splice(teamTimelineSpecs.selected.indexOf(i.teamID), 1)
-                    timelineData(teamTimelineSpecs)
+                    drawTimelineData(teamTimelineSpecs)
                 }
-                else if (specs.selector === hitterPlotSpecs.selector)
+                else if (specs.selector === hitterScatterplotSpecs.selector)
                 {
                     // remove hitter timeline and redraw
                     hitterTimelineSpecs.selected.splice(hitterTimelineSpecs.selected.indexOf(i.playerID), 1)
-                    timelineData(hitterTimelineSpecs)
+                    drawTimelineData(hitterTimelineSpecs)
                 }
                 else 
                 {
                     // remove pitcher timeline and redraw
                     pitcherTimelineSpecs.selected.splice(pitcherTimelineSpecs.selected.indexOf(i.playerID), 1)
-                    timelineData(pitcherTimelineSpecs)
+                    drawTimelineData(pitcherTimelineSpecs)
                 }
             }
             else // if not selected
@@ -933,34 +933,34 @@ function interactScatterCircles(svg, specs, colorScale)
                 // add to selected
                 specs.selected.push(i.id)
 
-                if (specs.selector === teamPlotSpecs.selector)
+                if (specs.selector === teamScatterplotSpecs.selector)
                 {
                     // redraw the hitter and pitcher views
-                    scatterplotData(hitterPlotSpecs)
-                    scatterplotData(pitcherPlotSpecs)
+                    scatterplotData(hitterScatterplotSpecs)
+                    scatterplotData(pitcherScatterplotSpecs)
 
                     // select on timeline and redraw
                     teamTimelineSpecs.selected.push(i.teamID)
-                    timelineData(teamTimelineSpecs)
+                    drawTimelineData(teamTimelineSpecs)
                 }
-                else if (specs.selector === hitterPlotSpecs.selector)
+                else if (specs.selector === hitterScatterplotSpecs.selector)
                 {
                     // select on hitter timeline, redraw
                     hitterTimelineSpecs.selected.push(i.playerID)
-                    timelineData(hitterTimelineSpecs)
+                    drawTimelineData(hitterTimelineSpecs)
                 }
                 else 
                 {
                     // select on pitcher timeline, redraw
                     pitcherTimelineSpecs.selected.push(i.playerID)
-                    timelineData(pitcherTimelineSpecs)
+                    drawTimelineData(pitcherTimelineSpecs)
                 }
             }
         })
 }
 
 // helper for timeline plot creation, makes path and squares for the average
-function makeAverageLine(svg, specs, xScale, yScale)
+function drawAverageTimeline(svg, specs, xScale, yScale)
 {
     // remove existing rects
     svg.selectAll("rect").remove()
@@ -1052,7 +1052,7 @@ function getPaths(specs)
 }
 
 // helper for timeline plot creation, draws path and circles for an entity
-function makeEntityLine(svg, specs, data, xScale, yScale)
+function drawDataTimeline(svg, specs, data, xScale, yScale)
 {
     // add the selected timeline
     svg.append("path")
