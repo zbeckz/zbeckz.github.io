@@ -1,8 +1,10 @@
-// plot specifications for use in basically every function!
+// plot specifications for the team scatter plot
 let teamScatterplotSpecs =
 {
+    // either scatter or timeline, used for setup
     type: "scatter",
 
+    // data schema used to setup the sliders / dropdowns
     fields: 
     {
         nominative: ["lgID", "teamID", "divID", "franchName"],
@@ -10,8 +12,10 @@ let teamScatterplotSpecs =
         quantitative: ["yearID", "G", "W", "L", "R", "PA", "AB", "H", "2B", "3B", "HR", "TB", "BB", "SO", "SB", "CS", "SB%", "HBP", "SF", "AVG", "OBP", "SLG", "OPS", "RA", "ER", "ERA", "CG", "SHO", "SV", "HA", "HRA", "BBA", "SOA", "DP", "Rank"]
     },
 
+    // prefix to html id for elements within this plot
     selector: "teams",
 
+    // svg size specs
     margin: 
     {
         top: 20, 
@@ -19,35 +23,44 @@ let teamScatterplotSpecs =
         bottom: 20, 
         left: 40
     },
-
     width: 300,
     height: 300,
 
+    // which stats are being encoded to the scatterplot
     XAxis: "R",
     YAxis: "RA",
     Color: "W",
 
+    // what stats to display on tooltip
     tooltipDisplay: [{name: "Team: ", stat: "franchName"}, {name:"Year: ", stat:"yearID"}],
 
+    // filters to apply to data before drawing
     filters: [],
 
+    // overall team data
     data: [],
 
+    // which teams are currently selected
     selected: [],
 
+    // what is slider controlling
     sliderStat: "W",
 
+    // here but empty to not break code later
     positions: [],
 
+    // svg element specs
     markSize: 4,
-
     strokeWidth: 0.5
 }
 
+// plot specifications for the hitter scatter plot
 let hitterScatterplotSpecs =
 {
+    // either scatter or timeline, used for setup
     type: "scatter",
     
+    // data schema used to setup the sliders / dropdowns
     fields:
     {
         nominative: ["playerID", "teamID", "nameFirst", "nameLast", "bats", "throws", "birthCountry", "position"],
@@ -55,8 +68,10 @@ let hitterScatterplotSpecs =
         quantitative: ["yearID", "G", "PA", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "SB%", "BB", "SO", "TB", "AVG", "OBP", "SLG", "OPS", "IBB", "HBP", "SF", "weight", "height"]
     },
 
+    // prefix to html id for elements within this plot
     selector: "hitters",
 
+    // svg size specs
     margin: 
     {
         top: 20, 
@@ -64,35 +79,44 @@ let hitterScatterplotSpecs =
         bottom: 20, 
         left: 40
     },
-
     width: 300,
     height: 300,
 
+    // which stats are being encoded to the scatterplot
     XAxis: "HR",
     YAxis: "RBI",
     Color: "OPS",
 
+    // what stats to display on tooltip
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name:"Last Name: ", stat:"nameLast"}, {name:"Team: ", stat:"teamID"}, {name:"Year: ", stat:"yearID"}, {name:"PA: ", stat:"PA"}],
 
+    // filters to apply to data before drawing
     filters: [],
 
+    // all the hitter data
     data: [],
 
+    // what is the slider controlling
     sliderStat: "PA",
 
+    // for the position dropdown
     positions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
 
+    // which hitters are selected
     selected: [],
 
+    // svg element specs
     markSize: 4,
-
     strokeWidth: 0.5
 }
 
+// plot specifications for the pitcher scatter plot
 let pitcherScatterplotSpecs =
 {
+    // either scatter or timeline, used for setup
     type: "scatter",
     
+    // data schema used to setup the sliders / dropdowns
     fields:
     {
         nominative: ["playerID", "teamID", "nameFirst", "nameLast", "bats", "throws", "birthCountry", "position"],
@@ -100,8 +124,10 @@ let pitcherScatterplotSpecs =
         quantitative: ["yearID", "W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "weight", "height", "IP"]
     },
 
+    // prefix to html id for elements within this plot
     selector: "pitchers",
 
+    // svg size specs
     margin: 
     {
         top: 20, 
@@ -109,39 +135,50 @@ let pitcherScatterplotSpecs =
         bottom: 20, 
         left: 40
     },
-
     width: 300,
     height: 300,
 
+    // which stats are being encoded to the scatterplot
     XAxis: "BAOpp",
     YAxis: "ERA",
     Color: "W",
 
+    // stats to display on tooltip
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name:"Last Name: ", stat:"nameLast"}, {name:"Team: ", stat:"teamID"}, {name:"Year: ", stat:"yearID"}, {name: "IP: ", stat:"IP"}],
 
+    // filters to apply to pitching data before plotting
     filters: [],
 
+    // all the pitching data
     data: [],
 
+    // what stat does the slider control
     sliderStat: "IP",
 
+    // for the position dropdown
     positions: ["All", "SP", "RP"],
 
+    // currently selected pitchers
     selected: [],
 
+    // svg element specs
     markSize: 4,
-
     strokeWidth: 0.5
 }
 
+// plot specifications for the team timeline plot
 let teamTimelineSpecs = 
 {
+    // either scatter or timeline, used for setup
     type: "timeline",
 
+    // prefix to html id for elements within this plot
     selector: "teamTimeline",
 
+    // used to connect to selected data in team scatterplot
     idField: "teamID",
 
+    // svg size specs
     margin: 
     {
         top: 20, 
@@ -149,37 +186,48 @@ let teamTimelineSpecs =
         bottom: 20, 
         left: 40
     },
-
     width: 350,
     height: 300,
 
+    // possible stats to display on timeline
     fields: ["G", "W", "L", "R", "PA", "AB", "H", "2B", "3B", "HR", "TB", "BB", "SO", "SB", "CS", "SB%", "HBP", "SF", "AVG", "OBP", "SLG", "OPS", "RA", "ER", "ERA", "CG", "SHO", "SV", "HA", "HRA", "BBA", "SOA", "DP", "Rank"],
 
+    // which fields to weight and what to weight it by when calculating averages (empty instead of null to not break code that uses it)
     rateFields: [],
 
+    // which stats are being encoded to the scatterplot
     YAxis: "W",
 
+    // which teams are selected to be drawn
     selected: [],
 
+    // overall team data
     data: [],
 
+    // average for each field for each year
     averages: [],
 
+    // which stats to display on the tooltip
     tooltipDisplay: [{name: "Team: ", stat: "teamID"}],
 
+    // svg element specs
     pathSize: 2,
-
     markSize: 3
 }
 
+// plot specifications for the hitter timeline plot
 let hitterTimelineSpecs = 
 {
+    // either scatter or timeline, used for setup
     type: "timeline",
 
+    // prefix to html id for elements within this plot
     selector: "hitterTimeline",
 
+    // used to connect to selected data in hitter scatterplot
     idField: "playerID",
 
+    // svg size specs
     margin: 
     {
         top: 20, 
@@ -187,39 +235,49 @@ let hitterTimelineSpecs =
         bottom: 20, 
         left: 40
     },
-
     width: 350,
     height: 300,
 
+    // possible stats to display on timeline
     fields: ["G", "PA", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "SB%", "BB", "SO", "TB", "AVG", "OBP", "SLG", "OPS", "IBB", "HBP", "SF"],
 
+    // which fields to weight and what to weight it by when calculating averages
     rateFields: ["SB%", "AVG", "OBP", "SLG", "OPS"],
-
     rateWeightField: ["PA"],
 
+    // which stats are being encoded to the scatterplot
     YAxis: "HR",
 
+    // which hitters are selected
     selected: [],
 
+    // overall hitter data
     data: [],
 
+    // average for each field for each year
     averages: [],
 
+    // what to display on the tooltip
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
 
+    // svg element specs
     pathSize: 2,
-
     markSize: 3
 }
 
+// plot specifications for the pitcher timeline plot
 let pitcherTimelineSpecs = 
 {
+    // either scatter or timeline, used for setup
     type: "timeline",
 
+    // prefix to html id for elements within this plot
     selector: "pitcherTimeline",
 
+    // used to connect to selected data in pitcher scatterplot
     idField: "playerID",
 
+    // svg size specs
     margin: 
     {
         top: 20, 
@@ -227,28 +285,33 @@ let pitcherTimelineSpecs =
         bottom: 20, 
         left: 40
     },
-
     width: 350,
     height: 300,
 
+    // possible stats to display on timeline
     fields: ["W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "IP"],
 
+    // which fields to weight and what to weight it by when calculating averages
     rateFields: ["BAOpp", "ERA"],
-
     rateWeightField: ["IP"],
 
+    // which stats are being encoded to the scatterplot
     YAxis: "W",
 
+    // which pitchers are currently selected and should be drawn
     selected: [],
 
+    // overall pitcher data
     data: [],
 
+    // average for each field for each year
     averages: [],
 
+    // what fields to display on the tooltip
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
 
+    // sizes for svg elements
     pathSize: 2,
-
     markSize: 3
 }
 
@@ -273,9 +336,9 @@ async function initialize()
   setupPlot(pitcherScatterplotSpecs)
 
   // add intial data to the scatter plots with no filters
-  scatterplotData(teamScatterplotSpecs)
-  scatterplotData(hitterScatterplotSpecs)
-  scatterplotData(pitcherScatterplotSpecs)
+  drawScatterplotData(teamScatterplotSpecs)
+  drawScatterplotData(hitterScatterplotSpecs)
+  drawScatterplotData(pitcherScatterplotSpecs)
 
   // setup timeline data
   teamTimelineSpecs.data = teamScatterplotSpecs.data
@@ -367,7 +430,7 @@ function drawTimelineData(specs)
 }
 
 // given specs, makes the appropriate scatterplot
-function scatterplotData(specs)
+function drawScatterplotData(specs)
 {
     // get filtered data
     let data = getFilteredData(specs)
@@ -586,7 +649,7 @@ function setupScatterplotDropdowns(specs)
                 change: function( event, data ) 
                 {
                     specs[encodings[i]] = data.item.value
-                    scatterplotData(specs)
+                    drawScatterplotData(specs)
                 }
             })
         })
@@ -619,7 +682,7 @@ function setupScatterplotDropdowns(specs)
              {
                 // if all, remove filter, otherwise add it
                 data.item.value === "All" ? removeFilter(specs, "position") : addFilter(specs, "equal", "position", [data.item.value])
-                scatterplotData(specs)
+                drawScatterplotData(specs)
              }
          })
      })
@@ -653,7 +716,7 @@ function setupScatterplotSlider(specs)
                 addFilter(specs, "range", specs.sliderStat, ui.values)
 
                 // redraw data
-                scatterplotData(specs)
+                drawScatterplotData(specs)
             }
         });
     })
@@ -728,7 +791,7 @@ function worldSeriesCheckbox(cb)
     }
 
     // redraw the data
-    scatterplotData(teamScatterplotSpecs)
+    drawScatterplotData(teamScatterplotSpecs)
 }
 
 // handle the hitters view checkbox
@@ -746,7 +809,7 @@ function hittersCheckbox(cb)
     }
 
     // redraw the data
-    scatterplotData(hitterScatterplotSpecs)
+    drawScatterplotData(hitterScatterplotSpecs)
 }
 
 // handle the pitchers view checkbox
@@ -764,7 +827,7 @@ function pitchersCheckbox(cb)
     }
 
     // redraw the data
-    scatterplotData(pitcherScatterplotSpecs)
+    drawScatterplotData(pitcherScatterplotSpecs)
 }
 
 // takes in data for a timeline, combines it for display when a player played for diff teams during the same year
@@ -905,8 +968,8 @@ function interactScatterplotCircles(svg, specs, colorScale)
                 if (specs.selector === teamScatterplotSpecs.selector)
                 {
                     // redraw the hitter and pitcher views with the filtered data
-                    scatterplotData(hitterScatterplotSpecs)
-                    scatterplotData(pitcherScatterplotSpecs)
+                    drawScatterplotData(hitterScatterplotSpecs)
+                    drawScatterplotData(pitcherScatterplotSpecs)
 
                     // remove team timeline and redraw
                     teamTimelineSpecs.selected.splice(teamTimelineSpecs.selected.indexOf(i.teamID), 1)
@@ -936,8 +999,8 @@ function interactScatterplotCircles(svg, specs, colorScale)
                 if (specs.selector === teamScatterplotSpecs.selector)
                 {
                     // redraw the hitter and pitcher views
-                    scatterplotData(hitterScatterplotSpecs)
-                    scatterplotData(pitcherScatterplotSpecs)
+                    drawScatterplotData(hitterScatterplotSpecs)
+                    drawScatterplotData(pitcherScatterplotSpecs)
 
                     // select on timeline and redraw
                     teamTimelineSpecs.selected.push(i.teamID)
