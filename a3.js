@@ -727,7 +727,7 @@ function setupScatterplotSlider(specs)
 function getFilteredData(specs)
 {
     // filter the data from specs
-    let data = specs.data.filter(function (d) 
+    return specs.data.filter(function (d) 
     {
         // if we are in hitter or pitcher plot, gotta check for teams if any are selected
         if (teamScatterplotSpecs.selected.length > 0 && (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector))
@@ -751,7 +751,6 @@ function getFilteredData(specs)
             if (!inTeams) { return false }
         }
 
-
         // loop through every filter in the filters
         for (let i = 0; i < specs.filters.length; i++)
         {
@@ -771,8 +770,6 @@ function getFilteredData(specs)
         // if made it through all the filters, data stays in
         return true
     })
-
-    return data
 }
 
 // handle the team view checkbox
