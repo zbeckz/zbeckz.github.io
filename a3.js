@@ -1,3 +1,7 @@
+/* ----------------------------- PLOT SPECS -------------------------------------------------------------------- */
+
+
+
 // plot specifications for the team scatter plot
 let teamScatterplotSpecs =
 {
@@ -315,6 +319,12 @@ let pitcherTimelineSpecs =
     markSize: 3
 }
 
+
+
+/* ----------------------------- INITIALIZATION  -------------------------------------------------------------------- */
+
+
+
 // this is the only code that gets run on start. sets everything up!
 initialize()
 
@@ -362,6 +372,10 @@ async function initialize()
   drawTimelineData(pitcherTimelineSpecs)
 }
 
+/* ----------------------------- SETUP FUNCTIONS FOR ANY PLOT -------------------------------------------------------------------- */
+
+
+
 // can set up any of the plots given specs
 function setupPlot(specs)
 {
@@ -387,6 +401,30 @@ function setupPlot(specs)
         setupTimelineDropdown(specs)
     }
 }
+
+// make axes given svg and specs and scales
+function drawAxes(svg, specs, xScale, yScale)
+{
+    // remove existing axes
+    svg.selectAll(".axis").remove()
+
+    // add x axis
+    svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", `translate(0, ${specs.height - specs.margin.top - specs.margin.bottom})`)
+    .call(d3.axisBottom(xScale));
+
+    // add y axis
+    svg.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(yScale));
+}
+
+
+
+/* ----------------------------- TIMELINE SPECIFIC -------------------------------------------------------------------- */
+
+
 
 // given specs, makes the appropriate timeline plot
 function drawTimelineData(specs)
@@ -426,80 +464,154 @@ function drawTimelineData(specs)
     {
         let data = paths[i]
 
-        drawDataTimeline(svg, specs, data, xScale, yScale)
+        drawIndividualTimeline(svg, specs, data, xScale, yScale)
     }
 }
 
-// given specs, makes the appropriate scatterplot
-function drawScatterplotData(specs)
+// helper for timeline plot creation, makes path and squares for the average
+function drawAverageTimeline(svg, specs, xScale, yScale)
 {
-    // get filtered data
-    let data = getFilteredData(specs)
+    // remove existing rects
+    svg.selectAll("rect").remove()
 
-    // get the chart
-    let svg = d3.select(`#${specs.selector}Plot svg g`)
+    // add the average timeline
+    let avg = specs.averages.filter(d => d.field === specs.YAxis)
+    svg.append("path")
+      .datum(avg)
+      .attr("fill", "none")
+      .attr("stroke", "orange")
+      .attr("stroke-width", specs.pathSize)
+      .attr("d", d3.line()
+                    .x(function(d) { return xScale(d.yearID) })
+                    .y(function(d) { return yScale(d.value) }))
 
-    // remove existing titles
-    svg.selectAll("title").remove()
-
-    // scale the data
-    let xScale = d3.scaleLinear()
-                    .domain(d3.extent(data, function (d) { return d[specs.XAxis] }))
-                    .range([0, specs.width - specs.margin.left - specs.margin.right])
-    let yScale = d3.scaleLinear()
-                    .domain(d3.extent(data, function (d) { return d[specs.YAxis] }))
-                    .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
-    let colorScale = d3.scaleLinear()
-                    .domain(d3.extent(data, function(d) { return d[specs.Color] }))
-                    .range(["blue", "red"])
-
-    // draw axes
-    drawAxes(svg, specs, xScale, yScale)
-
-    // draw circles
-    drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
-
-    // add interactions to the circles
-    interactScatterplotCircles(svg, specs, colorScale)
-}
-
-// remove a filter from specs
-function removeFilter(specs, field)
-{
-    // loop through existing filters
-    for (let i = 0; i < specs.filters.length; i++)
-    {
-        // if the filter has been found, remove it and return
-        if (specs.filters[i].field === field)
+    // add the average points
+    svg.append("g").selectAll("rect")
+        .data(avg)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
+        .attr("y", function(d) {return yScale(d.value) - specs.markSize})
+        .attr("width", specs.markSize * 2)
+        .attr("height", specs.markSize * 2)
+        .attr("fill", "orange")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .on('mouseover', function(d, i) 
         {
-            specs.filters[i].type = null
-            return
-        }
-    }
+            // create tooltip text
+            let t = `Year: ${i.yearID}\nAverage ${specs.YAxis}: ${i.value}`
+
+            // add new tooltip
+            d3.select(this)
+              .raise()
+              .attr("x", function(d) {return xScale(d.yearID) - specs.markSize * 1.25})
+              .attr("y", function(d) {return yScale(d.value) - specs.markSize * 1.25})
+              .attr("width", specs.markSize * 2.5)
+              .attr("height", specs.markSize * 2.5)
+              .attr("stroke-width", 0.5)
+              .append("svg:title")
+              .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
+                .attr("y", function(d) {return yScale(d.value) - specs.markSize})
+                .attr("width", specs.markSize * 2)
+                .attr("height", specs.markSize * 2)
+                .attr("stroke-width", 0)
+                .selectAll("*").remove()
+        })
 }
 
-// takes specs and adds a filter to it
-function addFilter(specs, type, field, values)
+// helper for timeline plot creation, draws path and circles for an entity
+function drawIndividualTimeline(svg, specs, data, xScale, yScale)
 {
-    // loop through existing filters
-    for (let i = 0; i < specs.filters.length; i++)
-    {
-        // if the filter exists, update type and value and return
-        if (specs.filters[i].field === field)
+    // add the selected timeline
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", specs.pathSize)
+        .attr("d", d3.line()
+                    .x(function(d) { return xScale(d.yearID) })
+                    .y(function(d) { return yScale(d[specs.YAxis]) }))
+
+    // add the selected points
+    svg.append("g").selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {return xScale(d.yearID)})
+        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+        .attr("r", specs.markSize)
+        .attr("fill", "steelblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .on('mouseover', function(d, i) 
         {
-            specs.filters[i].values = values
-            specs.filters[i].type = type
-            return
+            // create tooltip text
+            let t = `Year: ${i.yearID}\n`
+            for (let j = 0; j < specs.tooltipDisplay.length; j++)
+            {
+                t += specs.tooltipDisplay[j].name
+                t += i[specs.tooltipDisplay[j].stat]
+                t += "\n"
+            }
+            t += `${specs.YAxis}: ${i[specs.YAxis]}`
+
+            // add new tooltip
+            d3.select(this)
+                .raise()
+                .attr("r", specs.markSize * 1.5)
+                .attr("stroke-width", 0.5)
+                .append("svg:title")
+                .text(t)
+        })
+        .on('mouseout', function(d, i) 
+        {
+            // revert back to previous appearance, remove title
+            d3.select(this)
+                .attr("r", specs.markSize)
+                .attr("stroke-width", 0)
+                .selectAll("*").remove()
+        })
+}
+
+// helper for timeline plot creation, gets each selected entity path data
+function getPaths(specs)
+{
+    // reduce to unique values
+    let selected = specs.selected.reduce(function(acc, d) 
+    {
+        if (!acc.includes(d)) {acc.push(d)}
+
+        return acc
+    }, [])
+
+    let paths = []
+
+    // get individual arrays by looping through the selected entities
+    for (let i = 0; i < selected.length; i++)
+    {
+        // filter to only that selection
+        let data = specs.data.filter(d => d[specs.idField] === selected[i])
+  
+        // sort by year
+        data.sort((a, b) => a.yearID - b.yearID)
+        
+        // ensure players who played for mulitple teams in a given year have combined stats
+        if (specs.rateFields.length > 0)
+        {
+            data = combineYears(specs, data)
         }
+
+        paths.push(data)
     }
 
-    // if we reach here in the code, a filter for this field doesn't exist. need to add it
-    specs.filters.push(
-    {
-        field: field,
-        type: type,
-        values: values
-    })
+    return paths
 }
 
 // calculate averages of every stat per year for given timeline specs
@@ -546,232 +658,6 @@ function calculateTimelineAverages(specs)
     }
 }
 
-// takes a raw dataset and cleans it according to the specs
-function cleanData(dataset, specs, yesString)
-{
-// read and format team data
-  let data = dataset
-  for (let i = 0; i < data.length; i++)
-  {
-    let d = data[i]
-    
-    // make the quantitative variables numeric
-    for (let j = 0; j < specs.fields.quantitative.length; j++)
-    {
-        let num = +d[specs.fields.quantitative[j]]
-        if (!Number.isInteger(num)) { num = +num.toFixed(3)}
-        d[specs.fields.quantitative[j]] = +num
-    }
-
-    // make the booleans a real boolean
-    for (let j = 0; j < specs.fields.boolean.length; j++)
-    {
-        d[specs.fields.boolean[j]] == yesString ? d[specs.fields.boolean[j]] = true : d[specs.fields.boolean[j]] = false
-    }
-
-    // add id field
-    if (specs.selector === teamScatterplotSpecs.selector)
-    {
-        d.id = `${d.teamID}-${d.yearID}`
-    }
-    else if (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector)
-    {
-        d.id = `${d.nameFirst}${d.nameLast}-${d.teamID}-${d.yearID}`
-    }
-  }
-  return data
-}
-
-// sets up the dropdown menu for a timeline plot
-function setupTimelineDropdown(specs)
-{
-    // use d3 to put the options in
-    d3.select(`#${specs.selector}YAxis`)
-        .selectAll("option")
-        .data(specs.fields)
-        .enter()
-        .append("option")
-        .attr("value", function(d) 
-        {
-            // if this is the initial selected field for this encoding, select it!
-            if (d === specs.YAxis) 
-            {
-                d3.select(this).attr("selected", true)
-            }
-
-            return d
-        })
-        .text(d => d)
-
-    // use jquery to control selection
-    $(function ()
-    {
-        $(`#${specs.selector}YAxis`).selectmenu(
-        {
-            change: function( event, data ) 
-            {
-                specs.YAxis = data.item.value
-                drawTimelineData(specs)
-            }
-        })
-    })
-}
-
-// sets up the dropdown menus for a plot using jquery
-function setupScatterplotDropdowns(specs)
-{
-    // setup the encoded variable dropdown menus
-    let encodings = ["XAxis", "YAxis", "Color"]
-    for (let i = 0; i < encodings.length; i++)
-    {
-        // use d3 to put all the options in!
-        d3.select(`#${specs.selector}${encodings[i]}`)
-            .selectAll("option")
-            .data(specs.fields.quantitative)
-            .enter()
-            .append("option")
-            .attr("value", function(d) 
-            {
-                // if this is the initial selected field for this encoding, select it!
-                if (d === specs[encodings[i]]) 
-                {
-                    d3.select(this).attr("selected", true)
-                }
-
-                return d
-            })
-            .text(d => d)
-
-        // use jquery to format and setup filtering on change
-        $(function ()
-        {
-            $(`#${specs.selector}${encodings[i]}`).selectmenu(
-            {
-                change: function( event, data ) 
-                {
-                    specs[encodings[i]] = data.item.value
-                    drawScatterplotData(specs)
-                }
-            })
-        })
-    }
-
-    // setup position dropdown
-    d3.select(`#${specs.selector}Pos`)
-        .selectAll("option")
-        .data(specs.positions)
-        .enter()
-        .append("option")
-        .attr("value", function(d) 
-        {
-            // if this is the initial selected field for this encoding, select it!
-            if (d === "All") 
-            {
-                d3.select(this).attr("selected", true)
-            }
-
-            return d
-        })
-        .text(d => d)
-
-     // use jquery to format and setup filtering on change
-     $(function ()
-     {
-         $(`#${specs.selector}Pos`).selectmenu(
-         {
-             change: function( event, data ) 
-             {
-                // if all, remove filter, otherwise add it
-                data.item.value === "All" ? removeFilter(specs, "position") : addFilter(specs, "equal", "position", [data.item.value])
-                drawScatterplotData(specs)
-             }
-         })
-     })
-}
-
-// sets up slider range for plot given spec input
-function setupScatterplotSlider(specs)
-{
-    // use jquery to set up slider range for plate appearances for hitters
-    let extent = d3.extent(specs.data, d => d[specs.sliderStat])
-    $(function () 
-    {
-        // initialize min and max labels
-        $(`#${specs.selector}${specs.sliderStat}Min`).text(extent[0])
-        $(`#${specs.selector}${specs.sliderStat}Max`).text(extent[1])
-
-        // slider itself
-        $(`#${specs.selector}${specs.sliderStat}`).slider(
-        {
-            range: true,
-            min: extent[0],
-            max: extent[1],
-            values: extent,
-            slide: function (event, ui) 
-            {
-                // slider min and max labels change when slid
-                $(`#${specs.selector}${specs.sliderStat}Min`).text(ui.values[0])
-                $(`#${specs.selector}${specs.sliderStat}Max`).text(ui.values[1])
-
-                // add filter to data
-                addFilter(specs, "range", specs.sliderStat, ui.values)
-
-                // redraw data
-                drawScatterplotData(specs)
-            }
-        });
-    })
-}
-
-// returns data from specs filtered based on filters from specs
-function getFilteredData(specs)
-{
-    // filter the data from specs
-    return specs.data.filter(function (d) 
-    {
-        // if we are in hitter or pitcher plot, gotta check for teams if any are selected
-        if (teamScatterplotSpecs.selected.length > 0 && (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector))
-        {
-            let inTeams = false
-
-            // loop through all the selected teams
-            for (let i = 0; i < teamScatterplotSpecs.selected.length; i++)
-            {
-                // check if player was on team
-                let f = teamScatterplotSpecs.selected[i]
-                if (`${d.teamID}-${d.yearID}` === f)
-                {
-                    // if player was, we good
-                    inTeams = true
-                    break
-                }
-            }
-
-            // if false at this point, player was not on any selected teams
-            if (!inTeams) { return false }
-        }
-
-        // loop through every filter in the filters
-        for (let i = 0; i < specs.filters.length; i++)
-        {
-            let f = specs.filters[i]
-            if (f.type === "equal" || f.type === "boolean")
-            {
-                // if not equal, this data gets filtered out
-                if (d[f.field] != f.values[0]) { return false }
-            }
-            else if (f.type === "range")
-            {
-                // if outside the range, this data gets filtered out
-                if (d[f.field] < f.values[0] || d[f.field] > f.values[1]) { return false }
-            }
-        }
-
-        // if made it through all the filters, data stays in
-        return true
-    })
-}
-
 // takes in data for a timeline, combines it for display when a player played for diff teams during the same year
 function combineYears(specs, data)
 {
@@ -813,22 +699,43 @@ function combineYears(specs, data)
     }, [init])
 }
 
-// make axes given svg and specs and scales
-function drawAxes(svg, specs, xScale, yScale)
+
+
+/* ----------------------------- SCATTERPLOT SPECIFIC -------------------------------------------------------------------- */
+
+
+
+// given specs, makes the appropriate scatterplot
+function drawScatterplotData(specs)
 {
-    // remove existing axes
-    svg.selectAll(".axis").remove()
+    // get filtered data
+    let data = getFilteredData(specs)
 
-    // add x axis
-    svg.append("g")
-    .attr("class", "axis")
-    .attr("transform", `translate(0, ${specs.height - specs.margin.top - specs.margin.bottom})`)
-    .call(d3.axisBottom(xScale));
+    // get the chart
+    let svg = d3.select(`#${specs.selector}Plot svg g`)
 
-    // add y axis
-    svg.append("g")
-        .attr("class", "axis")
-        .call(d3.axisLeft(yScale));
+    // remove existing titles
+    svg.selectAll("title").remove()
+
+    // scale the data
+    let xScale = d3.scaleLinear()
+                    .domain(d3.extent(data, function (d) { return d[specs.XAxis] }))
+                    .range([0, specs.width - specs.margin.left - specs.margin.right])
+    let yScale = d3.scaleLinear()
+                    .domain(d3.extent(data, function (d) { return d[specs.YAxis] }))
+                    .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
+    let colorScale = d3.scaleLinear()
+                    .domain(d3.extent(data, function(d) { return d[specs.Color] }))
+                    .range(["blue", "red"])
+
+    // draw axes
+    drawAxes(svg, specs, xScale, yScale)
+
+    // draw circles
+    drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
+
+    // add interactions to the circles
+    interactScatterplotCircles(svg, specs, colorScale)
 }
 
 // helper for the scatter plot creation, draws the points
@@ -964,150 +871,173 @@ function interactScatterplotCircles(svg, specs, colorScale)
         })
 }
 
-// helper for timeline plot creation, makes path and squares for the average
-function drawAverageTimeline(svg, specs, xScale, yScale)
+
+
+/* ----------------------------- DATA FILTERING / CLEANING -------------------------------------------------------------------- */
+
+// remove a filter from specs
+function removeFilter(specs, field)
 {
-    // remove existing rects
-    svg.selectAll("rect").remove()
-
-    // add the average timeline
-    let avg = specs.averages.filter(d => d.field === specs.YAxis)
-    svg.append("path")
-      .datum(avg)
-      .attr("fill", "none")
-      .attr("stroke", "orange")
-      .attr("stroke-width", specs.pathSize)
-      .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d.value) }))
-
-    // add the average points
-    svg.append("g").selectAll("rect")
-        .data(avg)
-        .enter()
-        .append("rect")
-        .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
-        .attr("y", function(d) {return yScale(d.value) - specs.markSize})
-        .attr("width", specs.markSize * 2)
-        .attr("height", specs.markSize * 2)
-        .attr("fill", "orange")
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function(d, i) 
+    // loop through existing filters
+    for (let i = 0; i < specs.filters.length; i++)
+    {
+        // if the filter has been found, remove it and return
+        if (specs.filters[i].field === field)
         {
-            // create tooltip text
-            let t = `Year: ${i.yearID}\nAverage ${specs.YAxis}: ${i.value}`
-
-            // add new tooltip
-            d3.select(this)
-              .raise()
-              .attr("x", function(d) {return xScale(d.yearID) - specs.markSize * 1.25})
-              .attr("y", function(d) {return yScale(d.value) - specs.markSize * 1.25})
-              .attr("width", specs.markSize * 2.5)
-              .attr("height", specs.markSize * 2.5)
-              .attr("stroke-width", 0.5)
-              .append("svg:title")
-              .text(t)
-        })
-        .on('mouseout', function(d, i) 
-        {
-            // revert back to previous appearance, remove title
-            d3.select(this)
-                .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
-                .attr("y", function(d) {return yScale(d.value) - specs.markSize})
-                .attr("width", specs.markSize * 2)
-                .attr("height", specs.markSize * 2)
-                .attr("stroke-width", 0)
-                .selectAll("*").remove()
-        })
+            specs.filters[i].type = null
+            return
+        }
+    }
 }
 
-// helper for timeline plot creation, gets each selected entity path data
-function getPaths(specs)
+// takes specs and adds a filter to it
+function addFilter(specs, type, field, values)
 {
-    // reduce to unique values
-    let selected = specs.selected.reduce(function(acc, d) 
+    // loop through existing filters
+    for (let i = 0; i < specs.filters.length; i++)
     {
-        if (!acc.includes(d)) {acc.push(d)}
-
-        return acc
-    }, [])
-
-    let paths = []
-
-    // get individual arrays by looping through the selected entities
-    for (let i = 0; i < selected.length; i++)
-    {
-        // filter to only that selection
-        let data = specs.data.filter(d => d[specs.idField] === selected[i])
-  
-        // sort by year
-        data.sort((a, b) => a.yearID - b.yearID)
-        
-        // ensure players who played for mulitple teams in a given year have combined stats
-        if (specs.rateFields.length > 0)
+        // if the filter exists, update type and value and return
+        if (specs.filters[i].field === field)
         {
-            data = combineYears(specs, data)
+            specs.filters[i].values = values
+            specs.filters[i].type = type
+            return
         }
-
-        paths.push(data)
     }
 
-    return paths
+    // if we reach here in the code, a filter for this field doesn't exist. need to add it
+    specs.filters.push(
+    {
+        field: field,
+        type: type,
+        values: values
+    })
 }
 
-// helper for timeline plot creation, draws path and circles for an entity
-function drawDataTimeline(svg, specs, data, xScale, yScale)
+// returns data from specs filtered based on filters from specs
+function getFilteredData(specs)
 {
-    // add the selected timeline
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", specs.pathSize)
-        .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d[specs.YAxis]) }))
-
-    // add the selected points
-    svg.append("g").selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", function(d) {return xScale(d.yearID)})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", specs.markSize)
-        .attr("fill", "steelblue")
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function(d, i) 
+    // filter the data from specs
+    return specs.data.filter(function (d) 
+    {
+        // if we are in hitter or pitcher plot, gotta check for teams if any are selected
+        if (teamScatterplotSpecs.selected.length > 0 && (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector))
         {
-            // create tooltip text
-            let t = `Year: ${i.yearID}\n`
-            for (let j = 0; j < specs.tooltipDisplay.length; j++)
+            let inTeams = false
+
+            // loop through all the selected teams
+            for (let i = 0; i < teamScatterplotSpecs.selected.length; i++)
             {
-                t += specs.tooltipDisplay[j].name
-                t += i[specs.tooltipDisplay[j].stat]
-                t += "\n"
+                // check if player was on team
+                let f = teamScatterplotSpecs.selected[i]
+                if (`${d.teamID}-${d.yearID}` === f)
+                {
+                    // if player was, we good
+                    inTeams = true
+                    break
+                }
             }
-            t += `${specs.YAxis}: ${i[specs.YAxis]}`
 
-            // add new tooltip
-            d3.select(this)
-                .raise()
-                .attr("r", specs.markSize * 1.5)
-                .attr("stroke-width", 0.5)
-                .append("svg:title")
-                .text(t)
-        })
-        .on('mouseout', function(d, i) 
+            // if false at this point, player was not on any selected teams
+            if (!inTeams) { return false }
+        }
+
+        // loop through every filter in the filters
+        for (let i = 0; i < specs.filters.length; i++)
         {
-            // revert back to previous appearance, remove title
-            d3.select(this)
-                .attr("r", specs.markSize)
-                .attr("stroke-width", 0)
-                .selectAll("*").remove()
+            let f = specs.filters[i]
+            if (f.type === "equal" || f.type === "boolean")
+            {
+                // if not equal, this data gets filtered out
+                if (d[f.field] != f.values[0]) { return false }
+            }
+            else if (f.type === "range")
+            {
+                // if outside the range, this data gets filtered out
+                if (d[f.field] < f.values[0] || d[f.field] > f.values[1]) { return false }
+            }
+        }
+
+        // if made it through all the filters, data stays in
+        return true
+    })
+}
+
+// takes a raw dataset and cleans it according to the specs
+function cleanData(dataset, specs, yesString)
+{
+// read and format team data
+  let data = dataset
+  for (let i = 0; i < data.length; i++)
+  {
+    let d = data[i]
+    
+    // make the quantitative variables numeric
+    for (let j = 0; j < specs.fields.quantitative.length; j++)
+    {
+        let num = +d[specs.fields.quantitative[j]]
+        if (!Number.isInteger(num)) { num = +num.toFixed(3)}
+        d[specs.fields.quantitative[j]] = +num
+    }
+
+    // make the booleans a real boolean
+    for (let j = 0; j < specs.fields.boolean.length; j++)
+    {
+        d[specs.fields.boolean[j]] == yesString ? d[specs.fields.boolean[j]] = true : d[specs.fields.boolean[j]] = false
+    }
+
+    // add id field
+    if (specs.selector === teamScatterplotSpecs.selector)
+    {
+        d.id = `${d.teamID}-${d.yearID}`
+    }
+    else if (specs.selector === hitterScatterplotSpecs.selector || specs.selector === pitcherScatterplotSpecs.selector)
+    {
+        d.id = `${d.nameFirst}${d.nameLast}-${d.teamID}-${d.yearID}`
+    }
+  }
+  return data
+}
+
+
+
+/* ----------------------------- CONTROLS -------------------------------------------------------------------- */
+
+
+
+// sets up the dropdown menu for a timeline plot
+function setupTimelineDropdown(specs)
+{
+    // use d3 to put the options in
+    d3.select(`#${specs.selector}YAxis`)
+        .selectAll("option")
+        .data(specs.fields)
+        .enter()
+        .append("option")
+        .attr("value", function(d) 
+        {
+            // if this is the initial selected field for this encoding, select it!
+            if (d === specs.YAxis) 
+            {
+                d3.select(this).attr("selected", true)
+            }
+
+            return d
         })
+        .text(d => d)
+
+    // use jquery to control selection
+    $(function ()
+    {
+        $(`#${specs.selector}YAxis`).selectmenu(
+        {
+            change: function( event, data ) 
+            {
+                specs.YAxis = data.item.value
+                drawTimelineData(specs)
+            }
+        })
+    })
 }
 
 // handles checkboxes
@@ -1126,4 +1056,110 @@ function checkboxHandler(cb, specs, field)
 
     // redraw the data
     drawScatterplotData(specs)
+}
+
+// sets up the dropdown menus for a plot using jquery
+function setupScatterplotDropdowns(specs)
+{
+    // setup the encoded variable dropdown menus
+    let encodings = ["XAxis", "YAxis", "Color"]
+    for (let i = 0; i < encodings.length; i++)
+    {
+        // use d3 to put all the options in!
+        d3.select(`#${specs.selector}${encodings[i]}`)
+            .selectAll("option")
+            .data(specs.fields.quantitative)
+            .enter()
+            .append("option")
+            .attr("value", function(d) 
+            {
+                // if this is the initial selected field for this encoding, select it!
+                if (d === specs[encodings[i]]) 
+                {
+                    d3.select(this).attr("selected", true)
+                }
+
+                return d
+            })
+            .text(d => d)
+
+        // use jquery to format and setup filtering on change
+        $(function ()
+        {
+            $(`#${specs.selector}${encodings[i]}`).selectmenu(
+            {
+                change: function( event, data ) 
+                {
+                    specs[encodings[i]] = data.item.value
+                    drawScatterplotData(specs)
+                }
+            })
+        })
+    }
+
+    // setup position dropdown
+    d3.select(`#${specs.selector}Pos`)
+        .selectAll("option")
+        .data(specs.positions)
+        .enter()
+        .append("option")
+        .attr("value", function(d) 
+        {
+            // if this is the initial selected field for this encoding, select it!
+            if (d === "All") 
+            {
+                d3.select(this).attr("selected", true)
+            }
+
+            return d
+        })
+        .text(d => d)
+
+     // use jquery to format and setup filtering on change
+     $(function ()
+     {
+         $(`#${specs.selector}Pos`).selectmenu(
+         {
+             change: function( event, data ) 
+             {
+                // if all, remove filter, otherwise add it
+                data.item.value === "All" ? removeFilter(specs, "position") : addFilter(specs, "equal", "position", [data.item.value])
+                drawScatterplotData(specs)
+             }
+         })
+     })
+}
+
+// sets up slider range for plot given spec input
+function setupScatterplotSlider(specs)
+{
+    // use jquery to set up slider range for plate appearances for hitters
+    let extent = d3.extent(specs.data, d => d[specs.sliderStat])
+    $(function () 
+    {
+        // initialize min and max labels
+        $(`#${specs.selector}${specs.sliderStat}Min`).text(extent[0])
+        $(`#${specs.selector}${specs.sliderStat}Max`).text(extent[1])
+
+        // slider itself
+        $(`#${specs.selector}${specs.sliderStat}`).slider(
+        {
+            range: true,
+            min: extent[0],
+            max: extent[1],
+            values: extent,
+            slide: function (event, ui) 
+            {
+                // slider min and max labels change when slid
+                $(`#${specs.selector}${specs.sliderStat}Min`).text(ui.values[0])
+                $(`#${specs.selector}${specs.sliderStat}Max`).text(ui.values[1])
+
+                // add filter to data
+                addFilter(specs, "range", specs.sliderStat, ui.values)
+
+                // redraw data
+                drawScatterplotData(specs)
+            }
+        });
+    })
 }
