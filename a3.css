@@ -9,6 +9,10 @@
     padding-bottom: 300px;
 }
 
+label {
+    font-size: 0.75em;
+}
+
 /* each rectangle in the grid */
 .view {
     width: 100%;
