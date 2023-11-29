@@ -751,8 +751,6 @@ function getFilteredData(specs)
             if (!inTeams) { return false }
         }
 
-        
-        
 
         // loop through every filter in the filters
         for (let i = 0; i < specs.filters.length; i++)
