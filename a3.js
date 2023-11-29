@@ -37,7 +37,11 @@ let teamPlotSpecs =
 
     sliderStat: "W",
 
-    positions: []
+    positions: [],
+
+    markSize: 4,
+
+    strokeWidth: 0.5
 }
 
 let hitterPlotSpecs =
@@ -79,6 +83,10 @@ let hitterPlotSpecs =
     positions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
 
     selected: [],
+
+    markSize: 4,
+
+    strokeWidth: 0.5
 }
 
 let pitcherPlotSpecs =
@@ -120,6 +128,10 @@ let pitcherPlotSpecs =
     positions: ["All", "SP", "RP"],
 
     selected: [],
+
+    markSize: 4,
+
+    strokeWidth: 0.5
 }
 
 let teamTimelineSpecs = 
@@ -154,6 +166,10 @@ let teamTimelineSpecs =
     averages: [],
 
     tooltipDisplay: [{name: "Team: ", stat: "teamID"}],
+
+    pathSize: 2,
+
+    markSize: 3
 }
 
 let hitterTimelineSpecs = 
@@ -190,6 +206,10 @@ let hitterTimelineSpecs =
     averages: [],
 
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
+
+    pathSize: 2,
+
+    markSize: 3
 }
 
 let pitcherTimelineSpecs = 
@@ -226,6 +246,10 @@ let pitcherTimelineSpecs =
     averages: [],
 
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
+
+    pathSize: 2,
+
+    markSize: 3
 }
 
 initialize()
@@ -322,7 +346,7 @@ function timelineData(specs)
                     .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
 
     // create the axes
-    makeAxes(svg, specs, xScale, yScale)
+    drawAxes(svg, specs, xScale, yScale)
 
     // create the average timeline and points
     makeAverageLine(svg, specs, xScale, yScale)
@@ -366,7 +390,7 @@ function scatterplotData(specs)
                     .range(["blue", "red"])
 
     // draw axes
-    makeAxes(svg, specs, xScale, yScale)
+    drawAxes(svg, specs, xScale, yScale)
 
     // draw circles
     makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
@@ -785,7 +809,7 @@ function combineYears(specs, data)
 }
 
 // make axes given svg and specs and scales
-function makeAxes(svg, specs, xScale, yScale)
+function drawAxes(svg, specs, xScale, yScale)
 {
     // remove existing axes
     svg.selectAll(".axis").remove()
@@ -818,19 +842,19 @@ function makeScatterCircles(svg, specs, data, xScale, yScale, colorScale)
         .ease(d3.easeQuadInOut)
         .attr("cx", function(d) {return xScale(d[specs.XAxis])})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", 4)
+        .attr("r", specs.markSize)
         .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
         .attr("stroke", "black")
-        .attr("stroke-width", 0.5)
+        .attr("stroke-width", specs.strokeWidth)
 
     // add circles for the data that was not connected via id
     circle.enter().append("circle")
         .attr("cx", function(d) {return xScale(d[specs.XAxis])})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", 4)
+        .attr("r", specs.markSize)
         .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
         .attr("stroke", "black")
-        .attr("stroke-width", 0.5)
+        .attr("stroke-width", specs.strokeWidth)
 }
 
 // helper for the scatter plot creation, adds interactive behavior to the points
@@ -854,7 +878,7 @@ function interactScatterCircles(svg, specs, colorScale)
             // add new tooltip
             d3.select(this)
               .raise()
-              .attr("r", 5)
+              .attr("r", specs.markSize*1.5)
               .attr("stroke", "yellow")
               .append("svg:title")
               .text(t)
@@ -863,7 +887,7 @@ function interactScatterCircles(svg, specs, colorScale)
         {
             // revert back to previous appearance, remove title
             d3.select(this)
-                .attr("r", 4)
+                .attr("r", specs.markSize)
                 .attr("stroke", "black")
                 .selectAll("*").remove()
         })
@@ -947,7 +971,7 @@ function makeAverageLine(svg, specs, xScale, yScale)
       .datum(avg)
       .attr("fill", "none")
       .attr("stroke", "orange")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", specs.pathSize)
       .attr("d", d3.line()
                     .x(function(d) { return xScale(d.yearID) })
                     .y(function(d) { return yScale(d.value) }))
@@ -957,10 +981,10 @@ function makeAverageLine(svg, specs, xScale, yScale)
         .data(avg)
         .enter()
         .append("rect")
-        .attr("x", function(d) {return xScale(d.yearID) - 2.5})
-        .attr("y", function(d) {return yScale(d.value) - 2.5})
-        .attr("width", 5)
-        .attr("height", 5)
+        .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
+        .attr("y", function(d) {return yScale(d.value) - specs.markSize})
+        .attr("width", specs.markSize * 2)
+        .attr("height", specs.markSize * 2)
         .attr("fill", "orange")
         .attr("stroke", "black")
         .attr("stroke-width", 0)
@@ -972,10 +996,10 @@ function makeAverageLine(svg, specs, xScale, yScale)
             // add new tooltip
             d3.select(this)
               .raise()
-              .attr("x", function(d) {return xScale(d.yearID) - 3})
-              .attr("y", function(d) {return yScale(d.value) - 3})
-              .attr("width", 6)
-              .attr("height", 6)
+              .attr("x", function(d) {return xScale(d.yearID) - specs.markSize * 1.25})
+              .attr("y", function(d) {return yScale(d.value) - specs.markSize * 1.25})
+              .attr("width", specs.markSize * 2.5)
+              .attr("height", specs.markSize * 2.5)
               .attr("stroke-width", 0.5)
               .append("svg:title")
               .text(t)
@@ -984,10 +1008,10 @@ function makeAverageLine(svg, specs, xScale, yScale)
         {
             // revert back to previous appearance, remove title
             d3.select(this)
-                .attr("x", function(d) {return xScale(d.yearID) - 2.5})
-                .attr("y", function(d) {return yScale(d.value) - 2.5})
-                .attr("width", 5)
-                .attr("height", 5)
+                .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
+                .attr("y", function(d) {return yScale(d.value) - specs.markSize})
+                .attr("width", specs.markSize * 2)
+                .attr("height", specs.markSize * 2)
                 .attr("stroke-width", 0)
                 .selectAll("*").remove()
         })
@@ -1035,7 +1059,7 @@ function makeEntityLine(svg, specs, data, xScale, yScale)
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "steelblue")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", specs.pathSize)
         .attr("d", d3.line()
                     .x(function(d) { return xScale(d.yearID) })
                     .y(function(d) { return yScale(d[specs.YAxis]) }))
@@ -1047,7 +1071,7 @@ function makeEntityLine(svg, specs, data, xScale, yScale)
         .append("circle")
         .attr("cx", function(d) {return xScale(d.yearID)})
         .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", 3)
+        .attr("r", specs.markSize)
         .attr("fill", "steelblue")
         .attr("stroke", "black")
         .attr("stroke-width", 0)
@@ -1066,7 +1090,7 @@ function makeEntityLine(svg, specs, data, xScale, yScale)
             // add new tooltip
             d3.select(this)
                 .raise()
-                .attr("r", 4)
+                .attr("r", specs.markSize * 1.5)
                 .attr("stroke-width", 0.5)
                 .append("svg:title")
                 .text(t)
@@ -1075,7 +1099,7 @@ function makeEntityLine(svg, specs, data, xScale, yScale)
         {
             // revert back to previous appearance, remove title
             d3.select(this)
-                .attr("r", 3)
+                .attr("r", specs.markSize)
                 .attr("stroke-width", 0)
                 .selectAll("*").remove()
         })
