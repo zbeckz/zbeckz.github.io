@@ -315,6 +315,7 @@ let pitcherTimelineSpecs =
     markSize: 3
 }
 
+// this is the only code that gets run on start. sets everything up!
 initialize()
 
 // load data, set up plots
