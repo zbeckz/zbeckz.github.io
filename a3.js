@@ -50,8 +50,9 @@ let teamScatterplotSpecs =
     // what is slider controlling
     sliderStat: "W",
 
-    // here but empty to not break code later
-    positions: [],
+    // for the plot specific dropdown
+    dropdownOptions: ["All", "STL", "CHC", "PIT", "CIN", "MIL", "SFG", "SDP", "LAD", "ARI", "COL", "MIA", "WAS", "ATL", "PHI", "NYM", "NYY", "TOR", "BOS", "BAL", "TBR", "LAA", "HOU", "TEX", "SEA", "OAK", "CHW", "CLE", "KCR", "MIN", "DET"],
+    dropdownStat: "teamID",
 
     // svg element specs
     markSize: 4,
@@ -103,8 +104,9 @@ let hitterScatterplotSpecs =
     // what is the slider controlling
     sliderStat: "PA",
 
-    // for the position dropdown
-    positions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
+    // for the plot specific dropdown
+    dropdownOptions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
+    dropdownStat: ["position"],
 
     // which hitters are selected
     selected: [],
@@ -159,8 +161,9 @@ let pitcherScatterplotSpecs =
     // what stat does the slider control
     sliderStat: "IP",
 
-    // for the position dropdown
-    positions: ["All", "SP", "RP"],
+    // for the plot specific dropdown
+    dropdownOptions: ["All", "SP", "RP"],
+    dropdownStat: ["position"],
 
     // currently selected pitchers
     selected: [],
@@ -670,6 +673,7 @@ function drawScatterplotData(specs)
 {
     // get filtered data
     let data = getFilteredData(specs)
+    console.log(specs.filters)
 
     // get the chart
     let svg = d3.select(`#${specs.selector}Plot svg g`)
@@ -1052,10 +1056,10 @@ function setupScatterplotDropdowns(specs)
         })
     }
 
-    // setup position dropdown
-    d3.select(`#${specs.selector}Pos`)
+    // setup the other dropdown
+    d3.select(`#${specs.selector}Dropdown`)
         .selectAll("option")
-        .data(specs.positions)
+        .data(specs.dropdownOptions)
         .enter()
         .append("option")
         .attr("value", function(d) 
@@ -1073,12 +1077,12 @@ function setupScatterplotDropdowns(specs)
      // use jquery to format and setup filtering on change
      $(function ()
      {
-         $(`#${specs.selector}Pos`).selectmenu(
+         $(`#${specs.selector}Dropdown`).selectmenu(
          {
              change: function( event, data ) 
              {
                 // if all, remove filter, otherwise add it
-                data.item.value === "All" ? removeFilter(specs, "position") : addFilter(specs, "equal", "position", [data.item.value])
+                data.item.value === "All" ? removeFilter(specs, specs.dropdownStat) : addFilter(specs, "equal", specs.dropdownStat, [data.item.value])
                 drawScatterplotData(specs)
              }
          })
@@ -1093,11 +1097,11 @@ function setupScatterplotSlider(specs)
     $(function () 
     {
         // initialize min and max labels
-        $(`#${specs.selector}${specs.sliderStat}Min`).text(extent[0])
-        $(`#${specs.selector}${specs.sliderStat}Max`).text(extent[1])
+        $(`#${specs.selector}SliderMin`).text(extent[0])
+        $(`#${specs.selector}SliderMax`).text(extent[1])
 
         // slider itself
-        $(`#${specs.selector}${specs.sliderStat}`).slider(
+        $(`#${specs.selector}Slider`).slider(
         {
             range: true,
             min: extent[0],
@@ -1106,8 +1110,8 @@ function setupScatterplotSlider(specs)
             slide: function (event, ui) 
             {
                 // slider min and max labels change when slid
-                $(`#${specs.selector}${specs.sliderStat}Min`).text(ui.values[0])
-                $(`#${specs.selector}${specs.sliderStat}Max`).text(ui.values[1])
+                $(`#${specs.selector}SliderMin`).text(ui.values[0])
+                $(`#${specs.selector}SliderMax`).text(ui.values[1])
 
                 // add filter to data
                 addFilter(specs, "range", specs.sliderStat, ui.values)

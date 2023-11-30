@@ -46,13 +46,13 @@
 
           <div class="slider">
             <label>W:</label>
-            <label id="teamsWMin" style="font-weight: bold;"></label>
-            <div name="teamsW" id="teamsW"></div>
-            <label id="teamsWMax" style="font-weight: bold;"></label>
+            <label id="teamsSliderMin" style="font-weight: bold;"></label>
+            <div id="teamsSlider"></div>
+            <label id="teamsSliderMax" style="font-weight: bold;"></label>
+            <label>Franchise:</label>
+            <select id="teamsDropdown"></select>
             <label>Won WS:</label>
-            <input type='checkbox' onclick='checkboxHandler(this, teamScatterplotSpecs, "WSWin");'>
-            <label>Won Div:</label>
-            <input type='checkbox' onclick='checkboxHandler(this, teamScatterplotSpecs, "DivWin");'>
+            <input id="teamsCheckbox" type='checkbox' onclick='checkboxHandler(this, teamScatterplotSpecs, "WSWin");'>
           </div>
         </div>
 
@@ -78,13 +78,13 @@
 
           <div class="slider">
             <label>PA:</label>
-            <label id="hittersPAMin" style="font-weight: bold;"></label>
-            <div name="hittersPA" id="hittersPA"></div>
-            <label id="hittersPAMax" style="font-weight: bold;"></label>
+            <label id="hittersSliderMin" style="font-weight: bold;"></label>
+            <div id="hittersSlider"></div>
+            <label id="hittersSliderMax" style="font-weight: bold;"></label>
             <label>Pos:</label>
-            <select id="hittersPos"></select>
+            <select id="hittersDropdown"></select>
             <label>Allstar:</label>
-            <input type='checkbox' onclick='checkboxHandler(this, hitterScatterplotSpecs, "allstar");'>
+            <input id="hittersCheckbox" type='checkbox' onclick='checkboxHandler(this, hitterScatterplotSpecs, "allstar");'>
           </div>
         </div>
 
@@ -109,13 +109,13 @@
 
           <div class="slider">
             <label>IP:</label>
-            <label id="pitchersIPMin" style="font-weight: bold;"></label>
-            <div name="pitchersIP" id="pitchersIP"></div>
-            <label id="pitchersIPMax" style="font-weight: bold;"></label>
+            <label id="pitchersSliderMin" style="font-weight: bold;"></label>
+            <div id="pitchersSlider"></div>
+            <label id="pitchersSliderMax" style="font-weight: bold;"></label>
             <label>Pos:</label>
-            <select id="pitchersPos"></select>
+            <select id="pitchersDropdown"></select>
             <label>Allstar:</label>
-            <input type='checkbox' onclick='checkboxHandler(this, pitcherScatterplotSpecs, "allstar");'>
+            <input id="pitchersCheckbox" type='checkbox' onclick='checkboxHandler(this, pitcherScatterplotSpecs, "allstar");'>
           </div>
         </div>
 
