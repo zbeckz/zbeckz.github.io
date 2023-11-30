@@ -28,10 +28,14 @@
 
       <div class="view">
 
-        <div class="plot" id="teamsPlot">
+        <div class="plot">
           <strong id="teamsPlotTitle">
             Team Statistics <button type="button" onclick="scatterplotReset([teamScatterplotSpecs, hitterScatterplotSpecs, pitcherScatterplotSpecs], teamTimelineSpecs)">Reset</button>
           </strong>
+          <div class="dataContainer">
+            <svg id="teamsPlot"></svg>
+            <svg id="teamsLegend"></svg>
+          </div>
         </div>
 
         <div class="plotFilters">
@@ -60,10 +64,14 @@
 
       <div class="view">
 
-        <div class="plot" id="hittersPlot">
+        <div class="plot">
           <strong id="hittersPlotTitle">
             Hitter Statistics <button type="button" onclick="scatterplotReset([hitterScatterplotSpecs], hitterTimelineSpecs)">Reset</button>
           </strong>
+          <div class="dataContainer">
+            <svg id="hittersPlot"></svg>
+            <svg id="hittersLegend"></svg>
+          </div>
         </div>
 
         <div class="plotFilters">
@@ -91,10 +99,14 @@
       </div>
       <div class="view">
 
-        <div class="plot" id="pitchersPlot">
+        <div class="plot">
           <strong id="pitchersPlotTitle">
             Pitcher Statistics <button type="button" onclick="scatterplotReset([pitcherScatterplotSpecs], pitcherTimelineSpecs)">Reset</button>
           </strong>
+          <div class="dataContainer">
+            <svg id="pitchersPlot"></svg>
+            <svg id="pitchersLegend"></svg>
+          </div>
         </div>
 
         <div class="plotFilters">
@@ -123,10 +135,14 @@
 
       <div class="view">
 
-        <div class="plot" id="teamTimelinePlot">
+        <div class="plot">
           <strong id="teamTimelinePlotTitle">
             Team Timeline <button type="button">Reset</button>
           </strong>
+          <div class="dataContainer">
+            <svg id="teamTimelinePlot"></svg>
+            <svg id="teamTimelineLegend"></svg>
+          </div>
         </div>
 
         <div class="plotFilters">
@@ -139,10 +155,14 @@
       </div>
       <div class="view">
 
-        <div class="plot" id="hitterTimelinePlot">
+        <div class="plot">
           <strong id="hitterTimelinePlotTitle">
             Hitter Timeline <button type="button">Reset</button>
           </strong>
+          <div class="dataContainer">
+            <svg id="hitterTimelinePlot"></svg>
+            <svg id="hitterTimelineLegend"></svg>
+          </div>
         </div>
 
         <div class="plotFilters">
@@ -155,10 +175,14 @@
       </div>
       <div class="view">
 
-        <div class="plot" id="pitcherTimelinePlot">
+        <div class="plot">
           <strong id="pitcherTimelinePlotTitle">
             Pitcher Timeline <button type="button">Reset</button>
           </strong>
+          <div class="dataContainer">
+            <svg id="pitcherTimelinePlot"></svg>
+            <svg id="pitcherTimelineLegend"></svg>
+          </div>
         </div>
 
         <div class="plotFilters">

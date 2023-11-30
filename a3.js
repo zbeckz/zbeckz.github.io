@@ -1,6 +1,33 @@
 /* ----------------------------- PLOT SPECS -------------------------------------------------------------------- */
 
+// svg size specs
+let svgSpecs = 
+{
+    margin: 
+    {
+        top: 20, 
+        right: 20, 
+        bottom: 20, 
+        left: 40
+    },
+    width: 300,
+    height: 300,
+}
 
+// legend svg specs
+let legendSpecs =
+{
+    margin: 
+    {
+        top: 0, 
+        right: 0, 
+        bottom: 0, 
+        left: 0
+    },
+
+    width: 40,
+    height: 200,
+}
 
 // plot specifications for the team scatter plot
 let teamScatterplotSpecs =
@@ -18,17 +45,6 @@ let teamScatterplotSpecs =
 
     // prefix to html id for elements within this plot
     selector: "teams",
-
-    // svg size specs
-    margin: 
-    {
-        top: 20, 
-        right: 20, 
-        bottom: 20, 
-        left: 40
-    },
-    width: 300,
-    height: 300,
 
     // which stats are being encoded to the scatterplot
     XAxis: "R",
@@ -76,17 +92,6 @@ let hitterScatterplotSpecs =
     // prefix to html id for elements within this plot
     selector: "hitters",
 
-    // svg size specs
-    margin: 
-    {
-        top: 20, 
-        right: 20, 
-        bottom: 20, 
-        left: 40
-    },
-    width: 300,
-    height: 300,
-
     // which stats are being encoded to the scatterplot
     XAxis: "HR",
     YAxis: "RBI",
@@ -133,17 +138,6 @@ let pitcherScatterplotSpecs =
     // prefix to html id for elements within this plot
     selector: "pitchers",
 
-    // svg size specs
-    margin: 
-    {
-        top: 20, 
-        right: 20, 
-        bottom: 20, 
-        left: 40
-    },
-    width: 300,
-    height: 300,
-
     // which stats are being encoded to the scatterplot
     XAxis: "BAOpp",
     YAxis: "ERA",
@@ -185,17 +179,6 @@ let teamTimelineSpecs =
     // used to connect to selected data in team scatterplot
     idField: "teamID",
 
-    // svg size specs
-    margin: 
-    {
-        top: 20, 
-        right: 20, 
-        bottom: 20, 
-        left: 40
-    },
-    width: 350,
-    height: 300,
-
     // possible stats to display on timeline
     fields: ["G", "W", "L", "R", "PA", "AB", "H", "2B", "3B", "HR", "TB", "BB", "SO", "SB", "CS", "SB%", "HBP", "SF", "AVG", "OBP", "SLG", "OPS", "RA", "ER", "ERA", "CG", "SHO", "SV", "HA", "HRA", "BBA", "SOA", "DP", "Rank"],
 
@@ -233,17 +216,6 @@ let hitterTimelineSpecs =
 
     // used to connect to selected data in hitter scatterplot
     idField: "playerID",
-
-    // svg size specs
-    margin: 
-    {
-        top: 20, 
-        right: 20, 
-        bottom: 20, 
-        left: 40
-    },
-    width: 350,
-    height: 300,
 
     // possible stats to display on timeline
     fields: ["G", "PA", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "SB%", "BB", "SO", "TB", "AVG", "OBP", "SLG", "OPS", "IBB", "HBP", "SF"],
@@ -283,17 +255,6 @@ let pitcherTimelineSpecs =
 
     // used to connect to selected data in pitcher scatterplot
     idField: "playerID",
-
-    // svg size specs
-    margin: 
-    {
-        top: 20, 
-        right: 20, 
-        bottom: 20, 
-        left: 40
-    },
-    width: 350,
-    height: 300,
 
     // possible stats to display on timeline
     fields: ["W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "IP"],
@@ -386,11 +347,17 @@ function setupPlot(specs)
 {
     // setup the svg
     d3.select(`#${specs.selector}Plot`)
-        .append("svg")
-            .attr("width", specs.width)
-            .attr("height", specs.height)
+        .attr("width", svgSpecs.width)
+        .attr("height", svgSpecs.height)
         .append("g")
-            .attr("transform", `translate(${specs.margin.left}, ${specs.margin.top})`);
+            .attr("transform", `translate(${svgSpecs.margin.left}, ${svgSpecs.margin.top})`);
+
+    // setup the legend
+    d3.select(`#${specs.selector}Legend`)
+        .attr("width", legendSpecs.width)
+        .attr("height", legendSpecs.height)
+        .append("g")
+            .attr("transform", `translate(${legendSpecs.margin.left}, ${legendSpecs.margin.top})`);
 
     if (specs.type === "scatter")
     {
@@ -416,13 +383,13 @@ function drawAxes(svg, specs, xScale, yScale)
     // add x axis
     svg.append("g")
     .attr("class", "axis")
-    .attr("transform", `translate(0, ${specs.height - specs.margin.top - specs.margin.bottom})`)
-    .call(d3.axisBottom(xScale));
+    .attr("transform", `translate(0, ${svgSpecs.height - svgSpecs.margin.top - svgSpecs.margin.bottom})`)
+    .call(d3.axisBottom(xScale).ticks(5));
 
     // add y axis
     svg.append("g")
         .attr("class", "axis")
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale).ticks(5));
 }
 
 // get tooltip text given specs
@@ -440,7 +407,6 @@ function getTooltipText(specs, d)
 }
 
 
-
 /* ----------------------------- TIMELINE SPECIFIC -------------------------------------------------------------------- */
 
 
@@ -449,7 +415,7 @@ function getTooltipText(specs, d)
 function drawTimelineData(specs)
 {
     // get the chart
-    let svg = d3.select(`#${specs.selector}Plot svg g`)
+    let svg = d3.select(`#${specs.selector}Plot g`)
 
     // remove existing circles
     svg.selectAll("circle").remove()
@@ -460,11 +426,11 @@ function drawTimelineData(specs)
     // scale based on all teams
     let xScale = d3.scaleLinear()
                     .domain(d3.extent(specs.data, d => d.yearID))
-                    .range([0, specs.width - specs.margin.left - specs.margin.right])
+                    .range([0, svgSpecs.width - svgSpecs.margin.left - svgSpecs.margin.right])
 
     let yScale = d3.scaleLinear()
                     .domain(d3.extent(specs.data, d => d[specs.YAxis]))
-                    .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
+                    .range([svgSpecs.height - svgSpecs.margin.top - svgSpecs.margin.bottom, 0])
 
     // create the axes
     drawAxes(svg, specs, xScale, yScale)
@@ -673,24 +639,28 @@ function drawScatterplotData(specs)
 {
     // get filtered data
     let data = getFilteredData(specs)
-    console.log(specs.filters)
 
     // get the chart
-    let svg = d3.select(`#${specs.selector}Plot svg g`)
+    let svg = d3.select(`#${specs.selector}Plot g`)
 
     // remove existing titles
     svg.selectAll("title").remove()
 
     // scale the data
+    let colorData = data.map(d => d[specs.Color]) // doing this here because we need to pass it to legend later
     let xScale = d3.scaleLinear()
                     .domain(d3.extent(data, d => d[specs.XAxis]))
-                    .range([0, specs.width - specs.margin.left - specs.margin.right])
+                    .range([0, svgSpecs.width - svgSpecs.margin.left - svgSpecs.margin.right])
     let yScale = d3.scaleLinear()
                     .domain(d3.extent(data, d => d[specs.YAxis]))
-                    .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
+                    .range([svgSpecs.height - svgSpecs.margin.top - svgSpecs.margin.bottom, 0])
     let colorScale = d3.scaleQuantile()
-                        .domain(data.map(d => d[specs.Color]))
+                        .domain(colorData)
                         .range(d3.schemeRdBu[5].toReversed())
+
+    // draw legend
+    let legendSvg = d3.select(`#${specs.selector}Legend g`)
+    drawScatterplotLegend(legendSvg, colorData, colorScale)
 
     // draw axes
     drawAxes(svg, specs, xScale, yScale)
@@ -826,6 +796,32 @@ function interactScatterplotCircles(svg, specs, colorScale)
                 }
             }
         })
+}
+
+// draws the scatter plot legend
+function drawScatterplotLegend(svg, data, scale)
+{
+    // remove existing rectangles
+    svg.selectAll("rect").remove()
+
+    // some setup
+    let min = d3.min(data)
+    let max = d3.max(data)
+    let rectWidth = legendSpecs.width * 0.5
+    let rectHeight = legendSpecs.height * 0.2 // to make room for 5 color rects
+
+    // loop through every color
+    let colors = scale.range()
+    for (let i = 0; i < colors.length; i++)
+    {
+        svg.append("rect")
+            .attr("width", rectWidth)
+            .attr("height", rectHeight)
+            .attr("x", rectWidth)
+            .attr("y", rectHeight*i)
+            .attr("fill", colors[i])
+    }
+
 }
 
 
