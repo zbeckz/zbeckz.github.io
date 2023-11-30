@@ -1126,9 +1126,36 @@ function setupScatterplotSlider(specs)
 // handles reset buttons for scatterplots
 function scatterplotReset(scatterSpecArr, timelineSpec)
 {
+    // get the scatterplot this was clicked from
+    let specs = scatterSpecArr[0]
+
+    // reset the splider
+    let extent = d3.extent(specs.data, d => d[specs.sliderStat])
+    $(function () 
+    {
+        // reset min and max labels
+        $(`#${specs.selector}SliderMin`).text(extent[0])
+        $(`#${specs.selector}SliderMax`).text(extent[1])
+
+        // reset slider values itself itself
+        $(`#${specs.selector}Slider`).slider("values", 0, extent[0])
+        $(`#${specs.selector}Slider`).slider("values", 1, extent[1])
+
+    })
+
+    // reset the dropdown
+    $(function ()
+    {
+        $(`#${specs.selector}Dropdown`).val('All');
+        $(`#${specs.selector}Dropdown`).selectmenu("refresh");
+    })
+
+    // reset the checkbox
+    document.getElementById(`${specs.selector}Checkbox`).checked = false
+
     // reset the selected and filters for this scatterplot
-    scatterSpecArr[0].filters = []
-    scatterSpecArr[0].selected = []
+    specs.filters = []
+    specs.selected = []
 
     // redraw whichever scatterplots need to be redrawn
     scatterSpecArr.forEach(s => drawScatterplotData(s))
@@ -1138,5 +1165,4 @@ function scatterplotReset(scatterSpecArr, timelineSpec)
 
     // redraw timeline
     drawTimelineData(timelineSpec)
-
 }
