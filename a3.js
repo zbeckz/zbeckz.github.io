@@ -372,6 +372,8 @@ async function initialize()
   drawTimelineData(pitcherTimelineSpecs)
 }
 
+
+
 /* ----------------------------- SETUP FUNCTIONS FOR ANY PLOT -------------------------------------------------------------------- */
 
 
@@ -454,11 +456,11 @@ function drawTimelineData(specs)
 
     // scale based on all teams
     let xScale = d3.scaleLinear()
-                    .domain(d3.extent(specs.data, function (d) { return d.yearID }))
+                    .domain(d3.extent(specs.data, d => d.yearID))
                     .range([0, specs.width - specs.margin.left - specs.margin.right])
 
     let yScale = d3.scaleLinear()
-                    .domain(d3.extent(specs.data, function (d) { return d[specs.YAxis] }))
+                    .domain(d3.extent(specs.data, d => d[specs.YAxis]))
                     .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
 
     // create the axes
@@ -677,14 +679,14 @@ function drawScatterplotData(specs)
 
     // scale the data
     let xScale = d3.scaleLinear()
-                    .domain(d3.extent(data, function (d) { return d[specs.XAxis] }))
+                    .domain(d3.extent(data, d => d[specs.XAxis]))
                     .range([0, specs.width - specs.margin.left - specs.margin.right])
     let yScale = d3.scaleLinear()
-                    .domain(d3.extent(data, function (d) { return d[specs.YAxis] }))
+                    .domain(d3.extent(data, d => d[specs.YAxis]))
                     .range([specs.height - specs.margin.top - specs.margin.bottom, 0])
-    let colorScale = d3.scaleLinear()
-                    .domain(d3.extent(data, function(d) { return d[specs.Color] }))
-                    .range(["blue", "red"])
+    let colorScale = d3.scaleQuantile()
+                        .domain(data.map(d => d[specs.Color]))
+                        .range(d3.schemeRdBu[5].toReversed())
 
     // draw axes
     drawAxes(svg, specs, xScale, yScale)
@@ -742,6 +744,7 @@ function interactScatterplotCircles(svg, specs, colorScale)
               .raise()
               .attr("r", specs.markSize*1.5)
               .attr("stroke", "yellow")
+              .attr("stroke-width", specs.strokeWidth * 1.5)
               .append("svg:title")
               .text(t)
         })
