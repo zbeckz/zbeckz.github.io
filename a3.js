@@ -489,15 +489,8 @@ function drawTimelineData(specs)
                      data, 
                      d => xScale(d.yearID), 
                      d => yScale(d[specs.YAxis]), 
-                     d => "steelblue", 
-                     function(d) 
-                     {
-                        let t = getTooltipText(specs, d)
-
-                        t += `${specs.YAxis}: ${d[specs.YAxis]}`
-
-                        return t
-                     })
+                     d => "steelblue",
+                     d =>  `Year: ${d.yearID}\n` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`)
     }
 }
 
