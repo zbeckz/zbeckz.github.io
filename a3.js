@@ -375,7 +375,7 @@ function setupPlot(specs)
 }
 
 // make axes given svg and specs and scales
-function drawAxes(svg, specs, xScale, yScale)
+function drawAxes(svg, xScale, yScale)
 {
     // remove existing axes
     svg.selectAll(".axis").remove()
@@ -433,7 +433,7 @@ function drawTimelineData(specs)
                     .range([svgSpecs.height - svgSpecs.margin.top - svgSpecs.margin.bottom, 0])
 
     // create the axes
-    drawAxes(svg, specs, xScale, yScale)
+    drawAxes(svg, xScale, yScale)
 
     // draw the average timeline
     drawTimeline(svg, 
@@ -660,10 +660,10 @@ function drawScatterplotData(specs)
 
     // draw legend
     let legendSvg = d3.select(`#${specs.selector}Legend g`)
-    drawScatterplotLegend(legendSvg, colorData, colorScale)
+    drawScatterplotLegend(legendSvg, colorData, colorScale, specs.Color, svg)
 
     // draw axes
-    drawAxes(svg, specs, xScale, yScale)
+    drawAxes(svg, xScale, yScale)
 
     // draw circles
     drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
@@ -799,29 +799,80 @@ function interactScatterplotCircles(svg, specs, colorScale)
 }
 
 // draws the scatter plot legend
-function drawScatterplotLegend(svg, data, scale)
+function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
 {
-    // remove existing rectangles
+    // remove existing legend
     svg.selectAll("rect").remove()
+    svg.selectAll("text").remove()
 
     // some setup
     let min = d3.min(data)
     let max = d3.max(data)
-    let rectWidth = legendSpecs.width * 0.5
-    let rectHeight = legendSpecs.height * 0.2 // to make room for 5 color rects
+    let rectWidth = legendSpecs.width * 0.22
+    let rectHeight = legendSpecs.height * 0.18 // to make room for 5 color rects and labels
+    let labelMargin = 0.5 * (legendSpecs.height - 5 * rectHeight)
 
-    // loop through every color
-    let colors = scale.range()
+    // calculate the cutoffs including 0 and max
+    let cutoffs = scale.quantiles()
+    cutoffs.push(max)
+    cutoffs.reverse()
+    cutoffs.push(min)
+
+    // loop through every color, make swatch
+    let colors = scale.range().toReversed()
     for (let i = 0; i < colors.length; i++)
     {
+        // put rect
         svg.append("rect")
             .attr("width", rectWidth)
             .attr("height", rectHeight)
-            .attr("x", rectWidth)
-            .attr("y", rectHeight*i)
+            .attr("x", 0) // left side of legend
+            .attr("y", labelMargin + rectHeight*i)
             .attr("fill", colors[i])
+            .attr("stroke", "black")
+            .on('mouseover', function(d) 
+            {
+                // make all colors swatches faded
+                svg.selectAll("rect").attr("opacity", 0.2)
+
+                // add new tooltip
+                d3.select(this)
+                    .attr("opacity", 1) // unfade this one
+                    .append("svg:title")
+                    .text(`${stat}: ${cutoffs[i+1]}-${cutoffs[i]}`)
+
+                // make all other colors faded
+                scatterSvg.selectAll("circle")
+                            .each(function(d)
+                            {
+                                // if data is not in this particlar range, fade it
+                                if (d[stat] >= cutoffs[i] || d[stat] < cutoffs[i+1])
+                                {
+                                    d3.select(this).attr("opacity", 0.1)
+                                }
+                            })             
+            })
+            .on('mouseout', function(d) 
+            {
+                // remove tooltip
+                d3.select(this).selectAll("*").remove()
+
+                // make everything not faded
+                svg.selectAll("rect").attr("opacity", 1)
+                scatterSvg.selectAll("circle").attr("opacity", 1)  
+            })
     }
 
+    // loop through cutoffs and make labels
+    for (let i = 0; i < cutoffs.length; i++)
+    {
+        svg.append("text")
+            .attr("x", rectWidth + 5)
+            .attr("y", labelMargin + rectHeight*i)
+            .text(cutoffs[i])
+            .attr("class", "legendTick")
+            .style("alignment-baseline", "middle")
+    }
 }
 
 

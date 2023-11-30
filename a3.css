@@ -13,6 +13,10 @@ label {
     font-size: 0.75em;
 }
 
+.legendTick {
+    font-size: 0.75em;
+}
+
 /* has the plot svg and legend svg in it */
 .dataContainer {
     display: flex;
