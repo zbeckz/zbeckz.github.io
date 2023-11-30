@@ -420,6 +420,20 @@ function drawAxes(svg, specs, xScale, yScale)
         .call(d3.axisLeft(yScale));
 }
 
+// get tooltip text given specs
+function getTooltipText(specs, d)
+{
+    let t = ""
+    for (let j = 0; j < specs.tooltipDisplay.length; j++)
+    {
+        t += specs.tooltipDisplay[j].name
+        t += d[specs.tooltipDisplay[j].stat]
+        t += "\n"
+    }
+
+    return t
+}
+
 
 
 /* ----------------------------- TIMELINE SPECIFIC -------------------------------------------------------------------- */
@@ -437,9 +451,6 @@ function drawTimelineData(specs)
 
     // remove existing path
     svg.selectAll("path").remove()
-
-    // remove existing rects
-    svg.selectAll("rect").remove()
 
     // scale based on all teams
     let xScale = d3.scaleLinear()
@@ -481,13 +492,7 @@ function drawTimelineData(specs)
                      d => "steelblue", 
                      function(d) 
                      {
-                        let t = ""
-                        for (let j = 0; j < specs.tooltipDisplay.length; j++)
-                        {
-                            t += specs.tooltipDisplay[j].name
-                            t += d[specs.tooltipDisplay[j].stat]
-                            t += "\n"
-                        }
+                        let t = getTooltipText(specs, d)
 
                         t += `${specs.YAxis}: ${d[specs.YAxis]}`
 
@@ -733,13 +738,8 @@ function interactScatterplotCircles(svg, specs, colorScale)
         .on('mouseover', function(d, i) 
         {
             // create tooltip text
-            let t = ""
-            for (let j = 0; j < specs.tooltipDisplay.length; j++)
-            {
-                t += specs.tooltipDisplay[j].name
-                t += i[specs.tooltipDisplay[j].stat]
-                t += "\n"
-            }
+            let t = getTooltipText(specs, i)
+
             t += `${specs.XAxis}: ${i[specs.XAxis]}\n`
             t += `${specs.YAxis}: ${i[specs.YAxis]}\n`
             t += `${specs.Color}: ${i[specs.Color]}`
