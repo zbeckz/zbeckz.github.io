@@ -438,6 +438,9 @@ function drawTimelineData(specs)
     // remove existing path
     svg.selectAll("path").remove()
 
+    // remove existing rects
+    svg.selectAll("rect").remove()
+
     // scale based on all teams
     let xScale = d3.scaleLinear()
                     .domain(d3.extent(specs.data, function (d) { return d.yearID }))
@@ -450,8 +453,14 @@ function drawTimelineData(specs)
     // create the axes
     drawAxes(svg, specs, xScale, yScale)
 
-    // create the average timeline and points
-    drawAverageTimeline(svg, specs, xScale, yScale)
+    // draw the average timeline
+    drawTimeline(svg, 
+                 specs, 
+                 specs.averages.filter(d => d.field === specs.YAxis),
+                 d => xScale(d.yearID),
+                 d => yScale(d.value),
+                 d => "orange",
+                 d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`)
 
     // if no team is selected, don't actually plot any data
     if (specs.selected.length == 0) { return }
@@ -464,111 +473,62 @@ function drawTimelineData(specs)
     {
         let data = paths[i]
 
-        drawIndividualTimeline(svg, specs, data, xScale, yScale)
+        drawTimeline(svg, 
+                     specs, 
+                     data, 
+                     d => xScale(d.yearID), 
+                     d => yScale(d[specs.YAxis]), 
+                     d => "steelblue", 
+                     function(d) 
+                     {
+                        let t = ""
+                        for (let j = 0; j < specs.tooltipDisplay.length; j++)
+                        {
+                            t += specs.tooltipDisplay[j].name
+                            t += d[specs.tooltipDisplay[j].stat]
+                            t += "\n"
+                        }
+
+                        t += `${specs.YAxis}: ${d[specs.YAxis]}`
+
+                        return t
+                     })
     }
 }
 
-// helper for timeline plot creation, makes path and squares for the average
-function drawAverageTimeline(svg, specs, xScale, yScale)
+// helper for timeline plot creation, draws path and points
+function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc)
 {
-    // remove existing rects
-    svg.selectAll("rect").remove()
-
-    // add the average timeline
-    let avg = specs.averages.filter(d => d.field === specs.YAxis)
-    svg.append("path")
-      .datum(avg)
-      .attr("fill", "none")
-      .attr("stroke", "orange")
-      .attr("stroke-width", specs.pathSize)
-      .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d.value) }))
-
-    // add the average points
-    svg.append("g").selectAll("rect")
-        .data(avg)
-        .enter()
-        .append("rect")
-        .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
-        .attr("y", function(d) {return yScale(d.value) - specs.markSize})
-        .attr("width", specs.markSize * 2)
-        .attr("height", specs.markSize * 2)
-        .attr("fill", "orange")
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function(d, i) 
-        {
-            // create tooltip text
-            let t = `Year: ${i.yearID}\nAverage ${specs.YAxis}: ${i.value}`
-
-            // add new tooltip
-            d3.select(this)
-              .raise()
-              .attr("x", function(d) {return xScale(d.yearID) - specs.markSize * 1.25})
-              .attr("y", function(d) {return yScale(d.value) - specs.markSize * 1.25})
-              .attr("width", specs.markSize * 2.5)
-              .attr("height", specs.markSize * 2.5)
-              .attr("stroke-width", 0.5)
-              .append("svg:title")
-              .text(t)
-        })
-        .on('mouseout', function(d, i) 
-        {
-            // revert back to previous appearance, remove title
-            d3.select(this)
-                .attr("x", function(d) {return xScale(d.yearID) - specs.markSize})
-                .attr("y", function(d) {return yScale(d.value) - specs.markSize})
-                .attr("width", specs.markSize * 2)
-                .attr("height", specs.markSize * 2)
-                .attr("stroke-width", 0)
-                .selectAll("*").remove()
-        })
-}
-
-// helper for timeline plot creation, draws path and circles for an entity
-function drawIndividualTimeline(svg, specs, data, xScale, yScale)
-{
-    // add the selected timeline
-    svg.append("path")
+     // add the selected timeline
+     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "steelblue")
+        .attr("stroke", colorFunc)
         .attr("stroke-width", specs.pathSize)
         .attr("d", d3.line()
-                    .x(function(d) { return xScale(d.yearID) })
-                    .y(function(d) { return yScale(d[specs.YAxis]) }))
+                    .x(xFunc)
+                    .y(yFunc))
 
     // add the selected points
     svg.append("g").selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", function(d) {return xScale(d.yearID)})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+        .attr("cx", xFunc)
+        .attr("cy", yFunc)
         .attr("r", specs.markSize)
-        .attr("fill", "steelblue")
+        .attr("fill",colorFunc)
         .attr("stroke", "black")
         .attr("stroke-width", 0)
         .on('mouseover', function(d, i) 
         {
-            // create tooltip text
-            let t = `Year: ${i.yearID}\n`
-            for (let j = 0; j < specs.tooltipDisplay.length; j++)
-            {
-                t += specs.tooltipDisplay[j].name
-                t += i[specs.tooltipDisplay[j].stat]
-                t += "\n"
-            }
-            t += `${specs.YAxis}: ${i[specs.YAxis]}`
-
             // add new tooltip
             d3.select(this)
                 .raise()
                 .attr("r", specs.markSize * 1.5)
                 .attr("stroke-width", 0.5)
                 .append("svg:title")
-                .text(t)
+                .text(tooltipFunc(i))
         })
         .on('mouseout', function(d, i) 
         {
@@ -748,25 +708,22 @@ function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
     // remove circles that were not connected via id
     circle.exit().remove()
 
-    // transition the circles that were connected via id
-    circle.transition()
-        .duration(1000)
-        .ease(d3.easeQuadInOut)
-        .attr("cx", function(d) {return xScale(d[specs.XAxis])})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", specs.markSize)
-        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
-        .attr("stroke", "black")
-        .attr("stroke-width", specs.strokeWidth)
+    for (let i = 0; i < 2; i++)
+    {
+        let elements
 
-    // add circles for the data that was not connected via id
-    circle.enter().append("circle")
-        .attr("cx", function(d) {return xScale(d[specs.XAxis])})
-        .attr("cy", function(d) {return yScale(d[specs.YAxis])})
-        .attr("r", specs.markSize)
-        .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
-        .attr("stroke", "black")
-        .attr("stroke-width", specs.strokeWidth)
+        // transition circles that were connected via id, add new ones
+        i == 0 ? elements = circle.transition().duration(1000).ease(d3.easeQuadInOut) : elements = circle.enter().append("circle")
+
+        // setup for all elements
+        elements.attr("cx", function(d) {return xScale(d[specs.XAxis])})
+                .attr("cy", function(d) {return yScale(d[specs.YAxis])})
+                .attr("r", specs.markSize)
+                .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
+                .attr("stroke", "black")
+                .attr("stroke-width", specs.strokeWidth)
+        
+    }
 }
 
 // helper for the scatter plot creation, adds interactive behavior to the points
@@ -874,6 +831,8 @@ function interactScatterplotCircles(svg, specs, colorScale)
 
 
 /* ----------------------------- DATA FILTERING / CLEANING -------------------------------------------------------------------- */
+
+
 
 // remove a filter from specs
 function removeFilter(specs, field)
