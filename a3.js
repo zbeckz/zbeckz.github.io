@@ -1118,3 +1118,21 @@ function setupScatterplotSlider(specs)
         });
     })
 }
+
+// handles reset buttons for scatterplots
+function scatterplotReset(scatterSpecArr, timelineSpec)
+{
+    // reset the selected and filters for this scatterplot
+    scatterSpecArr[0].filters = []
+    scatterSpecArr[0].selected = []
+
+    // redraw whichever scatterplots need to be redrawn
+    scatterSpecArr.forEach(s => drawScatterplotData(s))
+
+    // reset selected and filters for associated timeline
+    timelineSpec.selected = []
+
+    // redraw timeline
+    drawTimelineData(timelineSpec)
+
+}
