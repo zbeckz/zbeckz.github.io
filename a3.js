@@ -491,7 +491,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
     svg.selectAll("rect").remove()
     svg.selectAll("text").remove()
 
-    // setup specs
+    // setup layout
     let rectWidth = legendSpecs.width * 0.2
     let rectHeight = rectWidth
     let yGap = legendSpecs.height * 0.05
@@ -521,6 +521,8 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                     }
                 })
             
+            // bold label
+            svg.select("#avgLabel").attr("font-weight", "bold")
         })
         .on('mouseout', function(d, i)
         {
@@ -537,6 +539,9 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                         el.selectAll("circle").attr("opacity", 0.2)
                     }
                 })
+
+            // unbold label
+            svg.select("#avgLabel").attr("font-weight", "normal")
         })
 
     // setup average label
@@ -546,6 +551,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
         .text("Average")
         .attr("class", "legendTick")
         .style("alignment-baseline", "middle")
+        .attr("id", "avgLabel")
 
     // setup entity rect
     svg.append("rect")
@@ -564,7 +570,16 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
         .text(entityTitle)
         .attr("class", "legendTick")
         .style("alignment-baseline", "middle")
-    
+
+    // setup entity selection window
+    svg.append("rect")
+        .attr("x", 1)
+        .attr("y", yGap*3 + rectHeight*2)
+        .attr("width", legendSpecs.width * 0.8)
+        .attr("height", legendSpecs.height - yGap*3 - rectHeight*2 - 5)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
 }
 
 // helper for timeline plot creation, draws path and points
