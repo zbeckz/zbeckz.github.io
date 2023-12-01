@@ -562,6 +562,45 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
         .attr("fill", "steelblue")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
+        .on('mouseover', function(d)
+        {
+            // highlight every path and circle that is not the "average" timeline
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+                    // if its not the average one, highlight it
+                    if (el.attr("id") !== null && !el.attr("id").includes("Average"))
+                    {
+                        el.selectAll("path").attr("opacity", 1)
+                        el.selectAll("circle").attr("opacity", 1)
+                    }
+                })
+            
+            // bold label
+            svg.select("#entityLabel").attr("font-weight", "bold")
+
+        })
+        .on('mouseout', function(d)
+        {
+            // fade every path and circle that is not the "average" timeline
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+
+                    // if its not the average one, fade it
+                    if (el.attr("id") !== null && !el.attr("id").includes("Average"))
+                    {
+                        el.selectAll("path").attr("opacity", 0.2)
+                        el.selectAll("circle").attr("opacity", 0.2)
+                    }
+                })
+            
+            // unbold label
+            svg.select("#entityLabel").attr("font-weight", "normal")
+
+        })
 
     // setup entity label
     svg.append("text")
@@ -570,6 +609,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
         .text(entityTitle)
         .attr("class", "legendTick")
         .style("alignment-baseline", "middle")
+        .attr("id", "entityLabel")
 
     // setup entity selection window
     svg.append("rect")
@@ -586,6 +626,14 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
     {
         let yPos = yGap*3 + rectHeight*2 + rectHeight*1.2*i
 
+        // selector entity name label
+        svg.append("text")
+            .attr("x", 5)
+            .attr("y", yPos+rectHeight*0.6)
+            .text(labels[i].substring(0, 9)) // truncated
+            .attr("class", "legendTick")
+            .style("alignment-baseline", "middle")
+
         // selector rectangle
         svg.append("rect")
             .attr("x", 1)
@@ -594,14 +642,49 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
             .attr("height", rectHeight*1.2)
             .attr("opacity", 0.1)
             .attr("fill", "steelblue")
+            .on('mouseover', function(d)
+            {
+                // highlight, add title
+                d3.select(this)
+                    .attr("opacity", 0.4)
+                    .append("svg:title")
+                    .text(labels[i])
 
+                // highlight associated timeline
+                scatterSvg.selectAll("g")
+                        .each(function (d) 
+                        {
+                            let el = d3.select(this)
 
-        svg.append("text")
-            .attr("x", 5)
-            .attr("y", yPos+rectHeight*0.6)
-            .text(labels[i].substring(0, 10))
-            .attr("class", "legendTick")
-            .style("alignment-baseline", "middle")
+                            // if its not the average one, fade it
+                            if (el.attr("id") === labels[i])
+                            {
+                                el.selectAll("path").attr("opacity", 1)
+                                el.selectAll("circle").attr("opacity", 1)
+                            }
+                        })
+            })
+            .on('mouseout', function(d)
+            {
+                // unhighlight, remove title
+                d3.select(this)
+                    .attr("opacity", 0.1)
+                    .selectAll("*").remove()
+
+                // unhighlight associated timeline
+                scatterSvg.selectAll("g")
+                        .each(function (d) 
+                        {
+                            let el = d3.select(this)
+
+                            // if its not the average one, fade it
+                            if (el.attr("id") === labels[i])
+                            {
+                                el.selectAll("path").attr("opacity", 0.2)
+                                el.selectAll("circle").attr("opacity", 0.2)
+                            }
+                        })
+            })
     }
 }
 
