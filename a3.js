@@ -580,6 +580,29 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
         .attr("fill", "white")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
+
+    // setup entity selectors
+    for (let i = 0; i < labels.length; i++)
+    {
+        let yPos = yGap*3 + rectHeight*2 + rectHeight*1.2*i
+
+        // selector rectangle
+        svg.append("rect")
+            .attr("x", 1)
+            .attr("y", yPos)
+            .attr("width", legendSpecs.width * 0.8)
+            .attr("height", rectHeight*1.2)
+            .attr("opacity", 0.1)
+            .attr("fill", "steelblue")
+
+
+        svg.append("text")
+            .attr("x", 5)
+            .attr("y", yPos+rectHeight*0.6)
+            .text(labels[i].substring(0, 10))
+            .attr("class", "legendTick")
+            .style("alignment-baseline", "middle")
+    }
 }
 
 // helper for timeline plot creation, draws path and points
