@@ -204,7 +204,13 @@ let teamTimelineSpecs =
     pathSize: 4,
     markSize: 4,
 
-    labelText: ["teamID"]
+    labelText: ["teamID"], 
+
+    // for the legend
+    entityTitle: "Teams",
+
+    // for scrolling
+    legendStart: 0,
 }
 
 // plot specifications for the hitter timeline plot
@@ -245,7 +251,13 @@ let hitterTimelineSpecs =
     pathSize: 4,
     markSize: 4,
 
-    labelText: ["nameFirst", "nameLast"]
+    labelText: ["nameFirst", "nameLast"], 
+
+    // for the legend
+    entityTitle: "Hitters",
+
+    // for scrolling
+    legendStart: 0,
 }
 
 // plot specifications for the pitcher timeline plot
@@ -287,7 +299,13 @@ let pitcherTimelineSpecs =
     markSize: 4,
 
     // what to display as title for the path
-    labelText: ["nameFirst", "nameLast"]
+    labelText: ["nameFirst", "nameLast"], 
+
+    // for the legend
+    entityTitle: "Pitchers",
+
+    // for scrolling
+    legendStart: 0,
 }
 
 
@@ -482,10 +500,10 @@ function drawTimelineData(specs)
 
     // draw legend
     let legendSvg = d3.select(`#${specs.selector}Legend g`)
-    drawTimelineLegend(legendSvg, svg, legendLabels, specs.selector === "teamTimeline" ? "Teams" : "Players", specs.YAxis)
+    drawTimelineLegend(legendSvg, svg, legendLabels, specs)
 }
 
-function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
+function drawTimelineLegend(svg, scatterSvg, labels, specs)
 {
     // remove existing legend
     svg.selectAll("rect").remove()
@@ -514,7 +532,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                     let el = d3.select(this)
 
                     // if its the average one, highlight it
-                    if (el.attr("id") === `Average ${stat}`)
+                    if (el.attr("id") === `Average ${specs.YAxis}`)
                     {
                         el.selectAll("path").attr("opacity", 1)
                         el.selectAll("circle").attr("opacity", 1)
@@ -533,7 +551,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                     let el = d3.select(this)
 
                     // if its the average one, highlight it
-                    if (el.attr("id") === `Average ${stat}`)
+                    if (el.attr("id") === `Average ${specs.YAxis}`)
                     {
                         el.selectAll("path").attr("opacity", 0.2)
                         el.selectAll("circle").attr("opacity", 0.2)
@@ -606,7 +624,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
     svg.append("text")
         .attr("x", rectWidth + 10)
         .attr("y", yGap*2 + rectHeight*1.5)
-        .text(entityTitle)
+        .text(specs.entityTitle)
         .attr("class", "legendTick")
         .style("alignment-baseline", "middle")
         .attr("id", "entityLabel")
@@ -622,15 +640,16 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
         .attr("stroke-width", 1)
 
     // setup entity selectors
-    for (let i = 0; i < labels.length; i++)
+    for (let i = 0; i < labels.length - specs.legendStart; i++)
     {
         let yPos = yGap*3 + rectHeight*2 + rectHeight*1.2*i
+        let label = labels[i + specs.legendStart]
 
         // selector entity name label
         svg.append("text")
             .attr("x", 5)
             .attr("y", yPos+rectHeight*0.6)
-            .text(labels[i].substring(0, 9)) // truncated
+            .text(label.substring(0, 9)) // truncated
             .attr("class", "legendTick")
             .style("alignment-baseline", "middle")
 
@@ -648,7 +667,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                 d3.select(this)
                     .attr("opacity", 0.4)
                     .append("svg:title")
-                    .text(labels[i])
+                    .text(label)
 
                 // highlight associated timeline
                 scatterSvg.selectAll("g")
@@ -657,7 +676,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                             let el = d3.select(this)
 
                             // if its not the average one, fade it
-                            if (el.attr("id") === labels[i])
+                            if (el.attr("id") === label)
                             {
                                 el.selectAll("path").attr("opacity", 1)
                                 el.selectAll("circle").attr("opacity", 1)
@@ -678,7 +697,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                             let el = d3.select(this)
 
                             // if its not the average one, fade it
-                            if (el.attr("id") === labels[i])
+                            if (el.attr("id") === label)
                             {
                                 el.selectAll("path").attr("opacity", 0.2)
                                 el.selectAll("circle").attr("opacity", 0.2)
@@ -686,6 +705,53 @@ function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
                         })
             })
     }
+
+    // setup the up arrow button to scroll entity select window
+    svg.append("rect")
+        .attr("x", 1 + legendSpecs.width * 0.8 + 1)
+        .attr("y", yGap*3 + rectHeight*2)
+        .attr("width", legendSpecs.width * 0.1)
+        .attr("height", legendSpecs.width * 0.2)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .on('mouseover', function(d)
+        {
+            d3.select(this).attr("fill", "lightgray")
+        })
+        .on('mouseout', function(d)
+        {
+            d3.select(this).attr("fill", "white")
+        })
+        .on('click', function(d)
+        {
+            specs.legendStart = Math.max(specs.legendStart - 1, 0)
+            drawTimelineLegend(svg, scatterSvg, labels, specs)
+        })
+
+
+    // setup the up the down button to scroll entity select window
+    svg.append("rect")
+        .attr("x", 1 + legendSpecs.width * 0.8 + 1)
+        .attr("y", yGap*3 + rectHeight*2 + legendSpecs.height - yGap*3 - rectHeight*2 - 5 - legendSpecs.width*0.2)
+        .attr("width", legendSpecs.width * 0.1)
+        .attr("height", legendSpecs.width * 0.2)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .on('mouseover', function(d)
+        {
+            d3.select(this).attr("fill", "lightgray")
+        })
+        .on('mouseout', function(d)
+        {
+            d3.select(this).attr("fill", "white")
+        })
+        .on('click', function(d)
+        {
+            specs.legendStart = Math.min(specs.legendStart + 1, labels.length == 0 ? 0 : labels.length - 1)
+            drawTimelineLegend(svg, scatterSvg, labels, specs)
+        })
 }
 
 // helper for timeline plot creation, draws path and points
@@ -1503,6 +1569,7 @@ function scatterplotReset(scatterSpecArr, timelineSpec)
 
     // reset selected and filters for associated timeline
     timelineSpec.selected = []
+    timelineSpec.legendStart = 0
 
     // redraw timeline
     drawTimelineData(timelineSpec)
