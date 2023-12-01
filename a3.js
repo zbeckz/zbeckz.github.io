@@ -640,7 +640,8 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         .attr("stroke-width", 1)
 
     // setup entity selectors
-    for (let i = 0; i < labels.length - specs.legendStart; i++)
+    let length = Math.min(7, labels.length - specs.legendStart)
+    for (let i = 0; i < length; i++)
     {
         let yPos = yGap*3 + rectHeight*2 + rectHeight*1.2*i
         let label = labels[i + specs.legendStart]
