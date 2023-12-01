@@ -17,6 +17,11 @@ label {
     font-size: 0.75em;
 }
 
+.legendTitle {
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
 /* has the plot svg and legend svg in it */
 .dataContainer {
     display: flex;

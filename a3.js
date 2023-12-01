@@ -25,7 +25,7 @@ let legendSpecs =
         left: 0
     },
 
-    width: 40,
+    width: 80,
     height: 200,
 }
 
@@ -139,9 +139,9 @@ let pitcherScatterplotSpecs =
     selector: "pitchers",
 
     // which stats are being encoded to the scatterplot
-    XAxis: "BAOpp",
-    YAxis: "ERA",
-    Color: "W",
+    XAxis: "BB",
+    YAxis: "SO",
+    Color: "ERA",
 
     // stats to display on tooltip
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name:"Last Name: ", stat:"nameLast"}, {name:"Team: ", stat:"teamID"}, {name:"Year: ", stat:"yearID"}, {name: "IP: ", stat:"IP"}],
@@ -677,7 +677,20 @@ function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
 {
     // add circles for each point
     let circle = svg.selectAll("circle")
-                .data(data, d => d.id)
+                .data(data, function(d) 
+                {
+                    // setup color groupings for legend behavior
+                    let myColor = colorScale(d[specs.Color])
+                    let colors = colorScale.range()
+                    for (let i = 0; i < colors.length; i++)
+                    {
+                        if (myColor === colors[i])
+                        {
+                            d.colorGroup = i;
+                            return d.id // give identifier
+                        }
+                    }
+                })
 
     // remove circles that were not connected via id
     circle.exit().remove()
@@ -808,15 +821,24 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
     // some setup
     let min = d3.min(data)
     let max = d3.max(data)
+    let titleMargin = legendSpecs.height * 0.05
     let rectWidth = legendSpecs.width * 0.22
-    let rectHeight = legendSpecs.height * 0.18 // to make room for 5 color rects and labels
+    let rectHeight = legendSpecs.height * 0.15 // to make room for 5 color rects and labels
     let labelMargin = 0.5 * (legendSpecs.height - 5 * rectHeight)
+    let widthMargin = 0.2 * legendSpecs.width
 
-    // calculate the cutoffs including 0 and max
+    // calculate the cutoffs including min and max
     let cutoffs = scale.quantiles()
     cutoffs.push(max)
     cutoffs.reverse()
     cutoffs.push(min)
+
+    // make title
+    svg.append("text")
+        .attr("x", widthMargin)
+        .attr("y", + titleMargin)
+        .text(stat)
+        .attr("class", "legendTitle")
 
     // loop through every color, make swatch
     let colors = scale.range().toReversed()
@@ -826,7 +848,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
         svg.append("rect")
             .attr("width", rectWidth)
             .attr("height", rectHeight)
-            .attr("x", 0) // left side of legend
+            .attr("x", widthMargin)
             .attr("y", labelMargin + rectHeight*i)
             .attr("fill", colors[i])
             .attr("stroke", "black")
@@ -845,8 +867,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
                 scatterSvg.selectAll("circle")
                             .each(function(d)
                             {
-                                // if data is not in this particlar range, fade it
-                                if (d[stat] >= cutoffs[i] || d[stat] < cutoffs[i+1])
+                                if (d.colorGroup != (colors.length - 1 - i))
                                 {
                                     d3.select(this).attr("opacity", 0.1)
                                 }
@@ -867,7 +888,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
     for (let i = 0; i < cutoffs.length; i++)
     {
         svg.append("text")
-            .attr("x", rectWidth + 5)
+            .attr("x", widthMargin + rectWidth + 5)
             .attr("y", labelMargin + rectHeight*i)
             .text(cutoffs[i])
             .attr("class", "legendTick")
