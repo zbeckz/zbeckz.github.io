@@ -455,16 +455,20 @@ function drawTimelineData(specs)
                  d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
                  `Average ${specs.YAxis}`)
 
-    // if no team is selected, don't actually plot any data
-    if (specs.selected.length == 0) { return }
-
     // setup array to contain each individual array for each selected entity
     let paths = getPaths(specs)
+
+    let legendLabels = []
 
     // draw all of the paths
     for (let i = 0; i < paths.length; i++)
     {
+        // get data for this path
         let data = paths[i]
+
+        // make the label and save it for legend use later
+        let label = specs.labelText.reduce((acc, d) => acc + data[0][d] + " ", "")
+        legendLabels.push(label)
 
         drawTimeline(svg, 
                      specs, 
@@ -473,8 +477,94 @@ function drawTimelineData(specs)
                      d => yScale(d[specs.YAxis]), 
                      "steelblue",
                      d =>  `Year: ${d.yearID}\n` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`,
-                     specs.labelText.reduce((acc, d) => acc + data[0][d] + " ", ""))
+                     label)
     }
+
+    // draw legend
+    let legendSvg = d3.select(`#${specs.selector}Legend g`)
+    drawTimelineLegend(legendSvg, svg, legendLabels, specs.selector === "teamTimeline" ? "Teams" : "Players", specs.YAxis)
+}
+
+function drawTimelineLegend(svg, scatterSvg, labels, entityTitle, stat)
+{
+    // remove existing legend
+    svg.selectAll("rect").remove()
+    svg.selectAll("text").remove()
+
+    // setup specs
+    let rectWidth = legendSpecs.width * 0.2
+    let rectHeight = rectWidth
+    let yGap = legendSpecs.height * 0.05
+
+    // setup the average rect
+    svg.append("rect")
+        .attr("x", 1)
+        .attr("y", yGap)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+        .attr("fill", "orange")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .on('mouseover', function(d, i)
+        {
+            // highlight average path
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+
+                    // if its the average one, highlight it
+                    if (el.attr("id") === `Average ${stat}`)
+                    {
+                        el.selectAll("path").attr("opacity", 1)
+                        el.selectAll("circle").attr("opacity", 1)
+                    }
+                })
+            
+        })
+        .on('mouseout', function(d, i)
+        {
+            // unhighlight average path
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+
+                    // if its the average one, highlight it
+                    if (el.attr("id") === `Average ${stat}`)
+                    {
+                        el.selectAll("path").attr("opacity", 0.2)
+                        el.selectAll("circle").attr("opacity", 0.2)
+                    }
+                })
+        })
+
+    // setup average label
+    svg.append("text")
+        .attr("x", rectWidth + 10)
+        .attr("y", yGap + rectHeight*0.5)
+        .text("Average")
+        .attr("class", "legendTick")
+        .style("alignment-baseline", "middle")
+
+    // setup entity rect
+    svg.append("rect")
+        .attr("x", 1)
+        .attr("y", yGap * 2 + rectHeight)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+        .attr("fill", "steelblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+
+    // setup entity label
+    svg.append("text")
+        .attr("x", rectWidth + 10)
+        .attr("y", yGap*2 + rectHeight*1.5)
+        .text(entityTitle)
+        .attr("class", "legendTick")
+        .style("alignment-baseline", "middle")
+    
 }
 
 // helper for timeline plot creation, draws path and points
