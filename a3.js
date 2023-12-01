@@ -201,8 +201,10 @@ let teamTimelineSpecs =
     tooltipDisplay: [{name: "Team: ", stat: "teamID"}],
 
     // svg element specs
-    pathSize: 2,
-    markSize: 3
+    pathSize: 4,
+    markSize: 4,
+
+    labelText: ["teamID"]
 }
 
 // plot specifications for the hitter timeline plot
@@ -240,8 +242,10 @@ let hitterTimelineSpecs =
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
 
     // svg element specs
-    pathSize: 2,
-    markSize: 3
+    pathSize: 4,
+    markSize: 4,
+
+    labelText: ["nameFirst", "nameLast"]
 }
 
 // plot specifications for the pitcher timeline plot
@@ -279,8 +283,11 @@ let pitcherTimelineSpecs =
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name: "Last Name: ", stat: "nameLast"}, {name: "Team: ", stat:"teamID"}],
 
     // sizes for svg elements
-    pathSize: 2,
-    markSize: 3
+    pathSize: 4,
+    markSize: 4,
+
+    // what to display as title for the path
+    labelText: ["nameFirst", "nameLast"]
 }
 
 
@@ -423,6 +430,9 @@ function drawTimelineData(specs)
     // remove existing path
     svg.selectAll("path").remove()
 
+    // remove existing gs
+    svg.selectAll("g").remove()
+
     // scale based on all teams
     let xScale = d3.scaleLinear()
                     .domain(d3.extent(specs.data, d => d.yearID))
@@ -441,8 +451,9 @@ function drawTimelineData(specs)
                  specs.averages.filter(d => d.field === specs.YAxis),
                  d => xScale(d.yearID),
                  d => yScale(d.value),
-                 d => "orange",
-                 d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`)
+                 "orange",
+                 d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
+                 `Average ${specs.YAxis}`)
 
     // if no team is selected, don't actually plot any data
     if (specs.selected.length == 0) { return }
@@ -460,53 +471,104 @@ function drawTimelineData(specs)
                      data, 
                      d => xScale(d.yearID), 
                      d => yScale(d[specs.YAxis]), 
-                     d => "steelblue",
-                     d =>  `Year: ${d.yearID}\n` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`)
+                     "steelblue",
+                     d =>  `Year: ${d.yearID}\n` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`,
+                     specs.labelText.reduce((acc, d) => acc + data[0][d] + " ", ""))
     }
 }
 
 // helper for timeline plot creation, draws path and points
-function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc)
+function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, label)
 {
-     // add the selected timeline
-     svg.append("path")
+    // add it
+    let newSvg = svg.append("g").attr("id", label)
+
+    // add the selected timeline
+    newSvg.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", colorFunc)
         .attr("stroke-width", specs.pathSize)
+        .attr("opacity", 0.2)
         .attr("d", d3.line()
                     .x(xFunc)
                     .y(yFunc))
-
-    // add the selected points
-    svg.append("g").selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", xFunc)
-        .attr("cy", yFunc)
-        .attr("r", specs.markSize)
-        .attr("fill",colorFunc)
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function(d, i) 
+        .on('mouseover', function(d, i)
         {
-            // add new tooltip
+            // highlight, add tooltip
             d3.select(this)
                 .raise()
-                .attr("r", specs.markSize * 1.5)
-                .attr("stroke-width", 0.5)
+                .attr("opacity", 1)
                 .append("svg:title")
-                .text(tooltipFunc(i))
+                .text(label)
+
+            // highlight all the circles on this path
+            newSvg.selectAll("circle")
+                .raise()
+                .attr("opacity", 1)
+
         })
-        .on('mouseout', function(d, i) 
+        .on('mouseout', function(d, i)
         {
-            // revert back to previous appearance, remove title
+            // remove tooltip
             d3.select(this)
-                .attr("r", specs.markSize)
-                .attr("stroke-width", 0)
+                .attr("opacity", 0.2)
                 .selectAll("*").remove()
+
+            // fade all the circles too
+            newSvg.selectAll("circle")
+                .raise()
+                .attr("opacity", 0.2)
         })
+
+    // add the selected points
+    newSvg.selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", xFunc)
+            .attr("cy", yFunc)
+            .attr("r", specs.markSize)
+            .attr("opacity", 0.2)
+            .attr("fill",colorFunc)
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .on('mouseover', function(d, i) 
+            {
+                // add new tooltip
+                d3.select(this)
+                    .raise()
+                    .attr("opacity", 1)
+                    .attr("r", specs.markSize * 1.5)
+                    .attr("stroke-width", 0.5)
+                    .append("svg:title")
+                    .text(tooltipFunc(i))
+
+                // highlight path
+                newSvg.select("path")
+                    .attr("opacity", 1)
+
+                // highlight other circles
+                newSvg.selectAll("circle")
+                    .attr("opacity", 1)
+            })
+            .on('mouseout', function(d, i) 
+            {
+                // revert back to previous appearance, remove title
+                d3.select(this)
+                    .attr("opacity", 0.2)
+                    .attr("r", specs.markSize)
+                    .attr("stroke-width", 0)
+                    .selectAll("*").remove()
+
+                // unhighlight path
+                newSvg.select("path")
+                    .attr("opacity", 0.2)
+
+                // unhighlight all circles
+                newSvg.selectAll("circle")
+                    .attr("opacity", 0.2)
+            })
 }
 
 // helper for timeline plot creation, gets each selected entity path data
@@ -672,7 +734,7 @@ function drawScatterplotData(specs)
     interactScatterplotCircles(svg, specs, colorScale)
 }
 
-// helper for the scatter plot creation, draws the points
+// helper for the scatter plot crea,tion, draws the points
 function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
 {
     // add circles for each point
