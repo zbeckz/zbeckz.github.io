@@ -1,31 +1,60 @@
-abbreviation	full	description
-STL	St. Louis Cardinals	An MLB team that plays in the National League Central Division
-CHC	Chicago Cubs	An MLB team that plays in the National League Central Division
-PIT	Pittsburgh Pirates	An MLB team that plays in the National League Central Division
-CIN	Cincinnati Reds	An MLB team that plays in the National League Central Division
-MIL	Milwaukee Brewers	An MLB team that plays in the National League Central Division
-ARI	Arizona Diamondbacks	An MLB team that plays in the National League West Division
-LAD	Los Angeles Dodgers	An MLB team that plays in the National League West Division
-SFG	San Francisco Giants	An MLB team that plays in the National League West Division
-SDP	San Diego Padres	An MLB team that plays in the National League West Division
-COL	Colorado Rockies	An MLB team that plays in the National League West Division
-MIA	Miami Marlins	An MLB team that plays in the National League East Division
-PHI	Philadelphia Phillies	An MLB team that plays in the National League East Division
-WAS	Washington Nationals	An MLB team that plays in the National League East Division
-NYM	New York Mets	An MLB team that plays in the National League East Division
-ATL	Atlanta Braves	An MLB team that plays in the National League East Division
-LAA	Los Angeles Angels	An MLB team that plays in the American League West Division
-HOU	Houston Astros	An MLB team that plays in the American League West Division
-TEX	Texas Rangers	An MLB team that plays in the American League West Division
-OAK	Oakland Athletics	An MLB team that plays in the American League West Division
-SEA	Seattle Mariners	An MLB team that plays in the American League West Division
-TOR	Toronto Blue Jays	An MLB team that plays in the American League East Division
-NYY	New York Yankees	An MLB team that plays in the American League East Division
-BOS	Boston Red Sox	An MLB team that plays in the American League East Division
-TBR	Tampa Bay Rays	An MLB team that plays in the American League East Division
-BAL	Baltimore Orioles	An MLB team that plays in the American League East Division
-CHW	Chicago White Sox	An MLB team that plays in the American League Central Division
-MIN	Minnesota Twins	An MLB team that plays in the American League Central Division
-CLE	Cleveland Guardians	An MLB team that plays in the American League Central Division
-DET	Detroit Tigers	An MLB team that plays in the American League Central Division
-KCR	Kansas City Royals	An MLB team that plays in the American League Central Division
+abbreviation,full
+ARI,Arizona Diamondbacks
+ATL,Atlanta Braves
+BAL,Baltimore Orioles
+BOS,Boston Red Sox
+CHW,Chicago White Sox
+CHC,Chicago Cubs
+CIN,Cincinnati Reds
+CLE,Cleveland Indians
+COL,Colorado Rockies
+DET,Detroit Tigers
+MIA,Miami Marlins
+HOU,Houston Astros
+KCR,Kansas City Royals
+LAA,Los Angeles Angels
+LAD,Los Angeles Dodgers
+MIL,Milwaukee Brewers
+MIN,Minnesota Twins
+NYY,New York Yankees
+NYM,New York Mets
+OAK,Oakland Athletics
+PHI,Philadelphia Phillies
+PIT,Pittsburgh Pirates
+SDP,San Diego Padres
+SEA,Seattle Mariners
+SFG,San Francisco Giants
+STL,St. Louis Cardinals
+TBR,Tampa Bay Rays
+TEX,Texas Rangers
+TOR,Toronto Blue Jays
+WAS,Washington Nationals
+Rank,"Division Rank (1 is best, 5 is worst)"
+W,Team Wins
+L,Team Losses
+R,Total Runs Scored
+H,Total Hits
+2B,Total Doubles
+3B,Total Triples
+HR,Total Home Runs
+TB,Team Total Bases
+BB,Total Walks
+SO,Total Strikeouts
+SB,Total Stolen Bases
+CS,Total Caught Stealing
+SB%,Team Stolen Base Percentage
+HBP,Total Hit By Pitches
+SF,Total Sacrifice Flies
+AVG,Team Batting Average
+OBP,Team On Base Percentage
+SLG,Team Slugging Percentage
+OPS,Team On Base Plus Slugging
+RA,Total Runs Allowed
+ERA,Team Earned Run Average
+CG,Total Complete Games
+SHO,Total Shutouts
+SV,Total Saves
+HA,Total Hits Allowed
+HRA,Total Home Runs Allowed
+BBA,Total Walks Allowed
+SOA,Total Strikeouts Allowed
