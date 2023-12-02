@@ -529,7 +529,6 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     specs.legendSpecs.arrowX = 1 + specs.legendSpecs.selectionWindowWidth + 9
     specs.legendSpecs.arrowY = [specs.legendSpecs.selectionWindowStart + 10, specs.legendSpecs.selectionWindowStart + specs.legendSpecs.selectionWindowHeight - 10]
     specs.legendSpecs.arrowTranslate = [`translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[0]})`, `translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[1]}) rotate(180)`]
-    console.log(specs.legendSpecs.selectionWindowHeight)
     specs.legendSpecs.indicatorSize = 92 / labels.length
 
     // draw the average color square and label
