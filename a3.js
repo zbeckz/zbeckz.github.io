@@ -514,6 +514,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     let rectWidth = legendSpecs.width * 0.2
     let rectHeight = rectWidth
     let yGap = legendSpecs.height * 0.05
+    let selectionWindowHeight = legendSpecs.height - yGap*3 - rectHeight*2 - 5
 
     // setup the average rect
     svg.append("rect")
@@ -635,7 +636,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         .attr("x", 1)
         .attr("y", yGap*3 + rectHeight*2)
         .attr("width", legendSpecs.width * 0.7)
-        .attr("height", legendSpecs.height - yGap*3 - rectHeight*2 - 5)
+        .attr("height", selectionWindowHeight)
         .attr("fill", "white")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
@@ -708,15 +709,47 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
             })
     }
 
+    // set ups the arrow specs
+    let arrowX = 1 + legendSpecs.width * 0.7 + 9
+    let arrowY = [yGap*3 + rectHeight*2 + 10, yGap*3 + rectHeight*2 + legendSpecs.height - yGap*3 - rectHeight*2 - 15]
+    let arrowTranslate = [`translate(${arrowX}, ${arrowY[0]})`, `translate(${arrowX}, ${arrowY[1]}) rotate(180)`]
+    let legendStartFunc = [d => Math.max(d - 1, 0), d => Math.min(d + 1, labels.length == 0 ? 0 : labels.length - 1)]
+    let indicatorSize = 92 / labels.length
+
+    // setup bounding box for arrows
+    svg.append("rect")
+        .attr("x", 1 + legendSpecs.width * 0.7)
+        .attr("y", yGap*3 + rectHeight*2)
+        .attr("width", legendSpecs.width * 0.22)
+        .attr("height", selectionWindowHeight)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+
+    // setup location indicator within the bounding box
+    if (labels.length > 0)
+    {
+        svg.append("rect")
+            .attr("x", 1 + legendSpecs.width * 0.7 + legendSpecs.width * 0.03)
+            .attr("y", yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart)
+            .attr("width", legendSpecs.width * 0.16)
+            .attr("height", indicatorSize)
+            .attr("fill", "lightgray")
+            .attr("stroke", "black")
+    }
+
+    // acts as arrow symbol to scroll legend menu
     let triangle = d3.symbol()
                     .type(d3.symbolTriangle)
                     .size(legendSpecs.width)
 
-    svg.append("path")
+    // up and down buttons via looping
+    for (let i = 0; i < 2; i++)
+    {
+        svg.append("path")
         .attr("d", triangle)
         .attr("stroke", "black")
         .attr("fill", "lightgray")
-        .attr("transform", `translate(${1 + legendSpecs.width * 0.7 +10}, ${yGap*3 + rectHeight*2 + 8})`)
+        .attr("transform", arrowTranslate[i])
         .on('mouseover', function(d)
         {
             d3.select(this).attr("fill", "gray")
@@ -727,29 +760,11 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         })
         .on('click', function(d)
         {
-            specs.legendStart = Math.max(specs.legendStart - 1, 0)
+            specs.legendStart = legendStartFunc[i](specs.legendStart)
             drawTimelineLegend(svg, scatterSvg, labels, specs)
         })
-
-    // setup the up the down button to scroll entity select window
-    svg.append("path")
-        .attr("d", triangle)
-        .attr("stroke", "black")
-        .attr("fill", "lightgray")
-        .attr("transform", `translate(${1 + legendSpecs.width * 0.7 +10}, ${yGap*3 + rectHeight*2 + legendSpecs.height - yGap*3 - rectHeight*2 - 13}) rotate(180)`)
-        .on('mouseover', function(d)
-        {
-            d3.select(this).attr("fill", "gray")
-        })
-        .on('mouseout', function(d)
-        {
-            d3.select(this).attr("fill", "lightgray")
-        })
-        .on('click', function(d)
-        {
-            specs.legendStart = Math.min(specs.legendStart + 1, labels.length == 0 ? 0 : labels.length - 1)
-            drawTimelineLegend(svg, scatterSvg, labels, specs)
-        })
+    }
+    
 }
 
 // helper for timeline plot creation, draws path and points
