@@ -38,8 +38,8 @@ let teamScatterplotSpecs =
     // data schema used to setup the sliders / dropdowns
     fields: 
     {
-        nominative: ["lgID", "teamID", "divID", "franchName"],
-        boolean: ["DivWin", "WCWin", "LgWin", "WSWin"],
+        nominative: ["lgID", "teamID", "franchName"],
+        boolean: ["WSWin"],
         quantitative: ["yearID", "G", "W", "L", "R", "PA", "AB", "H", "2B", "3B", "HR", "TB", "BB", "SO", "SB", "CS", "SB%", "HBP", "SF", "AVG", "OBP", "SLG", "OPS", "RA", "ER", "ERA", "CG", "SHO", "SV", "HA", "HRA", "BBA", "SOA", "DP", "Rank"]
     },
 
