@@ -15,7 +15,7 @@ let svgSpecs =
 }
 
 // legend svg specs
-let legendSpecs =
+let legendSvgSpecs =
 {
     margin: 
     {
@@ -211,6 +211,9 @@ let teamTimelineSpecs =
 
     // for scrolling
     legendStart: 0,
+
+    // for settuing up the legend
+    legendSpecs: {}
 }
 
 // plot specifications for the hitter timeline plot
@@ -258,6 +261,9 @@ let hitterTimelineSpecs =
 
     // for scrolling
     legendStart: 0,
+
+    // for setting up the legend
+    legendSpecs: {}
 }
 
 // plot specifications for the pitcher timeline plot
@@ -306,6 +312,9 @@ let pitcherTimelineSpecs =
 
     // for scrolling
     legendStart: 0,
+
+    // for setting up the legend
+    legendSpecs: {}
 }
 
 
@@ -379,10 +388,10 @@ function setupPlot(specs)
 
     // setup the legend
     d3.select(`#${specs.selector}Legend`)
-        .attr("width", legendSpecs.width)
-        .attr("height", legendSpecs.height)
+        .attr("width", legendSvgSpecs.width)
+        .attr("height", legendSvgSpecs.height)
         .append("g")
-            .attr("transform", `translate(${legendSpecs.margin.left}, ${legendSpecs.margin.top})`);
+            .attr("transform", `translate(${legendSvgSpecs.margin.left}, ${legendSvgSpecs.margin.top})`);
 
     if (specs.type === "scatter")
     {
@@ -511,10 +520,10 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     svg.selectAll("path").remove()
 
     // setup layout
-    let rectWidth = legendSpecs.width * 0.2
+    let rectWidth = legendSvgSpecs.width * 0.2
     let rectHeight = rectWidth
-    let yGap = legendSpecs.height * 0.05
-    let selectionWindowHeight = legendSpecs.height - yGap*3 - rectHeight*2 - 5
+    let yGap = legendSvgSpecs.height * 0.05
+    let selectionWindowHeight = legendSvgSpecs.height - yGap*3 - rectHeight*2 - 5
 
     // setup the average rect
     svg.append("rect")
@@ -635,26 +644,26 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     svg.append("rect")
         .attr("x", 1)
         .attr("y", yGap*3 + rectHeight*2)
-        .attr("width", legendSpecs.width * 0.7)
+        .attr("width", legendSvgSpecs.width * 0.7)
         .attr("height", selectionWindowHeight)
         .attr("fill", "white")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
 
     // setup the enitity selectors in the window
-    drawEntitySelectors(svg, scatterSvg, labels, specs, yGap, rectHeight, specs.legendStart)
+    drawEntitySelectors(svg, scatterSvg, labels, yGap, rectHeight, specs.legendStart)
 
     // set ups the arrow specs
-    let arrowX = 1 + legendSpecs.width * 0.7 + 9
-    let arrowY = [yGap*3 + rectHeight*2 + 10, yGap*3 + rectHeight*2 + legendSpecs.height - yGap*3 - rectHeight*2 - 15]
+    let arrowX = 1 + legendSvgSpecs.width * 0.7 + 9
+    let arrowY = [yGap*3 + rectHeight*2 + 10, yGap*3 + rectHeight*2 + legendSvgSpecs.height - yGap*3 - rectHeight*2 - 15]
     let arrowTranslate = [`translate(${arrowX}, ${arrowY[0]})`, `translate(${arrowX}, ${arrowY[1]}) rotate(180)`]
     let indicatorSize = 92 / labels.length
 
     // setup bounding box for arrows
     svg.append("rect")
-        .attr("x", 1 + legendSpecs.width * 0.7)
+        .attr("x", 1 + legendSvgSpecs.width * 0.7)
         .attr("y", yGap*3 + rectHeight*2)
-        .attr("width", legendSpecs.width * 0.22)
+        .attr("width", legendSvgSpecs.width * 0.22)
         .attr("height", selectionWindowHeight)
         .attr("fill", "white")
         .attr("stroke", "black")
@@ -663,9 +672,9 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     if (labels.length > 0)
     {
         svg.append("rect")
-            .attr("x", 1 + legendSpecs.width * 0.7 + legendSpecs.width * 0.03)
+            .attr("x", 1 + legendSvgSpecs.width * 0.7 + legendSvgSpecs.width * 0.03)
             .attr("y", yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart)
-            .attr("width", legendSpecs.width * 0.16)
+            .attr("width", legendSvgSpecs.width * 0.16)
             .attr("height", indicatorSize)
             .attr("fill", "lightgray")
             .attr("stroke", "black")
@@ -695,14 +704,14 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
 
                 // update selection window accordingly
                 let newLegendStart = Math.round((newY - (yGap*3 + rectHeight*2 + 20)) / indicatorSize)
-                drawEntitySelectors(svg, scatterSvg, labels, specs, yGap, rectHeight, newLegendStart)
+                drawEntitySelectors(svg, scatterSvg, labels, yGap, rectHeight, newLegendStart)
             }))
     }
 
     // acts as arrow symbol to scroll legend menu
     let triangle = d3.symbol()
                     .type(d3.symbolTriangle)
-                    .size(legendSpecs.width)
+                    .size(legendSvgSpecs.width)
 
     // up and down buttons via looping
     for (let i = 0; i < 2; i++)
@@ -717,7 +726,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
 }
 
 // helper for drawTimelineLegend, draws the entity selectors in the window
-function drawEntitySelectors(legendSvg, scatterSvg, labels, specs, yGap, rectHeight, legendStart)
+function drawEntitySelectors(legendSvg, scatterSvg, labels, yGap, rectHeight, legendStart)
 {
     // remove old g
     legendSvg.selectAll("g").remove()
@@ -744,7 +753,7 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs, yGap, rectHei
         svg.append("rect")
             .attr("x", 1)
             .attr("y", yPos)
-            .attr("width", legendSpecs.width * 0.7)
+            .attr("width", legendSvgSpecs.width * 0.7)
             .attr("height", rectHeight*1.2)
             .attr("opacity", 0.1)
             .attr("fill", "steelblue")
@@ -1200,11 +1209,11 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
     // some setup
     let min = d3.min(data)
     let max = d3.max(data)
-    let titleMargin = legendSpecs.height * 0.05
-    let rectWidth = legendSpecs.width * 0.22
-    let rectHeight = legendSpecs.height * 0.15 // to make room for 5 color rects and labels
-    let labelMargin = 0.5 * (legendSpecs.height - 5 * rectHeight)
-    let widthMargin = 0.2 * legendSpecs.width
+    let titleMargin = legendSvgSpecs.height * 0.05
+    let rectWidth = legendSvgSpecs.width * 0.22
+    let rectHeight = legendSvgSpecs.height * 0.15 // to make room for 5 color rects and labels
+    let labelMargin = 0.5 * (legendSvgSpecs.height - 5 * rectHeight)
+    let widthMargin = 0.2 * legendSvgSpecs.width
 
     // calculate the cutoffs including min and max
     let cutoffs = scale.quantiles()
