@@ -531,63 +531,8 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     specs.legendSpecs.arrowTranslate = [`translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[0]})`, `translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[1]}) rotate(180)`]
     specs.legendSpecs.indicatorSize = 92 / labels.length
 
-    // setup the average rect
-    svg.append("rect")
-        .attr("x", 1)
-        .attr("y", specs.legendSpecs.yGap)
-        .attr("width", specs.legendSpecs.rectWidth)
-        .attr("height", specs.legendSpecs.rectHeight)
-        .attr("fill", "orange")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .on('mouseover', function(d, i)
-        {
-            // highlight average path
-            scatterSvg.selectAll("g")
-                .each(function (d) 
-                {
-                    let el = d3.select(this)
-
-                    // if its the average one, highlight it
-                    if (el.attr("id") === `Average ${specs.YAxis}`)
-                    {
-                        el.selectAll("path").attr("opacity", 1)
-                        el.selectAll("circle").attr("opacity", 1)
-                    }
-                })
-            
-            // bold label
-            svg.select("#avgLabel").attr("font-weight", "bold")
-        })
-        .on('mouseout', function(d, i)
-        {
-            // unhighlight average path
-            scatterSvg.selectAll("g")
-                .each(function (d) 
-                {
-                    let el = d3.select(this)
-
-                    // if its the average one, highlight it
-                    if (el.attr("id") === `Average ${specs.YAxis}`)
-                    {
-                        el.selectAll("path").attr("opacity", 0.2)
-                        el.selectAll("circle").attr("opacity", 0.2)
-                    }
-                })
-
-            // unbold label
-            svg.select("#avgLabel").attr("font-weight", "normal")
-        })
-
-    // setup average label
-    svg.append("text")
-        .attr("x", specs.legendSpecs.rectWidth + 10)
-        .attr("y", specs.legendSpecs.yGap + specs.legendSpecs.rectHeight*0.5)
-        .text("Average")
-        .attr("class", "legendTick")
-        .style("alignment-baseline", "middle")
-        .attr("id", "avgLabel")
-
+    drawAverageLegend(svg, scatterSvg, specs)
+    
     // setup entity rect
     svg.append("rect")
         .attr("x", 1)
@@ -723,6 +668,68 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         .attr("transform", specs.legendSpecs.arrowTranslate[i])
     }
     
+}
+
+// helper for drawTimelineLegend, draws the average selector and label
+function drawAverageLegend(svg, scatterSvg, specs)
+{
+    // setup the average rect
+    svg.append("rect")
+        .attr("x", 1)
+        .attr("y", specs.legendSpecs.yGap)
+        .attr("width", specs.legendSpecs.rectWidth)
+        .attr("height", specs.legendSpecs.rectHeight)
+        .attr("fill", "orange")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .on('mouseover', function(d, i)
+        {
+            // highlight average path
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+
+                    // if its the average one, highlight it
+                    if (el.attr("id") === `Average ${specs.YAxis}`)
+                    {
+                        el.selectAll("path").attr("opacity", 1)
+                        el.selectAll("circle").attr("opacity", 1)
+                    }
+                })
+            
+            // bold label
+            svg.select("#avgLabel").attr("font-weight", "bold")
+        })
+        .on('mouseout', function(d, i)
+        {
+            // unhighlight average path
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+
+                    // if its the average one, highlight it
+                    if (el.attr("id") === `Average ${specs.YAxis}`)
+                    {
+                        el.selectAll("path").attr("opacity", 0.2)
+                        el.selectAll("circle").attr("opacity", 0.2)
+                    }
+                })
+
+            // unbold label
+            svg.select("#avgLabel").attr("font-weight", "normal")
+        })
+
+    // setup average label
+    svg.append("text")
+        .attr("x", specs.legendSpecs.rectWidth + 10)
+        .attr("y", specs.legendSpecs.yGap + specs.legendSpecs.rectHeight*0.5)
+        .text("Average")
+        .attr("class", "legendTick")
+        .style("alignment-baseline", "middle")
+        .attr("id", "avgLabel")
+
 }
 
 // helper for drawTimelineLegend, draws the entity selectors in the window
