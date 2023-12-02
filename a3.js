@@ -130,7 +130,7 @@ let pitcherScatterplotSpecs =
     // data schema used to setup the sliders / dropdowns
     fields:
     {
-        nominative: ["playerID", "teamID", "nameFirst", "nameLast", "bats", "throws", "birthCountry", "position"],
+        nominative: ["playerID", "teamID", "nameFirst", "nameLast", "position"],
         boolean: ["allstar"],
         quantitative: ["yearID", "W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "weight", "height", "IP"]
     },
