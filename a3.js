@@ -508,6 +508,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     // remove existing legend
     svg.selectAll("rect").remove()
     svg.selectAll("text").remove()
+    svg.selectAll("path").remove()
 
     // setup layout
     let rectWidth = legendSpecs.width * 0.2
@@ -633,7 +634,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     svg.append("rect")
         .attr("x", 1)
         .attr("y", yGap*3 + rectHeight*2)
-        .attr("width", legendSpecs.width * 0.8)
+        .attr("width", legendSpecs.width * 0.7)
         .attr("height", legendSpecs.height - yGap*3 - rectHeight*2 - 5)
         .attr("fill", "white")
         .attr("stroke", "black")
@@ -658,7 +659,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         svg.append("rect")
             .attr("x", 1)
             .attr("y", yPos)
-            .attr("width", legendSpecs.width * 0.8)
+            .attr("width", legendSpecs.width * 0.7)
             .attr("height", rectHeight*1.2)
             .attr("opacity", 0.1)
             .attr("fill", "steelblue")
@@ -707,22 +708,22 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
             })
     }
 
-    // setup the up arrow button to scroll entity select window
-    svg.append("rect")
-        .attr("x", 1 + legendSpecs.width * 0.8 + 1)
-        .attr("y", yGap*3 + rectHeight*2)
-        .attr("width", legendSpecs.width * 0.1)
-        .attr("height", legendSpecs.width * 0.2)
-        .attr("fill", "white")
+    let triangle = d3.symbol()
+                    .type(d3.symbolTriangle)
+                    .size(legendSpecs.width)
+
+    svg.append("path")
+        .attr("d", triangle)
         .attr("stroke", "black")
-        .attr("stroke-width", 1)
+        .attr("fill", "lightgray")
+        .attr("transform", `translate(${1 + legendSpecs.width * 0.7 +10}, ${yGap*3 + rectHeight*2 + 8})`)
         .on('mouseover', function(d)
         {
-            d3.select(this).attr("fill", "lightgray")
+            d3.select(this).attr("fill", "gray")
         })
         .on('mouseout', function(d)
         {
-            d3.select(this).attr("fill", "white")
+            d3.select(this).attr("fill", "lightgray")
         })
         .on('click', function(d)
         {
@@ -730,23 +731,19 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
             drawTimelineLegend(svg, scatterSvg, labels, specs)
         })
 
-
     // setup the up the down button to scroll entity select window
-    svg.append("rect")
-        .attr("x", 1 + legendSpecs.width * 0.8 + 1)
-        .attr("y", yGap*3 + rectHeight*2 + legendSpecs.height - yGap*3 - rectHeight*2 - 5 - legendSpecs.width*0.2)
-        .attr("width", legendSpecs.width * 0.1)
-        .attr("height", legendSpecs.width * 0.2)
-        .attr("fill", "white")
+    svg.append("path")
+        .attr("d", triangle)
         .attr("stroke", "black")
-        .attr("stroke-width", 1)
+        .attr("fill", "lightgray")
+        .attr("transform", `translate(${1 + legendSpecs.width * 0.7 +10}, ${yGap*3 + rectHeight*2 + legendSpecs.height - yGap*3 - rectHeight*2 - 13}) rotate(180)`)
         .on('mouseover', function(d)
         {
-            d3.select(this).attr("fill", "lightgray")
+            d3.select(this).attr("fill", "gray")
         })
         .on('mouseout', function(d)
         {
-            d3.select(this).attr("fill", "white")
+            d3.select(this).attr("fill", "lightgray")
         })
         .on('click', function(d)
         {
