@@ -651,7 +651,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         svg.append("text")
             .attr("x", 5)
             .attr("y", yPos+rectHeight*0.6)
-            .text(label.substring(0, 9)) // truncated
+            .text(label.substring(0, 8)) // truncated
             .attr("class", "legendTick")
             .style("alignment-baseline", "middle")
 
