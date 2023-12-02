@@ -520,17 +520,23 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     svg.selectAll("path").remove()
 
     // setup layout
-    let rectWidth = legendSvgSpecs.width * 0.2
-    let rectHeight = rectWidth
-    let yGap = legendSvgSpecs.height * 0.05
-    let selectionWindowHeight = legendSvgSpecs.height - yGap*3 - rectHeight*2 - 5
+    specs.legendSpecs.rectWidth = legendSvgSpecs.width * 0.2
+    specs.legendSpecs.rectHeight = specs.legendSpecs.rectWidth
+    yGap = legendSvgSpecs.height * 0.05
+    selectionWindowHeight = legendSvgSpecs.height - yGap*3 - specs.legendSpecs.rectHeight*2 - 5
+
+    // set ups the arrow specs
+    arrowX = 1 + legendSvgSpecs.width * 0.7 + 9
+    arrowY = [yGap*3 + specs.legendSpecs.rectHeight*2 + 10, yGap*3 + specs.legendSpecs.rectHeight*2 + legendSvgSpecs.height - yGap*3 - specs.legendSpecs.rectHeight*2 - 15]
+    arrowTranslate = [`translate(${arrowX}, ${arrowY[0]})`, `translate(${arrowX}, ${arrowY[1]}) rotate(180)`]
+    indicatorSize = 92 / labels.length
 
     // setup the average rect
     svg.append("rect")
         .attr("x", 1)
         .attr("y", yGap)
-        .attr("width", rectWidth)
-        .attr("height", rectHeight)
+        .attr("width", specs.legendSpecs.rectWidth)
+        .attr("height", specs.legendSpecs.rectHeight)
         .attr("fill", "orange")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
@@ -575,8 +581,8 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
 
     // setup average label
     svg.append("text")
-        .attr("x", rectWidth + 10)
-        .attr("y", yGap + rectHeight*0.5)
+        .attr("x", specs.legendSpecs.rectWidth + 10)
+        .attr("y", yGap + specs.legendSpecs.rectHeight*0.5)
         .text("Average")
         .attr("class", "legendTick")
         .style("alignment-baseline", "middle")
@@ -585,9 +591,9 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     // setup entity rect
     svg.append("rect")
         .attr("x", 1)
-        .attr("y", yGap * 2 + rectHeight)
-        .attr("width", rectWidth)
-        .attr("height", rectHeight)
+        .attr("y", yGap * 2 + specs.legendSpecs.rectHeight)
+        .attr("width", specs.legendSpecs.rectWidth)
+        .attr("height", specs.legendSpecs.rectHeight)
         .attr("fill", "steelblue")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
@@ -633,8 +639,8 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
 
     // setup entity label
     svg.append("text")
-        .attr("x", rectWidth + 10)
-        .attr("y", yGap*2 + rectHeight*1.5)
+        .attr("x", specs.legendSpecs.rectWidth + 10)
+        .attr("y", yGap*2 + specs.legendSpecs.rectHeight*1.5)
         .text(specs.entityTitle)
         .attr("class", "legendTick")
         .style("alignment-baseline", "middle")
@@ -643,7 +649,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     // setup entity selection window
     svg.append("rect")
         .attr("x", 1)
-        .attr("y", yGap*3 + rectHeight*2)
+        .attr("y", yGap*3 + specs.legendSpecs.rectHeight*2)
         .attr("width", legendSvgSpecs.width * 0.7)
         .attr("height", selectionWindowHeight)
         .attr("fill", "white")
@@ -651,18 +657,12 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         .attr("stroke-width", 1)
 
     // setup the enitity selectors in the window
-    drawEntitySelectors(svg, scatterSvg, labels, yGap, rectHeight, specs.legendStart)
-
-    // set ups the arrow specs
-    let arrowX = 1 + legendSvgSpecs.width * 0.7 + 9
-    let arrowY = [yGap*3 + rectHeight*2 + 10, yGap*3 + rectHeight*2 + legendSvgSpecs.height - yGap*3 - rectHeight*2 - 15]
-    let arrowTranslate = [`translate(${arrowX}, ${arrowY[0]})`, `translate(${arrowX}, ${arrowY[1]}) rotate(180)`]
-    let indicatorSize = 92 / labels.length
+    drawEntitySelectors(svg, scatterSvg, labels, yGap, specs.legendSpecs.rectHeight, specs.legendStart)
 
     // setup bounding box for arrows
     svg.append("rect")
         .attr("x", 1 + legendSvgSpecs.width * 0.7)
-        .attr("y", yGap*3 + rectHeight*2)
+        .attr("y", yGap*3 + specs.legendSpecs.rectHeight*2)
         .attr("width", legendSvgSpecs.width * 0.22)
         .attr("height", selectionWindowHeight)
         .attr("fill", "white")
@@ -673,7 +673,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     {
         svg.append("rect")
             .attr("x", 1 + legendSvgSpecs.width * 0.7 + legendSvgSpecs.width * 0.03)
-            .attr("y", yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart)
+            .attr("y", yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + indicatorSize*specs.legendStart)
             .attr("width", legendSvgSpecs.width * 0.16)
             .attr("height", indicatorSize)
             .attr("fill", "lightgray")
@@ -696,15 +696,15 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
                 let newY = +y + e.dy
 
                 // constrain within the bounds of the scrollbar
-                if (newY < yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart) { newY = yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart}
-                if (newY > yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart + indicatorSize*(labels.length-1)) {newY = yGap*3 + rectHeight*2 + 20 + indicatorSize*specs.legendStart + indicatorSize*(labels.length-1)}
+                if (newY < yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + indicatorSize*specs.legendStart) { newY = yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + indicatorSize*specs.legendStart}
+                if (newY > yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + indicatorSize*specs.legendStart + indicatorSize*(labels.length-1)) {newY = yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + indicatorSize*specs.legendStart + indicatorSize*(labels.length-1)}
                 
                 // set the new position
                 pt.attr("y", newY)
 
                 // update selection window accordingly
-                let newLegendStart = Math.round((newY - (yGap*3 + rectHeight*2 + 20)) / indicatorSize)
-                drawEntitySelectors(svg, scatterSvg, labels, yGap, rectHeight, newLegendStart)
+                let newLegendStart = Math.round((newY - (yGap*3 + specs.legendSpecs.rectHeight*2 + 20)) / indicatorSize)
+                drawEntitySelectors(svg, scatterSvg, labels, yGap, specs.legendSpecs.rectHeight, newLegendStart)
             }))
     }
 
