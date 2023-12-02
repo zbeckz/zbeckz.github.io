@@ -590,7 +590,7 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     specs.legendSpecs.arrowX = 1 + specs.legendSpecs.selectionWindowWidth + 9
     specs.legendSpecs.arrowY = [specs.legendSpecs.selectionWindowStart + 10, specs.legendSpecs.selectionWindowStart + specs.legendSpecs.selectionWindowHeight - 10]
     specs.legendSpecs.arrowTranslate = [`translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[0]})`, `translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[1]}) rotate(180)`]
-    specs.legendSpecs.indicatorSize = 92 / labels.length
+    specs.legendSpecs.indicatorSize = labels.length > 7 ? 92 / (labels.length - 6) : 0
 
     // draw the average color square and label
     drawAverageLegend(svg, scatterSvg, specs)
@@ -628,7 +628,7 @@ function drawEntitySelectionWindow(svg, scatterSvg, labels, specs)
         .attr("stroke", "black")
 
     // setup location indicator within the bounding box
-    if (labels.length > 0)
+    if (labels.length > 7)
     {
         svg.append("rect")
             .attr("x", 1 + specs.legendSpecs.selectionWindowWidth + legendSvgSpecs.width * 0.03)
@@ -656,7 +656,7 @@ function drawEntitySelectionWindow(svg, scatterSvg, labels, specs)
 
                 // constrain within the bounds of the scrollbar
                 if (newY < specs.legendSpecs.selectionWindowStart + 20 ) { newY = specs.legendSpecs.selectionWindowStart + 20}
-                if (newY > specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*(labels.length-1)) {newY = specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*(labels.length-1)}
+                if (newY > specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*(labels.length-7)) {newY = specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*(labels.length-7)}
                 
                 // set the new position
                 pt.attr("y", newY)
