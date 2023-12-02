@@ -477,19 +477,28 @@ function drawTimelineData(specs)
     // remove existing gs
     svg.selectAll("g").remove()
 
-    // scale based on all teams
+    // setup array to contain each individual array for each selected entity
+    let paths = getPaths(specs)
+
+    // get filtered data
+    let data = getFilteredData(specs)
+
+    // get domain for YAxis stat based on all paths and filtered data
+    let yDomain = getYDomain(paths, data, specs.YAxis)
+
     let xScale = d3.scaleLinear()
-                    .domain(d3.extent(specs.data, d => d.yearID))
+                    .domain([2010, 2019])
                     .range([0, svgSpecs.width - svgSpecs.margin.left - svgSpecs.margin.right])
 
     let yScale = d3.scaleLinear()
-                    .domain(d3.extent(specs.data, d => d[specs.YAxis]))
+                    .domain(yDomain)
                     .range([svgSpecs.height - svgSpecs.margin.top - svgSpecs.margin.bottom, 0])
 
     // create the axes
     drawAxes(svg, xScale, yScale)
 
     // draw the average timeline
+    calculateTimelineAverages(specs)
     drawTimeline(svg, 
                  specs, 
                  specs.averages.filter(d => d.field === specs.YAxis),
@@ -497,10 +506,7 @@ function drawTimelineData(specs)
                  d => yScale(d.value),
                  "orange",
                  d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
-                 `Average ${specs.YAxis}`)
-
-    // setup array to contain each individual array for each selected entity
-    let paths = getPaths(specs)
+                 `Average ${specs.YAxis} based on filters below`)
 
     let legendLabels = []
 
@@ -527,6 +533,24 @@ function drawTimelineData(specs)
     // draw legend
     let legendSvg = d3.select(`#${specs.selector}Legend g`)
     drawTimelineLegend(legendSvg, svg, legendLabels, specs)
+}
+
+function getYDomain(paths, filteredData, stat)
+{
+    // setup [min, max] to return later
+    let domain = d3.extent(filteredData, d => d[stat])
+
+    // loop through all the paths
+    for (let i = 0; i < paths.length; i++)
+    {
+        // check if this path contains vals outside the current min and max
+        let data = paths[i]
+        let testDomain = d3.extent(data, d => d[stat])
+        if (testDomain[0] < domain[0]) { domain[0] = testDomain[0] }
+        if (testDomain[1] > domain[1]) { domain[1] = testDomain[1] }
+    }
+
+    return domain
 }
 
 // draws the whole legend using heleprs
@@ -845,6 +869,15 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs)
 // helper for timeline plot creation, draws path and points
 function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, label)
 {
+    // if data has NaN, do not draw
+    for (let i = 0; i < data.length; i++)
+    {
+        if (isNaN(yFunc(data[i])))
+        {
+            return
+        }
+    }
+
     // add it
     let newSvg = svg.append("g").attr("id", label)
 
@@ -973,6 +1006,10 @@ function getPaths(specs)
 // calculate averages of every stat per year for given timeline specs
 function calculateTimelineAverages(specs)
 {
+    // get data from filters and reset averages
+    let data = getFilteredData(specs)
+    specs.averages = []
+
     // loop through all the possible fields to show
     for (let i = 0; i < specs.fields.length; i++)
     {
@@ -983,7 +1020,7 @@ function calculateTimelineAverages(specs)
         for (let y = 2010; y <= 2019; y++)
         {
             // filter by year
-            let yearData = specs.data.filter(d => d.yearID === y)
+            let yearData = data.filter(d => d.yearID === y)
 
             // to keep track of nan amounts to not incorporate
             let nanAmount = 0
