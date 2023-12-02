@@ -194,6 +194,15 @@ let teamTimelineSpecs =
     // overall team data
     data: [],
 
+    // filters to calculate the averages
+    filters: [],
+
+    sliderStat: "W",
+
+    // for the plot specific dropdown
+    dropdownOptions: ["All", "NL", "AL"],
+    dropdownStat: ["lgID"],
+
     // average for each field for each year
     averages: [],
 
@@ -244,6 +253,15 @@ let hitterTimelineSpecs =
     // overall hitter data
     data: [],
 
+    // filters to calculate the averages
+    filters: [],
+
+    sliderStat: "PA",
+
+    // for the plot specific dropdown
+    dropdownOptions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
+    dropdownStat: ["position"],
+
     // average for each field for each year
     averages: [],
 
@@ -293,6 +311,15 @@ let pitcherTimelineSpecs =
 
     // overall pitcher data
     data: [],
+
+    // filters to calculate the averages
+    filters: [],
+
+    sliderStat: "IP",
+
+    // for the plot specific dropdown
+    dropdownOptions: ["All", "SP", "RP"],
+    dropdownStat: ["position"],
 
     // average for each field for each year
     averages: [],
@@ -393,19 +420,9 @@ function setupPlot(specs)
         .append("g")
             .attr("transform", `translate(${legendSvgSpecs.margin.left}, ${legendSvgSpecs.margin.top})`);
 
-    if (specs.type === "scatter")
-    {
-        // setup the dropdown menus
-        setupScatterplotDropdowns(specs)
-
-        // setup the slider range (function handles whether or not it happens depending on spec input)
-        setupScatterplotSlider(specs)
-    }
-    else if (specs.type === "timeline")
-    {
-        // setup the dropdown menu
-        setupTimelineDropdown(specs)
-    }
+    // setup controls (specs handles what type)
+    setupDropdowns(specs)
+    setupSlider(specs)
 }
 
 // make axes given svg and specs and scales
@@ -512,6 +529,7 @@ function drawTimelineData(specs)
     drawTimelineLegend(legendSvg, svg, legendLabels, specs)
 }
 
+// draws the whole legend using heleprs
 function drawTimelineLegend(svg, scatterSvg, labels, specs)
 {
     // remove existing legend
@@ -1084,7 +1102,7 @@ function drawScatterplotData(specs)
 // helper for the scatter plot crea,tion, draws the points
 function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
 {
-    // add circles for each point
+    // add circles for each point, give color group
     let circle = svg.selectAll("circle")
                 .data(data, function(d) 
                 {
@@ -1117,8 +1135,7 @@ function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
                 .attr("r", specs.markSize)
                 .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
                 .attr("stroke", "black")
-                .attr("stroke-width", specs.strokeWidth)
-        
+                .attr("stroke-width", specs.strokeWidth)        
     }
 }
 
@@ -1439,7 +1456,44 @@ function cleanData(dataset, specs, yesString)
 
 /* ----------------------------- CONTROLS -------------------------------------------------------------------- */
 
+// sets up dropdown menu for specs depending on type
+function setupDropdowns(specs)
+{
+    // setup the axis dropdowns depending on type
+    specs.type === "scatter" ? setupScatterplotDropdowns(specs) : setupTimelineDropdown(specs)
 
+    // setup the other dropdown
+    d3.select(`#${specs.selector}Dropdown`)
+    .selectAll("option")
+    .data(specs.dropdownOptions)
+    .enter()
+    .append("option")
+    .attr("value", function(d) 
+    {
+        // if this is the initial selected field for this encoding, select it!
+        if (d === "All") 
+        {
+            d3.select(this).attr("selected", true)
+        }
+
+        return d
+    })
+    .text(d => d)
+
+    // use jquery to format and setup filtering on change
+    $(function ()
+    {
+        $(`#${specs.selector}Dropdown`).selectmenu(
+        {
+            change: function( event, data ) 
+            {
+                // if all, remove filter, otherwise add it
+                data.item.value === "All" ? removeFilter(specs, specs.dropdownStat) : addFilter(specs, "equal", specs.dropdownStat, [data.item.value])
+                specs.type === "scatter" ? drawScatterplotData(specs) : drawTimelineData(specs)
+            }
+        })
+    })
+}
 
 // sets up the dropdown menu for a timeline plot
 function setupTimelineDropdown(specs)
@@ -1491,7 +1545,7 @@ function checkboxHandler(cb, specs, field)
     }
 
     // redraw the data
-    drawScatterplotData(specs)
+    specs.type === "scatter" ? drawScatterplotData(specs) : drawTimelineData(specs)
 }
 
 // sets up the dropdown menus for a plot using jquery
@@ -1532,42 +1586,10 @@ function setupScatterplotDropdowns(specs)
             })
         })
     }
-
-    // setup the other dropdown
-    d3.select(`#${specs.selector}Dropdown`)
-        .selectAll("option")
-        .data(specs.dropdownOptions)
-        .enter()
-        .append("option")
-        .attr("value", function(d) 
-        {
-            // if this is the initial selected field for this encoding, select it!
-            if (d === "All") 
-            {
-                d3.select(this).attr("selected", true)
-            }
-
-            return d
-        })
-        .text(d => d)
-
-     // use jquery to format and setup filtering on change
-     $(function ()
-     {
-         $(`#${specs.selector}Dropdown`).selectmenu(
-         {
-             change: function( event, data ) 
-             {
-                // if all, remove filter, otherwise add it
-                data.item.value === "All" ? removeFilter(specs, specs.dropdownStat) : addFilter(specs, "equal", specs.dropdownStat, [data.item.value])
-                drawScatterplotData(specs)
-             }
-         })
-     })
 }
 
 // sets up slider range for plot given spec input
-function setupScatterplotSlider(specs)
+function setupSlider(specs)
 {
     // use jquery to set up slider range for plate appearances for hitters
     let extent = d3.extent(specs.data, d => d[specs.sliderStat])
@@ -1594,7 +1616,7 @@ function setupScatterplotSlider(specs)
                 addFilter(specs, "range", specs.sliderStat, ui.values)
 
                 // redraw data
-                drawScatterplotData(specs)
+                specs.type === "scatter" ? drawScatterplotData(specs) : drawTimelineData(specs)
             }
         });
     })
@@ -1606,6 +1628,35 @@ function scatterplotReset(scatterSpecArr, timelineSpec)
     // get the scatterplot this was clicked from
     let specs = scatterSpecArr[0]
 
+    // reset controls
+    controlsReset(specs)
+
+    // reset the selected and filters for this scatterplot
+    specs.filters = []
+    specs.selected = []
+
+    // redraw whichever scatterplots need to be redrawn
+    scatterSpecArr.forEach(s => drawScatterplotData(s))
+
+    // reset selected and filters for associated timeline
+    timelineSpec.selected = []
+    timelineSpec.legendStart = 0
+
+    // redraw timeline
+    drawTimelineData(timelineSpec)
+}
+
+// handles reset buttons for timelines
+function timelineReset(specs)
+{
+    controlsReset(specs)
+    specs.filters = []
+    drawTimelineData(specs)
+}
+
+// helper for both reset buttons, resets the controls displayed on screen (slider, dropdown, checkbox)
+function controlsReset(specs)
+{
     // reset the splider
     let extent = d3.extent(specs.data, d => d[specs.sliderStat])
     $(function () 
@@ -1630,17 +1681,4 @@ function scatterplotReset(scatterSpecArr, timelineSpec)
     // reset the checkbox
     document.getElementById(`${specs.selector}Checkbox`).checked = false
 
-    // reset the selected and filters for this scatterplot
-    specs.filters = []
-    specs.selected = []
-
-    // redraw whichever scatterplots need to be redrawn
-    scatterSpecArr.forEach(s => drawScatterplotData(s))
-
-    // reset selected and filters for associated timeline
-    timelineSpec.selected = []
-    timelineSpec.legendStart = 0
-
-    // redraw timeline
-    drawTimelineData(timelineSpec)
 }

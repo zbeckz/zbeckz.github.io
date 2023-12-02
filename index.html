@@ -137,7 +137,7 @@
 
         <div class="plot">
           <strong id="teamTimelinePlotTitle">
-            Team Timeline <button type="button">Reset</button>
+            Team Timeline <button type="button" onclick="timelineReset(teamTimelineSpecs)">Reset</button>
           </strong>
           <div class="dataContainer">
             <svg id="teamTimelinePlot"></svg>
@@ -149,6 +149,17 @@
 
           <label>Y Axis:</label>
           <select id="teamTimelineYAxis"></select>
+
+          <div class="slider">
+            <label>W:</label>
+            <label id="teamTimelineSliderMin" style="font-weight: bold;"></label>
+            <div id="teamTimelineSlider"></div>
+            <label id="teamTimelineSliderMax" style="font-weight: bold;"></label>
+            <label>League:</label>
+            <select id="teamTimelineDropdown"></select>
+            <label>Won WS:</label>
+            <input id="teamTimelineCheckbox" type='checkbox' onclick='checkboxHandler(this, teamTimelineSpecs, "WSWin");'>
+          </div>
           
         </div>
 
@@ -157,7 +168,7 @@
 
         <div class="plot">
           <strong id="hitterTimelinePlotTitle">
-            Hitter Timeline <button type="button">Reset</button>
+            Hitter Timeline <button type="button" onclick="timelineReset(hitterTimelineSpecs)">Reset</button>
           </strong>
           <div class="dataContainer">
             <svg id="hitterTimelinePlot"></svg>
@@ -169,6 +180,17 @@
 
           <label>Y Axis:</label>
           <select id="hitterTimelineYAxis"></select>
+
+          <div class="slider">
+            <label>PA:</label>
+            <label id="hitterTimelineSliderMin" style="font-weight: bold;"></label>
+            <div id="hitterTimelineSlider"></div>
+            <label id="hitterTimelineSliderMax" style="font-weight: bold;"></label>
+            <label>Pos:</label>
+            <select id="hitterTimelineDropdown"></select>
+            <label>Allstar:</label>
+            <input id="hitterTimelineCheckbox" type='checkbox' onclick='checkboxHandler(this, hitterTimelineSpecs, "allstar");'>
+          </div>
           
         </div>
 
@@ -177,7 +199,7 @@
 
         <div class="plot">
           <strong id="pitcherTimelinePlotTitle">
-            Pitcher Timeline <button type="button">Reset</button>
+            Pitcher Timeline <button type="button" onclick="timelineReset(pitcherTimelineSpecs)">Reset</button>
           </strong>
           <div class="dataContainer">
             <svg id="pitcherTimelinePlot"></svg>
@@ -189,6 +211,17 @@
 
           <label>Y Axis:</label>
           <select id="pitcherTimelineYAxis"></select>
+
+          <div class="slider">
+            <label>PA:</label>
+            <label id="pitcherTimelineSliderMin" style="font-weight: bold;"></label>
+            <div id="pitcherTimelineSlider"></div>
+            <label id="pitcherTimelineSliderMax" style="font-weight: bold;"></label>
+            <label>Pos:</label>
+            <select id="pitcherTimelineDropdown"></select>
+            <label>Allstar:</label>
+            <input id="pitcherTimelineCheckbox" type='checkbox' onclick='checkboxHandler(this, pitcherTimelineSpecs, "allstar");'>
+          </div>
           
         </div>
 
