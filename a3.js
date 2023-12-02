@@ -522,7 +522,7 @@ function drawTimelineData(specs)
             d => yScale(d.value),
             "orange",
             d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
-            `Average ${specs.YAxis} based on filters below`)
+            `Average ${specs.YAxis}`)
     }
     
     let legendLabels = []
