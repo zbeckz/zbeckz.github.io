@@ -1729,3 +1729,12 @@ function controlsReset(specs)
     document.getElementById(`${specs.selector}Checkbox`).checked = false
 
 }
+
+
+
+/* ----------------------------- STAT KEY TABLES  -------------------------------------------------------------------- */
+
+
+let teamTableData = []
+let hitterTableData = []
+let pitcherTableData = []
