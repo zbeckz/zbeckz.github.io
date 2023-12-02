@@ -531,65 +531,11 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     specs.legendSpecs.arrowTranslate = [`translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[0]})`, `translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[1]}) rotate(180)`]
     specs.legendSpecs.indicatorSize = 92 / labels.length
 
+    // draw the average color square and label
     drawAverageLegend(svg, scatterSvg, specs)
-    
-    // setup entity rect
-    svg.append("rect")
-        .attr("x", 1)
-        .attr("y", specs.legendSpecs.yGap * 2 + specs.legendSpecs.rectHeight)
-        .attr("width", specs.legendSpecs.rectWidth)
-        .attr("height", specs.legendSpecs.rectHeight)
-        .attr("fill", "steelblue")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .on('mouseover', function(d)
-        {
-            // highlight every path and circle that is not the "average" timeline
-            scatterSvg.selectAll("g")
-                .each(function (d) 
-                {
-                    let el = d3.select(this)
-                    // if its not the average one, highlight it
-                    if (el.attr("id") !== null && !el.attr("id").includes("Average"))
-                    {
-                        el.selectAll("path").attr("opacity", 1)
-                        el.selectAll("circle").attr("opacity", 1)
-                    }
-                })
-            
-            // bold label
-            svg.select("#entityLabel").attr("font-weight", "bold")
 
-        })
-        .on('mouseout', function(d)
-        {
-            // fade every path and circle that is not the "average" timeline
-            scatterSvg.selectAll("g")
-                .each(function (d) 
-                {
-                    let el = d3.select(this)
-
-                    // if its not the average one, fade it
-                    if (el.attr("id") !== null && !el.attr("id").includes("Average"))
-                    {
-                        el.selectAll("path").attr("opacity", 0.2)
-                        el.selectAll("circle").attr("opacity", 0.2)
-                    }
-                })
-            
-            // unbold label
-            svg.select("#entityLabel").attr("font-weight", "normal")
-
-        })
-
-    // setup entity label
-    svg.append("text")
-        .attr("x", specs.legendSpecs.rectWidth + 10)
-        .attr("y", specs.legendSpecs.yGap*2 + specs.legendSpecs.rectHeight*1.5)
-        .text(specs.entityTitle)
-        .attr("class", "legendTick")
-        .style("alignment-baseline", "middle")
-        .attr("id", "entityLabel")
+    // draw the all entities color and label
+    drawEntityLegend(svg, scatterSvg, specs)
 
     // setup entity selection window
     svg.append("rect")
@@ -668,6 +614,67 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
         .attr("transform", specs.legendSpecs.arrowTranslate[i])
     }
     
+}
+
+function drawEntityLegend(svg, scatterSvg, specs)
+{
+    // setup entity rect
+    svg.append("rect")
+        .attr("x", 1)
+        .attr("y", specs.legendSpecs.yGap * 2 + specs.legendSpecs.rectHeight)
+        .attr("width", specs.legendSpecs.rectWidth)
+        .attr("height", specs.legendSpecs.rectHeight)
+        .attr("fill", "steelblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .on('mouseover', function(d)
+        {
+            // highlight every path and circle that is not the "average" timeline
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+                    // if its not the average one, highlight it
+                    if (el.attr("id") !== null && !el.attr("id").includes("Average"))
+                    {
+                        el.selectAll("path").attr("opacity", 1)
+                        el.selectAll("circle").attr("opacity", 1)
+                    }
+                })
+            
+            // bold label
+            svg.select("#entityLabel").attr("font-weight", "bold")
+
+        })
+        .on('mouseout', function(d)
+        {
+            // fade every path and circle that is not the "average" timeline
+            scatterSvg.selectAll("g")
+                .each(function (d) 
+                {
+                    let el = d3.select(this)
+
+                    // if its not the average one, fade it
+                    if (el.attr("id") !== null && !el.attr("id").includes("Average"))
+                    {
+                        el.selectAll("path").attr("opacity", 0.2)
+                        el.selectAll("circle").attr("opacity", 0.2)
+                    }
+                })
+            
+            // unbold label
+            svg.select("#entityLabel").attr("font-weight", "normal")
+
+        })
+
+    // setup entity label
+    svg.append("text")
+        .attr("x", specs.legendSpecs.rectWidth + 10)
+        .attr("y", specs.legendSpecs.yGap*2 + specs.legendSpecs.rectHeight*1.5)
+        .text(specs.entityTitle)
+        .attr("class", "legendTick")
+        .style("alignment-baseline", "middle")
+        .attr("id", "entityLabel")
 }
 
 // helper for drawTimelineLegend, draws the average selector and label
