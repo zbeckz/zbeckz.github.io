@@ -24,6 +24,19 @@
   </head>
 
   <body>
+    <div id="menu">
+      <button type="button" 
+              onclick="scatterplotReset([teamScatterplotSpecs], teamTimelineSpecs);
+                       scatterplotReset([hitterScatterplotSpecs], hitterTimelineSpecs);
+                       scatterplotReset([pitcherScatterplotSpecs], pitcherTimelineSpecs);
+                       timelineReset(teamTimelineSpecs);
+                       timelineReset(hitterTimelineSpecs);
+                       timelineReset(pitcherTimelineSpecs);">
+          Reset All
+      </button>
+      <button type="button">Help</button>
+    </div>
+
     <div id="layout">
 
       <div class="view">
