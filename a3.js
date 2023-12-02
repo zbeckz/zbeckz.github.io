@@ -523,12 +523,13 @@ function drawTimelineLegend(svg, scatterSvg, labels, specs)
     specs.legendSpecs.rectWidth = legendSvgSpecs.width * 0.2
     specs.legendSpecs.rectHeight = specs.legendSpecs.rectWidth
     specs.legendSpecs.yGap = legendSvgSpecs.height * 0.05
-    specs.legendSpecs.selectionWindowHeight = legendSvgSpecs.height - specs.legendSpecs.yGap*3 - specs.legendSpecs.rectHeight*2 - 5
-
-    // set ups the arrow specs
-    specs.legendSpecs.arrowX = 1 + legendSvgSpecs.width * 0.7 + 9
-    specs.legendSpecs.arrowY = [specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 10, specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + legendSvgSpecs.height - specs.legendSpecs.yGap*3 - specs.legendSpecs.rectHeight*2 - 15]
+    specs.legendSpecs.selectionWindowStart = specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2
+    specs.legendSpecs.selectionWindowHeight = legendSvgSpecs.height - specs.legendSpecs.selectionWindowStart - 5
+    specs.legendSpecs.selectionWindowWidth = legendSvgSpecs.width * 0.7
+    specs.legendSpecs.arrowX = 1 + specs.legendSpecs.selectionWindowWidth + 9
+    specs.legendSpecs.arrowY = [specs.legendSpecs.selectionWindowStart + 10, specs.legendSpecs.selectionWindowStart + specs.legendSpecs.selectionWindowHeight - 10]
     specs.legendSpecs.arrowTranslate = [`translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[0]})`, `translate(${specs.legendSpecs.arrowX}, ${specs.legendSpecs.arrowY[1]}) rotate(180)`]
+    console.log(specs.legendSpecs.selectionWindowHeight)
     specs.legendSpecs.indicatorSize = 92 / labels.length
 
     // draw the average color square and label
@@ -547,8 +548,8 @@ function drawEntitySelectionWindow(svg, scatterSvg, labels, specs)
     // setup entity selection window
     svg.append("rect")
         .attr("x", 1)
-        .attr("y", specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2)
-        .attr("width", legendSvgSpecs.width * 0.7)
+        .attr("y", specs.legendSpecs.selectionWindowStart)
+        .attr("width", specs.legendSpecs.selectionWindowWidth)
         .attr("height", specs.legendSpecs.selectionWindowHeight)
         .attr("fill", "white")
         .attr("stroke", "black")
@@ -559,8 +560,8 @@ function drawEntitySelectionWindow(svg, scatterSvg, labels, specs)
 
     // setup bounding box for arrows
     svg.append("rect")
-        .attr("x", 1 + legendSvgSpecs.width * 0.7)
-        .attr("y", specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2)
+        .attr("x", 1 + specs.legendSpecs.selectionWindowWidth)
+        .attr("y", specs.legendSpecs.selectionWindowStart)
         .attr("width", legendSvgSpecs.width * 0.22)
         .attr("height", specs.legendSpecs.selectionWindowHeight)
         .attr("fill", "white")
@@ -570,8 +571,8 @@ function drawEntitySelectionWindow(svg, scatterSvg, labels, specs)
     if (labels.length > 0)
     {
         svg.append("rect")
-            .attr("x", 1 + legendSvgSpecs.width * 0.7 + legendSvgSpecs.width * 0.03)
-            .attr("y", specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + specs.legendSpecs.indicatorSize*specs.legendStart)
+            .attr("x", 1 + specs.legendSpecs.selectionWindowWidth + legendSvgSpecs.width * 0.03)
+            .attr("y", specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*specs.legendStart)
             .attr("width", legendSvgSpecs.width * 0.16)
             .attr("height", specs.legendSpecs.indicatorSize)
             .attr("fill", "lightgray")
@@ -594,14 +595,14 @@ function drawEntitySelectionWindow(svg, scatterSvg, labels, specs)
                 let newY = +y + e.dy
 
                 // constrain within the bounds of the scrollbar
-                if (newY < specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 20 ) { newY = specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 20}
-                if (newY > specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + specs.legendSpecs.indicatorSize*(labels.length-1)) {newY = specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 20 + specs.legendSpecs.indicatorSize*(labels.length-1)}
+                if (newY < specs.legendSpecs.selectionWindowStart + 20 ) { newY = specs.legendSpecs.selectionWindowStart + 20}
+                if (newY > specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*(labels.length-1)) {newY = specs.legendSpecs.selectionWindowStart + 20 + specs.legendSpecs.indicatorSize*(labels.length-1)}
                 
                 // set the new position
                 pt.attr("y", newY)
 
                 // update selection window accordingly
-                specs.legendStart = Math.round((newY - (specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + 20)) / specs.legendSpecs.indicatorSize)
+                specs.legendStart = Math.round((newY - (specs.legendSpecs.selectionWindowStart + 20)) / specs.legendSpecs.indicatorSize)
                 drawEntitySelectors(svg, scatterSvg, labels, specs)
             }))
     }
@@ -759,7 +760,7 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs)
     let length = Math.min(7, labels.length - specs.legendStart)
     for (let i = 0; i < length; i++)
     {
-        let yPos = specs.legendSpecs.yGap*3 + specs.legendSpecs.rectHeight*2 + specs.legendSpecs.rectHeight*1.2*i
+        let yPos = specs.legendSpecs.selectionWindowStart + specs.legendSpecs.rectHeight*1.2*i
         let label = labels[i + specs.legendStart]
 
         // selector entity name label
@@ -774,7 +775,7 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs)
         svg.append("rect")
             .attr("x", 1)
             .attr("y", yPos)
-            .attr("width", legendSvgSpecs.width * 0.7)
+            .attr("width", specs.legendSpecs.selectionWindowWidth)
             .attr("height", specs.legendSpecs.rectHeight*1.2)
             .attr("opacity", 0.1)
             .attr("fill", "steelblue")
