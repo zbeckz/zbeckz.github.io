@@ -483,6 +483,21 @@ function drawTimelineData(specs)
     // get filtered data
     let data = getFilteredData(specs)
 
+    // get averages
+    calculateTimelineAverages(specs)
+    let avgs = specs.averages.filter(d => d.field === specs.YAxis)
+
+    // if data has NaN, do not draw
+    let drawAvg = true
+    for (let i = 0; i < avgs.length; i++)
+    {
+        if (isNaN(avgs[i].value))
+        {
+            drawAvg = false
+            break
+        }
+    }
+
     // get domain for YAxis stat based on all paths and filtered data
     let yDomain = getYDomain(paths, data, specs.YAxis)
 
@@ -498,16 +513,18 @@ function drawTimelineData(specs)
     drawAxes(svg, xScale, yScale)
 
     // draw the average timeline
-    calculateTimelineAverages(specs)
-    drawTimeline(svg, 
-                 specs, 
-                 specs.averages.filter(d => d.field === specs.YAxis),
-                 d => xScale(d.yearID),
-                 d => yScale(d.value),
-                 "orange",
-                 d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
-                 `Average ${specs.YAxis} based on filters below`)
-
+    if (drawAvg)
+    {
+        drawTimeline(svg, 
+            specs, 
+            avgs,
+            d => xScale(d.yearID),
+            d => yScale(d.value),
+            "orange",
+            d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
+            `Average ${specs.YAxis} based on filters below`)
+    }
+    
     let legendLabels = []
 
     // draw all of the paths
@@ -539,6 +556,8 @@ function getYDomain(paths, filteredData, stat)
 {
     // setup [min, max] to return later
     let domain = d3.extent(filteredData, d => d[stat])
+    if (isNaN(domain[0])) { domain[0] = 0 }
+    if (isNaN(domain[1])) { domain[1] = 0 }
 
     // loop through all the paths
     for (let i = 0; i < paths.length; i++)
@@ -869,15 +888,6 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs)
 // helper for timeline plot creation, draws path and points
 function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, label)
 {
-    // if data has NaN, do not draw
-    for (let i = 0; i < data.length; i++)
-    {
-        if (isNaN(yFunc(data[i])))
-        {
-            return
-        }
-    }
-
     // add it
     let newSvg = svg.append("g").attr("id", label)
 
