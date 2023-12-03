@@ -132,7 +132,7 @@ let pitcherScatterplotSpecs =
     {
         nominative: ["playerID", "teamID", "nameFirst", "nameLast", "position"],
         boolean: ["allstar"],
-        quantitative: ["yearID", "W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "weight", "height", "IP"]
+        quantitative: ["yearID", "WHIP", "W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "weight", "height", "IP"]
     },
 
     // prefix to html id for elements within this plot
@@ -297,10 +297,10 @@ let pitcherTimelineSpecs =
     idField: "playerID",
 
     // possible stats to display on timeline
-    fields: ["W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "IP"],
+    fields: ["WHIP", "W", "L", "G", "GS", "CG", "SHO", "SV", "H", "ER", "HR", "BB", "SO", "BAOpp", "ERA", "HBP", "GF", "R", "IP"],
 
     // which fields to weight and what to weight it by when calculating averages
-    rateFields: ["BAOpp", "ERA"],
+    rateFields: ["BAOpp", "ERA", "WHIP"],
     rateWeightField: ["IP"],
 
     // which stats are being encoded to the scatterplot
