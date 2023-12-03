@@ -151,15 +151,15 @@ let pitcherScatterplotSpecs =
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name:"Last Name: ", stat:"nameLast"}, {name:"Team: ", stat:"teamID"}, {name:"Year: ", stat:"yearID"}, {name: "IP: ", stat:"IP"}],
 
     // filters to apply to pitching data before plotting
-    filters: [{field: "IP", type: "range", values: [50, 251]}],
-    startingFilters: [{field: "IP", type: "range", values: [50, 251]}],
+    filters: [{field: "IP", type: "range", values: [81, 251]}],
+    startingFilters: [{field: "IP", type: "range", values: [81, 251]}],
 
     // all the pitching data
     data: [],
 
     // what stat does the slider control
     sliderStat: "IP",
-    sliderStartingMin: 50,
+    sliderStartingMin: 81,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "SP", "RP"],
@@ -323,11 +323,11 @@ let pitcherTimelineSpecs =
     data: [],
 
     // filters to calculate the averages
-    filters: [{field: "IP", type: "range", values: [50, 251]}],
-    startingFilters: [{field: "IP", type: "range", values: [50, 251]}],
+    filters: [{field: "IP", type: "range", values: [81, 251]}],
+    startingFilters: [{field: "IP", type: "range", values: [81, 251]}],
 
     sliderStat: "IP",
-    sliderStartingMin: 50,
+    sliderStartingMin: 81,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "SP", "RP"],
@@ -1211,7 +1211,7 @@ function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
                 .attr("r", specs.markSize)
                 .attr("fill", function(d) {return specs.selected.includes(d.id) ? "yellow" : colorScale(d[specs.Color])})
                 .attr("stroke", "black")
-                .attr("stroke-width", specs.strokeWidth)        
+                .attr("stroke-width", specs.strokeWidth) 
     }
 }
 
