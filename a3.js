@@ -356,7 +356,7 @@ initialize()
 // welcome message if first time visiting
 if (!localStorage.getItem("visited"))
 {
-    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Enjoy!')
+    welcomeMessage() // display welcome message
     localStorage.setItem("visited", "true") // set in browser cache
 }
 
@@ -1745,6 +1745,12 @@ function controlsReset(specs)
     // reset the checkbox
     document.getElementById(`${specs.selector}Checkbox`).checked = false
 
+}
+
+// display welcome message
+function welcomeMessage()
+{
+    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Enjoy!')
 }
 
 

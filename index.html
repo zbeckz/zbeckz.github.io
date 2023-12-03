@@ -26,6 +26,7 @@
   <body>
     <div id="menu">
       <h1>MLB in the 2010s</h1>
+      <button type="button" onclick="welcomeMessage()">Welcome</button>
       <button type="button" 
               onclick="scatterplotReset([teamScatterplotSpecs], teamTimelineSpecs);
                        scatterplotReset([hitterScatterplotSpecs], hitterTimelineSpecs);
@@ -38,7 +39,7 @@
       <button type="button" onclick="alert('Data is from the Lahman Baseball Database: http://seanlahman.com/download-baseball-database/ \n\nI used data from the Teams.csv, Hitters.csv, and Pitchers.csv tables, filtered to only include records from the 2010-2019 seasons.\n\nThis data is meant to be used by people with basic knowledge of baseball statistics and thus includes a lot of abbreviations with no explanations. Please refer to the tables at the bottom of this page, which is clickable with links to the MLB website explanations of statistics, for clarification. Enjoy!');">Data Source</button>
       <button type="button" onclick="alert('The 3 graphs on the top row are scatterplots. Hover your mouse over a circle to see information about that datapoint. It can take some time to load.\n\nClick on a point to select it. The team or player you select will then be viewable in the timeline below. If you click on a team, the hitter and pitcher scatterplots will only show data from the team and season you selected.\n\nThe statistics plotted to the X Axis, Y Axis, and Color are controlled by dropdown menus below each graph. There are also filters below which control what data is shown.\n\nThe color groupings are such that each color maps to 20% of the data, the cutoff values being displayed on the legend. White is the middle 20%. More red indicates higher values, more blue indicates lower values. Hover your mouse over a color on the legend to highlight the points in that group.\n\nThe reset button will reset the filters and remove all selections');">Scatterplot Help</button>
       <button type="button" onclick="alert('The 3 graphs on the bottom row are timelines. Hover your mouse over a line or point to see data information. It can take some time to load. Use the Y Axis dropdown menu to change what stat is being shown over time.\n\nYou can hover your mouse over a color on the legend to highlight associated timelines, or hover over team/player names in the white box in the legend to view a specific timeline. If there are more than 7 teams/players being displayed on the plot, a scrollbar will appear on the legend which can be dragged to view all of the team/player names.\n\nThe filters apply only to the average timeline in orange. If the filters you put are such that there are no players/teams that match the filters for a given year, and thus the average cannot be calculated, no average timeline will be displayed. The reset button resets the filters.');">Timeline Help</button>
-      <button type="button" onclick="alert('');">Abbreviation Table Help</button>
+      <button type="button" onclick="alert('At the bottom of the screen are tables describing what abbreviations used in the above plots refer to. Use the text input above each table to search for a specific abbrevation. Clicking on an entry in the table will open a tab in your browser with a link to the MLB website page on that abbreviation.');">Abbreviation Table Help</button>
     </div>
 
     <div id="layout">
