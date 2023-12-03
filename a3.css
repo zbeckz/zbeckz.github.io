@@ -13,18 +13,30 @@ h3 {
     text-align: center;
 }
 
-table {
-    border-collapse: collapse; /* Collapse borders */
-    width: 375px; /* Full-width */
-    border: 1px solid #ddd; /* Add a grey border */
-    font-size: 18px; /* Increase font-size */
-}
-
 .tableHolder {
     display: flex;
     flex-direction: row;
     gap: 30px;
     justify-content: center;
+}
+
+table {
+    width: 375px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+}
+
+tr.header {
+    background-color: rgb(244, 244, 244);
+    border-bottom: 1px solid black
+}
+
+tr:hover {
+    background-color: #f1f1f1;
 }
 
 #menu {

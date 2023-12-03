@@ -1751,13 +1751,6 @@ function setupTable(data, selector)
     // get table
     let tbl = document.getElementById(`${selector}Table`)
 
-    // setup table header
-    let tr = tbl.insertRow()
-    let td = tr.insertCell()
-    td.appendChild(document.createTextNode("Abbreviation"))
-    td = tr.insertCell()
-    td.appendChild(document.createTextNode("Full"))
-
     // sort data alphabetically by abbreviation
     data.sort((a, b) => a.abbreviation < b.abbreviation ? -1 : 1)
 
