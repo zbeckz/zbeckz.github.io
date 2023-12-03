@@ -57,6 +57,8 @@ tr.header {
 .row:hover {
     background-color: #f1f1f1;
     cursor: pointer;
+    text-decoration: underline;
+    color: #0000EE;
 }
 
 #menu {
