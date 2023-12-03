@@ -1,18 +1,18 @@
-abbreviation,full
-W,Pitching Wins
-L,Pitching Losses
-G,Games Pitched In
-GS,Games Started
-CG,Complete Games
-SHO,Shutouts
-SV,Saves
-H,Hits
-ER,Earned Runs
-HR,Home Runs Given Up
-BB,Walks Given Up
-SO,Strikeouts
-BAOpp,Opposing Batting Average
-ERA,Earned Run Average
-HBP,Hit By Pitches
-GF,Games Finished
-IP,Innings Pitched
+abbreviation,full,link,
+W,Pitching Wins,https://www.mlb.com/glossary/standard-stats/win,
+L,Pitching Losses,https://www.mlb.com/glossary/standard-stats/loss,
+G,Games Pitched In,https://www.mlb.com/glossary/standard-stats/appearance,
+GS,Games Started,https://www.mlb.com/glossary/standard-stats/games-started,
+CG,Complete Games,https://www.mlb.com/glossary/standard-stats/complete-game,
+SHO,Shutouts,https://www.mlb.com/glossary/standard-stats/shutout,
+SV,Saves,https://www.mlb.com/glossary/standard-stats/save,
+H,Hits,https://www.mlb.com/glossary/standard-stats/hit,
+ER,Earned Runs,https://www.mlb.com/glossary/standard-stats/earned-run,
+HR,Home Runs Given Up,https://www.mlb.com/glossary/standard-stats/home-run,
+BB,Walks Given Up,https://www.mlb.com/glossary/standard-stats/walk,
+SO,Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout,
+BAOpp,Opposing Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average,
+ERA,Earned Run Average,https://www.mlb.com/glossary/standard-stats/earned-run-average,
+HBP,Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch,
+GF,Games Finished,https://www.mlb.com/glossary/standard-stats/games-finished,
+IP,Innings Pitched,https://www.mlb.com/glossary/standard-stats/innings-pitched,

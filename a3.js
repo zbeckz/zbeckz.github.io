@@ -1757,9 +1757,18 @@ function setupTable(data, selector)
     // add data
     for (let i = 0; i < data.length; i++)
     {
+        // make row
         tr = tbl.insertRow()
-        tr.onclick = d => window.open(data[i].link, '_blank')
-        tr.className = "row"
+
+        // setup link if it exists
+        let link = data[i].link
+        if (link !== "")
+        {
+            tr.onclick = d => window.open(link, '_blank')
+            tr.className = "row"
+        }
+        
+        // add the data
         let td = tr.insertCell()
         td.appendChild(document.createTextNode(data[i].abbreviation))
         td = tr.insertCell()
