@@ -37,12 +37,21 @@ table {
 }
 
 th {
-    text-align: left;
+    text-align: center;
+    padding-right: 10px;
+}
+
+td.right {
+    text-align: right;
 }
 
 tr.header {
     background-color: rgb(244, 244, 244);
     border-bottom: 1px solid black
+}
+
+.row {
+    border-bottom: 1px dotted gray;
 }
 
 .row:hover {

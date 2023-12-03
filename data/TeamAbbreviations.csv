@@ -1,60 +1,60 @@
-abbreviation,full,link
-ARI,Arizona Diamondbacks,https://www.mlb.com/diamondbacks
-ATL,Atlanta Braves,https://www.mlb.com/braves
-BAL,Baltimore Orioles,https://www.mlb.com/orioles
-BOS,Boston Red Sox,https://www.mlb.com/redsox
-CHW,Chicago White Sox,https://www.mlb.com/whitesox
-CHC,Chicago Cubs,https://www.mlb.com/cubs
-CIN,Cincinnati Reds,https://www.mlb.com/reds
-CLE,Cleveland Indians,https://www.mlb.com/indians
-COL,Colorado Rockies,https://www.mlb.com/rockies
-DET,Detroit Tigers,https://www.mlb.com/tigers
-MIA,Miami Marlins,https://www.mlb.com/marlins
-HOU,Houston Astros,https://www.mlb.com/astros
-KCR,Kansas City Royals,https://www.mlb.com/cityroyals
-LAA,Los Angeles Angels,https://www.mlb.com/angels
-LAD,Los Angeles Dodgers,https://www.mlb.com/dodgers
-MIL,Milwaukee Brewers,https://www.mlb.com/brewers
-MIN,Minnesota Twins,https://www.mlb.com/twins
-NYY,New York Yankees,https://www.mlb.com/yankees
-NYM,New York Mets,https://www.mlb.com/mets
-OAK,Oakland Athletics,https://www.mlb.com/athletics
-PHI,Philadelphia Phillies,https://www.mlb.com/phillies
-PIT,Pittsburgh Pirates,https://www.mlb.com/pirates
-SDP,San Diego Padres,https://www.mlb.com/padres
-SEA,Seattle Mariners,https://www.mlb.com/mariners
-SFG,San Francisco Giants,https://www.mlb.com/giants
-STL,St. Louis Cardinals,https://www.mlb.com/cardinals
-TBR,Tampa Bay Rays,https://www.mlb.com/rays
-TEX,Texas Rangers,https://www.mlb.com/rangers
-TOR,Toronto Blue Jays,https://www.mlb.com/bluejays
-WAS,Washington Nationals,https://www.mlb.com/nationals
-Rank,"Division Rank (1 is best, 5 is worst)",https://www.mlb.com/standings
-W,Team Wins,https://www.mlb.com/standings
-L,Team Losses,https://www.mlb.com/standings
-R,Total Runs Scored,https://www.mlb.com/glossary/standard-stats/run
-H,Total Hits,https://www.mlb.com/glossary/standard-stats/hit
-2B,Total Doubles,https://www.mlb.com/glossary/standard-stats/double
-3B,Total Triples,https://www.mlb.com/glossary/standard-stats/triple
-HR,Total Home Runs,https://www.mlb.com/glossary/standard-stats/home-run
-TB,Team Total Bases,https://www.mlb.com/glossary/standard-stats/total-bases
-BB,Total Walks,https://www.mlb.com/glossary/standard-stats/walk
-SO,Total Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout
-SB,Total Stolen Bases,https://www.mlb.com/glossary/standard-stats/stolen-base
-CS,Total Caught Stealing,https://www.mlb.com/glossary/standard-stats/caught-stealing
-SB%,Team Stolen Base Percentage,https://www.mlb.com/glossary/standard-stats/stolen-base-percentage
-HBP,Total Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch
-SF,Total Sacrifice Flies,https://www.mlb.com/glossary/standard-stats/sacrifice-fly
-AVG,Team Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average
-OBP,Team On Base Percentage,https://www.mlb.com/glossary/standard-stats/on-base-percentage
-SLG,Team Slugging Percentage,https://www.mlb.com/glossary/standard-stats/slugging-percentage
-OPS,Team On Base Plus Slugging,https://www.mlb.com/glossary/standard-stats/on-base-plus-slugging
-RA,Total Runs Allowed,https://www.mlb.com/glossary/standard-stats/run
-ERA,Team Earned Run Average,https://www.mlb.com/glossary/standard-stats/earned-run-average
-CG,Total Complete Games,https://www.mlb.com/glossary/standard-stats/complete-game
-SHO,Total Shutouts,https://www.mlb.com/glossary/standard-stats/shutout
-SV,Total Saves,https://www.mlb.com/glossary/standard-stats/save
-HA,Total Hits Allowed,https://www.mlb.com/glossary/standard-stats/hit
-HRA,Total Home Runs Allowed,https://www.mlb.com/glossary/standard-stats/home-run
-BBA,Total Walks Allowed,https://www.mlb.com/glossary/standard-stats/walk
-SOA,Total Strikeouts Allowed,https://www.mlb.com/glossary/standard-stats/strikeout
+abbreviation,full,link,highlow
+ARI,Arizona Diamondbacks,https://www.mlb.com/diamondbacks,N/A
+ATL,Atlanta Braves,https://www.mlb.com/braves,N/A
+BAL,Baltimore Orioles,https://www.mlb.com/orioles,N/A
+BOS,Boston Red Sox,https://www.mlb.com/redsox,N/A
+CHW,Chicago White Sox,https://www.mlb.com/whitesox,N/A
+CHC,Chicago Cubs,https://www.mlb.com/cubs,N/A
+CIN,Cincinnati Reds,https://www.mlb.com/reds,N/A
+CLE,Cleveland Indians,https://www.mlb.com/indians,N/A
+COL,Colorado Rockies,https://www.mlb.com/rockies,N/A
+DET,Detroit Tigers,https://www.mlb.com/tigers,N/A
+MIA,Miami Marlins,https://www.mlb.com/marlins,N/A
+HOU,Houston Astros,https://www.mlb.com/astros,N/A
+KCR,Kansas City Royals,https://www.mlb.com/cityroyals,N/A
+LAA,Los Angeles Angels,https://www.mlb.com/angels,N/A
+LAD,Los Angeles Dodgers,https://www.mlb.com/dodgers,N/A
+MIL,Milwaukee Brewers,https://www.mlb.com/brewers,N/A
+MIN,Minnesota Twins,https://www.mlb.com/twins,N/A
+NYY,New York Yankees,https://www.mlb.com/yankees,N/A
+NYM,New York Mets,https://www.mlb.com/mets,N/A
+OAK,Oakland Athletics,https://www.mlb.com/athletics,N/A
+PHI,Philadelphia Phillies,https://www.mlb.com/phillies,N/A
+PIT,Pittsburgh Pirates,https://www.mlb.com/pirates,N/A
+SDP,San Diego Padres,https://www.mlb.com/padres,N/A
+SEA,Seattle Mariners,https://www.mlb.com/mariners,N/A
+SFG,San Francisco Giants,https://www.mlb.com/giants,N/A
+STL,St. Louis Cardinals,https://www.mlb.com/cardinals,N/A
+TBR,Tampa Bay Rays,https://www.mlb.com/rays,N/A
+TEX,Texas Rangers,https://www.mlb.com/rangers,N/A
+TOR,Toronto Blue Jays,https://www.mlb.com/bluejays,N/A
+WAS,Washington Nationals,https://www.mlb.com/nationals,N/A
+Rank,"Division Rank (1 is best, 5 is worst)",https://www.mlb.com/standings,Low
+W,Team Wins,https://www.mlb.com/standings,High
+L,Team Losses,https://www.mlb.com/standings,Low
+R,Total Runs Scored,https://www.mlb.com/glossary/standard-stats/run,High
+H,Total Hits,https://www.mlb.com/glossary/standard-stats/hit,High
+2B,Total Doubles,https://www.mlb.com/glossary/standard-stats/double,High
+3B,Total Triples,https://www.mlb.com/glossary/standard-stats/triple,High
+HR,Total Home Runs,https://www.mlb.com/glossary/standard-stats/home-run,High
+TB,Team Total Bases,https://www.mlb.com/glossary/standard-stats/total-bases,High
+BB,Total Walks,https://www.mlb.com/glossary/standard-stats/walk,High
+SO,Total Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout,Low
+SB,Total Stolen Bases,https://www.mlb.com/glossary/standard-stats/stolen-base,High
+CS,Total Caught Stealing,https://www.mlb.com/glossary/standard-stats/caught-stealing,Low
+SB%,Team Stolen Base Percentage,https://www.mlb.com/glossary/standard-stats/stolen-base-percentage,High
+HBP,Total Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch,High
+SF,Total Sacrifice Flies,https://www.mlb.com/glossary/standard-stats/sacrifice-fly,High
+AVG,Team Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average,High
+OBP,Team On Base Percentage,https://www.mlb.com/glossary/standard-stats/on-base-percentage,High
+SLG,Team Slugging Percentage,https://www.mlb.com/glossary/standard-stats/slugging-percentage,High
+OPS,Team On Base Plus Slugging,https://www.mlb.com/glossary/standard-stats/on-base-plus-slugging,High
+RA,Total Runs Allowed,https://www.mlb.com/glossary/standard-stats/run,Low
+ERA,Team Earned Run Average,https://www.mlb.com/glossary/standard-stats/earned-run-average,Low
+CG,Total Complete Games,https://www.mlb.com/glossary/standard-stats/complete-game,High
+SHO,Total Shutouts,https://www.mlb.com/glossary/standard-stats/shutout,High
+SV,Total Saves,https://www.mlb.com/glossary/standard-stats/save,High
+HA,Total Hits Allowed,https://www.mlb.com/glossary/standard-stats/hit,Low
+HRA,Total Home Runs Allowed,https://www.mlb.com/glossary/standard-stats/home-run,Low
+BBA,Total Walks Allowed,https://www.mlb.com/glossary/standard-stats/walk,Low
+SOA,Total Strikeouts Allowed,https://www.mlb.com/glossary/standard-stats/strikeout,High

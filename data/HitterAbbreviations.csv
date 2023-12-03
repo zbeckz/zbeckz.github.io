@@ -1,24 +1,24 @@
-abbreviation,full,link
-G,Games Played,https://www.mlb.com/glossary/standard-stats/games-played
-PA,Plate Appearances,https://www.mlb.com/glossary/standard-stats/plate-appearance
-AB,At Bats,https://www.mlb.com/glossary/standard-stats/at-bat
-R,Runs Scored,https://www.mlb.com/glossary/standard-stats/run
-H,Hits,https://www.mlb.com/glossary/standard-stats/hit
-2B,Doubles,https://www.mlb.com/glossary/standard-stats/double
-3B,Triples,https://www.mlb.com/glossary/standard-stats/triple
-HR,Home Runs,https://www.mlb.com/glossary/standard-stats/home-run
-RBI,Runs Batted In,https://www.mlb.com/glossary/standard-stats/runs-batted-in
-SB,Stolen Bases,https://www.mlb.com/glossary/standard-stats/stolen-base
-CS,Caught Stealing,https://www.mlb.com/glossary/standard-caats/caught-stealing
-SB%,Stolen Base Percentage,https://www.mlb.com/glossary/standard-stats/stolen-base-percentage
-BB,Walks,https://www.mlb.com/glossary/standard-stats/walk
-SO,Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout
-TB,Total Bases,https://www.mlb.com/glossary/standard-stats/total-bases
-AVG,Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average
-OBP,On Base Percentage,https://www.mlb.com/glossary/standard-stats/on-base-percentage
-SLG,Slugging Percentage,https://www.mlb.com/glossary/standard-slats/slugging-percentage
-OPS,On Base Plus Slugging,https://www.mlb.com/glossary/standard-stats/on-base-plus-slugging
-IBB,Intentional Walks,https://www.mlb.com/glossary/standard-stats/intentional-walk
-HBP,Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch
-SF,Sacrifice Flies,https://www.mlb.com/glossary/standard-stats/sacrifice-fly
-allstar,Played in All Star Game,https://www.mlb.com/all-star
+abbreviation,full,link,highlow
+G,Games Played,https://www.mlb.com/glossary/standard-stats/games-played,High
+PA,Plate Appearances,https://www.mlb.com/glossary/standard-stats/plate-appearance,High
+AB,At Bats,https://www.mlb.com/glossary/standard-stats/at-bat,High
+R,Runs Scored,https://www.mlb.com/glossary/standard-stats/run,High
+H,Hits,https://www.mlb.com/glossary/standard-stats/hit,High
+2B,Doubles,https://www.mlb.com/glossary/standard-stats/double,High
+3B,Triples,https://www.mlb.com/glossary/standard-stats/triple,High
+HR,Home Runs,https://www.mlb.com/glossary/standard-stats/home-run,High
+RBI,Runs Batted In,https://www.mlb.com/glossary/standard-stats/runs-batted-in,High
+SB,Stolen Bases,https://www.mlb.com/glossary/standard-stats/stolen-base,High
+CS,Caught Stealing,https://www.mlb.com/glossary/standard-caats/caught-stealing,Low
+SB%,Stolen Base Percentage,https://www.mlb.com/glossary/standard-stats/stolen-base-percentage,High
+BB,Walks,https://www.mlb.com/glossary/standard-stats/walk,High
+SO,Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout,Low
+TB,Total Bases,https://www.mlb.com/glossary/standard-stats/total-bases,High
+AVG,Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average,High
+OBP,On Base Percentage,https://www.mlb.com/glossary/standard-stats/on-base-percentage,High
+SLG,Slugging Percentage,https://www.mlb.com/glossary/standard-slats/slugging-percentage,High
+OPS,On Base Plus Slugging,https://www.mlb.com/glossary/standard-stats/on-base-plus-slugging,High
+IBB,Intentional Walks,https://www.mlb.com/glossary/standard-stats/intentional-walk,High
+HBP,Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch,High
+SF,Sacrifice Flies,https://www.mlb.com/glossary/standard-stats/sacrifice-fly,High
+allstar,Played in All Star Game,https://www.mlb.com/all-star,N/A

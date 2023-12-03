@@ -1797,7 +1797,11 @@ function setupTable(data, selector)
         let td = tr.insertCell()
         td.appendChild(document.createTextNode(data[i].abbreviation))
         td = tr.insertCell()
+        td.className = "right"
         td.appendChild(document.createTextNode(data[i].full))
+        td = tr.insertCell()
+        td.className = "right"
+        td.appendChild(document.createTextNode(data[i].highlow))
     }
 }
 

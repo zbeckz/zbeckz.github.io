@@ -1,19 +1,19 @@
-abbreviation,full,link
-W,Pitching Wins,https://www.mlb.com/glossary/standard-stats/win
-L,Pitching Losses,https://www.mlb.com/glossary/standard-stats/loss
-G,Games Pitched In,https://www.mlb.com/glossary/standard-stats/appearance
-GS,Games Started,https://www.mlb.com/glossary/standard-stats/games-started
-CG,Complete Games,https://www.mlb.com/glossary/standard-stats/complete-game
-SHO,Shutouts,https://www.mlb.com/glossary/standard-stats/shutout
-SV,Saves,https://www.mlb.com/glossary/standard-stats/save
-H,Hits,https://www.mlb.com/glossary/standard-stats/hit
-ER,Earned Runs,https://www.mlb.com/glossary/standard-stats/earned-run
-HR,Home Runs Given Up,https://www.mlb.com/glossary/standard-stats/home-run
-BB,Walks Given Up,https://www.mlb.com/glossary/standard-stats/walk
-SO,Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout
-BAOpp,Opposing Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average
-ERA,Earned Run Average,https://www.mlb.com/glossary/standard-stats/earned-run-average
-HBP,Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch
-GF,Games Finished,https://www.mlb.com/glossary/standard-stats/games-finished
-IP,Innings Pitched,https://www.mlb.com/glossary/standard-stats/innings-pitched
-WHIP,Walks and Hits per Inning Pitched,https://www.mlb.com/glossary/standard-stats/walks-and-hits-per-inning-pitched
+abbreviation,full,link,highlow
+W,Pitching Wins,https://www.mlb.com/glossary/standard-stats/win,High
+L,Pitching Losses,https://www.mlb.com/glossary/standard-stats/loss,Low
+G,Games Pitched In,https://www.mlb.com/glossary/standard-stats/appearance,High
+GS,Games Started,https://www.mlb.com/glossary/standard-stats/games-started,High
+CG,Complete Games,https://www.mlb.com/glossary/standard-stats/complete-game,High
+SHO,Shutouts,https://www.mlb.com/glossary/standard-stats/shutout,High
+SV,Saves,https://www.mlb.com/glossary/standard-stats/save,High
+H,Hits,https://www.mlb.com/glossary/standard-stats/hit,Low
+ER,Earned Runs,https://www.mlb.com/glossary/standard-stats/earned-run,Low
+HR,Home Runs Given Up,https://www.mlb.com/glossary/standard-stats/home-run,Low
+BB,Walks Given Up,https://www.mlb.com/glossary/standard-stats/walk,Low
+SO,Strikeouts,https://www.mlb.com/glossary/standard-stats/strikeout,High
+BAOpp,Opposing Batting Average,https://www.mlb.com/glossary/standard-stats/batting-average,Low
+ERA,Earned Run Average,https://www.mlb.com/glossary/standard-stats/earned-run-average,Low
+HBP,Hit By Pitches,https://www.mlb.com/glossary/standard-stats/hit-by-pitch,Low
+GF,Games Finished,https://www.mlb.com/glossary/standard-stats/games-finished,High
+IP,Innings Pitched,https://www.mlb.com/glossary/standard-stats/innings-pitched,High
+WHIP,Walks and Hits per Inning Pitched,https://www.mlb.com/glossary/standard-stats/walks-and-hits-per-inning-pitched,Low
