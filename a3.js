@@ -361,6 +361,18 @@ async function initialize()
   let pitchers = await d3.csv("data/Pitchers2010s.csv");
   let teams = await d3.csv("data/Teams2010s.csv");
 
+  // read in the abbreviation data
+  let teamTableData = await d3.csv("data/TeamAbbreviations.csv");
+  let hitterTableData = await d3.csv("data/HitterAbbreviations.csv");
+  let pitcherTableData = await d3.csv("data/PitcherAbbreviations.csv");
+
+  console.log(pitcherTableData)
+
+  // setup the tables for abbreivations
+  setupTable(teamTableData, "team")
+  setupTable(hitterTableData, "hitter")
+  setupTable(pitcherTableData, "pitcher")
+
   // now that we have the data, clean it for scatterplots
   hitterScatterplotSpecs.data = cleanData(hitters, hitterScatterplotSpecs, "yes")
   pitcherScatterplotSpecs.data = cleanData(pitchers, pitcherScatterplotSpecs, "yes")
@@ -1735,6 +1747,26 @@ function controlsReset(specs)
 /* ----------------------------- STAT KEY TABLES  -------------------------------------------------------------------- */
 
 
-let teamTableData = []
-let hitterTableData = []
-let pitcherTableData = []
+
+function setupTable(data, selector)
+{
+    // get table
+    let tbl = document.getElementById(`${selector}Table`)
+
+    // setup table header
+    let tr = tbl.insertRow()
+    let td = tr.insertCell()
+    td.appendChild(document.createTextNode("Abbreviation"))
+    td = tr.insertCell()
+    td.appendChild(document.createTextNode("Full"))
+
+    // add data
+    for (let i = 0; i < data.length; i++)
+    {
+        tr = tbl.insertRow()
+        let td = tr.insertCell()
+        td.appendChild(document.createTextNode(data[i].abbreviation))
+        td = tr.insertCell()
+        td.appendChild(document.createTextNode(data[i].full))
+    }
+}
