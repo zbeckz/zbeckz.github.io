@@ -56,6 +56,7 @@ let teamScatterplotSpecs =
 
     // filters to apply to data before drawing
     filters: [],
+    startingFilters: [],
 
     // overall team data
     data: [],
@@ -65,6 +66,7 @@ let teamScatterplotSpecs =
 
     // what is slider controlling
     sliderStat: "W",
+    sliderStartingMin: 47,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "STL", "CHC", "PIT", "CIN", "MIL", "SFG", "SDP", "LAD", "ARI", "COL", "MIA", "WAS", "ATL", "PHI", "NYM", "NYY", "TOR", "BOS", "BAL", "TBR", "LAA", "HOU", "TEX", "SEA", "OAK", "CHW", "CLE", "KCR", "MIN", "DET"],
@@ -101,13 +103,15 @@ let hitterScatterplotSpecs =
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name:"Last Name: ", stat:"nameLast"}, {name:"Team: ", stat:"teamID"}, {name:"Year: ", stat:"yearID"}, {name:"PA: ", stat:"PA"}],
 
     // filters to apply to data before drawing
-    filters: [],
+    filters: [{field: "PA", type: "range", values: [500, 754]}],
+    startingFilters: [{field: "PA", type: "range", values: [500, 754]}],
 
     // all the hitter data
     data: [],
 
     // what is the slider controlling
     sliderStat: "PA",
+    sliderStartingMin: 500,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
@@ -147,13 +151,15 @@ let pitcherScatterplotSpecs =
     tooltipDisplay: [{name: "First Name: ", stat: "nameFirst"}, {name:"Last Name: ", stat:"nameLast"}, {name:"Team: ", stat:"teamID"}, {name:"Year: ", stat:"yearID"}, {name: "IP: ", stat:"IP"}],
 
     // filters to apply to pitching data before plotting
-    filters: [],
+    filters: [{field: "IP", type: "range", values: [50, 251]}],
+    startingFilters: [{field: "IP", type: "range", values: [50, 251]}],
 
     // all the pitching data
     data: [],
 
     // what stat does the slider control
     sliderStat: "IP",
+    sliderStartingMin: 50,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "SP", "RP"],
@@ -196,8 +202,10 @@ let teamTimelineSpecs =
 
     // filters to calculate the averages
     filters: [],
+    startingFilters: [],
 
     sliderStat: "W",
+    sliderStartingMin: 47,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "NL", "AL"],
@@ -254,9 +262,11 @@ let hitterTimelineSpecs =
     data: [],
 
     // filters to calculate the averages
-    filters: [],
+    filters: [{field: "PA", type: "range", values: [500, 754]}],
+    startingFilters: [{field: "PA", type: "range", values: [500, 754]}],
 
     sliderStat: "PA",
+    sliderStartingMin: 500,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "1B", "2B", "3B", "SS", "C", "LF", "RF", "CF"],
@@ -313,9 +323,11 @@ let pitcherTimelineSpecs =
     data: [],
 
     // filters to calculate the averages
-    filters: [],
+    filters: [{field: "IP", type: "range", values: [50, 251]}],
+    startingFilters: [{field: "IP", type: "range", values: [50, 251]}],
 
     sliderStat: "IP",
+    sliderStartingMin: 50,
 
     // for the plot specific dropdown
     dropdownOptions: ["All", "SP", "RP"],
@@ -1660,7 +1672,7 @@ function setupSlider(specs)
     $(function () 
     {
         // initialize min and max labels
-        $(`#${specs.selector}SliderMin`).text(extent[0])
+        $(`#${specs.selector}SliderMin`).text(specs.sliderStartingMin)
         $(`#${specs.selector}SliderMax`).text(extent[1])
 
         // slider itself
@@ -1669,7 +1681,7 @@ function setupSlider(specs)
             range: true,
             min: extent[0],
             max: extent[1],
-            values: extent,
+            values: [specs.sliderStartingMin, extent[1]],
             slide: function (event, ui) 
             {
                 // slider min and max labels change when slid
@@ -1696,7 +1708,7 @@ function scatterplotReset(scatterSpecArr, timelineSpec)
     controlsReset(specs)
 
     // reset the selected and filters for this scatterplot
-    specs.filters = []
+    specs.filters = JSON.parse(JSON.stringify(specs.startingFilters)) // to prevent data references
     specs.selected = []
 
     // redraw whichever scatterplots need to be redrawn
@@ -1714,7 +1726,7 @@ function scatterplotReset(scatterSpecArr, timelineSpec)
 function timelineReset(specs)
 {
     controlsReset(specs)
-    specs.filters = []
+    specs.filters = JSON.parse(JSON.stringify(specs.startingFilters)) // to prevent data references
     drawTimelineData(specs)
 }
 
@@ -1726,11 +1738,11 @@ function controlsReset(specs)
     $(function () 
     {
         // reset min and max labels
-        $(`#${specs.selector}SliderMin`).text(extent[0])
+        $(`#${specs.selector}SliderMin`).text(specs.sliderStartingMin)
         $(`#${specs.selector}SliderMax`).text(extent[1])
 
         // reset slider values itself itself
-        $(`#${specs.selector}Slider`).slider("values", 0, extent[0])
+        $(`#${specs.selector}Slider`).slider("values", 0, specs.sliderStartingMin)
         $(`#${specs.selector}Slider`).slider("values", 1, extent[1])
 
     })
@@ -1750,7 +1762,7 @@ function controlsReset(specs)
 // display welcome message
 function welcomeMessage()
 {
-    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Enjoy!')
+    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Please refer to the tables at the bottom for any clarification on abbreviations. Enjoy!')
 }
 
 
