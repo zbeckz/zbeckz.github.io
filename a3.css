@@ -45,14 +45,17 @@ tr.header {
     border-bottom: 1px solid black
 }
 
-tr:hover {
+.row:hover {
     background-color: #f1f1f1;
+    cursor: pointer;
 }
 
 #menu {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding-bottom: 20px;
+    gap: 20px;
 }
 
 label {
