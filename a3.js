@@ -350,8 +350,15 @@ let pitcherTimelineSpecs =
 
 
 
-// this is the only code that gets run on start. sets everything up!
+// sets everything up!
 initialize()
+
+// welcome message if first time visiting
+if (!localStorage.getItem("visited"))
+{
+    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Enjoy!')
+    localStorage.setItem("visited", "true") // set in browser cache
+}
 
 // load data, set up plots
 async function initialize() 
