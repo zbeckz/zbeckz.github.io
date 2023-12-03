@@ -13,6 +13,10 @@ h3 {
     text-align: center;
 }
 
+.searchBar {
+    width: 200px;
+}
+
 .tableHolder {
     display: flex;
     flex-direction: row;
