@@ -366,8 +366,6 @@ async function initialize()
   let hitterTableData = await d3.csv("data/HitterAbbreviations.csv");
   let pitcherTableData = await d3.csv("data/PitcherAbbreviations.csv");
 
-  console.log(pitcherTableData)
-
   // setup the tables for abbreivations
   setupTable(teamTableData, "team")
   setupTable(hitterTableData, "hitter")
@@ -1759,6 +1757,9 @@ function setupTable(data, selector)
     td.appendChild(document.createTextNode("Abbreviation"))
     td = tr.insertCell()
     td.appendChild(document.createTextNode("Full"))
+
+    // sort data alphabetically by abbreviation
+    data.sort((a, b) => a.abbreviation < b.abbreviation ? -1 : 1)
 
     // add data
     for (let i = 0; i < data.length; i++)
