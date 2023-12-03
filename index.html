@@ -245,8 +245,10 @@
     
     <div class="tableHolder">
 
-      <div>
+      <div class="tableControls">
         <h3>Team Abbreivation Legend</h3>
+        <input type="text" id="teamInput" onkeyup="filterTable('team')" placeholder="Search for abbreviations...">
+        <br><br>
         <table id="teamTable">
           <tr class="header">
             <th>Abbreviation</th>
@@ -255,8 +257,10 @@
         </table>
       </div>
 
-      <div>
+      <div class="tableControls">
         <h3>Hitter Abbreviation Legend</h3>
+        <input type="text" id="hitterInput" onkeyup="myFunction('hitter')" placeholder="Search for abbreviations...">
+        <br><br>
         <table id="hitterTable">
           <tr class="header">
             <th>Abbreviation</th>
@@ -265,8 +269,10 @@
         </table>
       </div>
 
-      <div>
+      <div class="tableControls">
         <h3>Pitcher Abbreviation Legend</h3>
+        <input type="text" id="pitcherInput" onkeyup="myFunction('pitcher')" placeholder="Search for abbreviations...">
+        <br><br>
         <table id="pitcherTable">
           <tr class="header">
             <th>Abbreviation</th>

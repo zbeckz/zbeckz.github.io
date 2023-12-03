@@ -1745,7 +1745,7 @@ function controlsReset(specs)
 /* ----------------------------- STAT KEY TABLES  -------------------------------------------------------------------- */
 
 
-
+// setup table
 function setupTable(data, selector)
 {
     // get table
@@ -1764,3 +1764,39 @@ function setupTable(data, selector)
         td.appendChild(document.createTextNode(data[i].full))
     }
 }
+
+// filter based on search input. Modified from https://www.w3schools.com/howto/howto_js_filter_table.asp
+function filterTable(selector) 
+{
+
+    // get input value
+    let input = document.getElementById(`${selector}Input`)
+    let filter = input.value.toUpperCase()
+
+    // get the table and rows
+    let table = document.getElementById(`${selector}Table`);
+    let tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows, and hide those who don't match the filter
+    for (i = 0; i < tr.length; i++) 
+    {
+        // get the abbreviation there
+        let td = tr[i].getElementsByTagName("td")[0];
+
+        if (td) 
+        {
+            // get the value itself
+            let textValue = td.textContent || td.innerText;
+
+            // check if it matches the filter
+            if (textValue.toUpperCase().substring(0, filter.length) === filter) 
+            {
+                tr[i].style.display = "";
+            } 
+            else 
+            {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+  }
