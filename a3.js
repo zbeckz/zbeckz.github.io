@@ -1392,7 +1392,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
         svg.append("text")
             .attr("x", widthMargin + rectWidth + 5)
             .attr("y", labelMargin + rectHeight*i)
-            .text(cutoffs[i])
+            .text(cutoffs[i].toFixed(2))
             .attr("class", "legendTick")
             .style("alignment-baseline", "middle")
     }
