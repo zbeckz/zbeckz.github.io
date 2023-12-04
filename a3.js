@@ -1,5 +1,7 @@
 /* ----------------------------- PLOT SPECS -------------------------------------------------------------------- */
 
+var tooltip // used throughout
+
 // svg size specs
 let svgSpecs = 
 {
@@ -360,8 +362,6 @@ let pitcherTimelineSpecs =
 
 /* ----------------------------- INITIALIZATION  -------------------------------------------------------------------- */
 
-
-
 // sets everything up!
 initialize()
 
@@ -375,55 +375,61 @@ if (!localStorage.getItem("visited"))
 // load data, set up plots
 async function initialize() 
 {
-  // read in the data
-  let hitters = await d3.csv("data/Hitters2010s.csv");
-  let pitchers = await d3.csv("data/Pitchers2010s.csv");
-  let teams = await d3.csv("data/Teams2010s.csv");
+    // read in the data
+    let hitters = await d3.csv("data/Hitters2010s.csv");
+    let pitchers = await d3.csv("data/Pitchers2010s.csv");
+    let teams = await d3.csv("data/Teams2010s.csv");
 
-  // read in the abbreviation data
-  let teamTableData = await d3.csv("data/TeamAbbreviations.csv");
-  let hitterTableData = await d3.csv("data/HitterAbbreviations.csv");
-  let pitcherTableData = await d3.csv("data/PitcherAbbreviations.csv");
+    // read in the abbreviation data
+    let teamTableData = await d3.csv("data/TeamAbbreviations.csv");
+    let hitterTableData = await d3.csv("data/HitterAbbreviations.csv");
+    let pitcherTableData = await d3.csv("data/PitcherAbbreviations.csv");
 
-  // setup the tables for abbreivations
-  setupTable(teamTableData, "team")
-  setupTable(hitterTableData, "hitter")
-  setupTable(pitcherTableData, "pitcher")
+    // setup the tables for abbreivations
+    setupTable(teamTableData, "team")
+    setupTable(hitterTableData, "hitter")
+    setupTable(pitcherTableData, "pitcher")
 
-  // now that we have the data, clean it for scatterplots
-  hitterScatterplotSpecs.data = cleanData(hitters, hitterScatterplotSpecs, "yes")
-  pitcherScatterplotSpecs.data = cleanData(pitchers, pitcherScatterplotSpecs, "yes")
-  teamScatterplotSpecs.data = cleanData(teams, teamScatterplotSpecs, "Y")
+    // now that we have the data, clean it for scatterplots
+    hitterScatterplotSpecs.data = cleanData(hitters, hitterScatterplotSpecs, "yes")
+    pitcherScatterplotSpecs.data = cleanData(pitchers, pitcherScatterplotSpecs, "yes")
+    teamScatterplotSpecs.data = cleanData(teams, teamScatterplotSpecs, "Y")
 
-  // set up scatter plots
-  setupPlot(teamScatterplotSpecs)
-  setupPlot(hitterScatterplotSpecs)
-  setupPlot(pitcherScatterplotSpecs)
+    // set up scatter plots
+    setupPlot(teamScatterplotSpecs)
+    setupPlot(hitterScatterplotSpecs)
+    setupPlot(pitcherScatterplotSpecs)
 
-  // add intial data to the scatter plots with no filters
-  drawScatterplotData(teamScatterplotSpecs)
-  drawScatterplotData(hitterScatterplotSpecs)
-  drawScatterplotData(pitcherScatterplotSpecs)
+    // add intial data to the scatter plots with no filters
+    drawScatterplotData(teamScatterplotSpecs)
+    drawScatterplotData(hitterScatterplotSpecs)
+    drawScatterplotData(pitcherScatterplotSpecs)
 
-  // setup timeline data
-  teamTimelineSpecs.data = teamScatterplotSpecs.data
-  hitterTimelineSpecs.data = hitterScatterplotSpecs.data
-  pitcherTimelineSpecs.data = pitcherScatterplotSpecs.data
+    // setup timeline data
+    teamTimelineSpecs.data = teamScatterplotSpecs.data
+    hitterTimelineSpecs.data = hitterScatterplotSpecs.data
+    pitcherTimelineSpecs.data = pitcherScatterplotSpecs.data
 
-  // calculate averages for timelines
-  calculateTimelineAverages(teamTimelineSpecs)
-  calculateTimelineAverages(hitterTimelineSpecs)
-  calculateTimelineAverages(pitcherTimelineSpecs)
+    // calculate averages for timelines
+    calculateTimelineAverages(teamTimelineSpecs)
+    calculateTimelineAverages(hitterTimelineSpecs)
+    calculateTimelineAverages(pitcherTimelineSpecs)
 
-  // set up timeline plots
-  setupPlot(teamTimelineSpecs)
-  setupPlot(hitterTimelineSpecs)
-  setupPlot(pitcherTimelineSpecs)
+    // set up timeline plots
+    setupPlot(teamTimelineSpecs)
+    setupPlot(hitterTimelineSpecs)
+    setupPlot(pitcherTimelineSpecs)
 
-  // add initial data to timeline plots (should be blank to start)
-  drawTimelineData(teamTimelineSpecs)
-  drawTimelineData(hitterTimelineSpecs)
-  drawTimelineData(pitcherTimelineSpecs)
+    // add initial data to timeline plots (should be blank to start)
+    drawTimelineData(teamTimelineSpecs)
+    drawTimelineData(hitterTimelineSpecs)
+    drawTimelineData(pitcherTimelineSpecs)
+
+    // intialize tooltip
+    tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("display", "none");
 }
 
 
@@ -480,7 +486,7 @@ function getTooltipText(specs, d)
     {
         t += specs.tooltipDisplay[j].name
         t += d[specs.tooltipDisplay[j].stat]
-        t += "\n"
+        t += "<br>"
     }
 
     return t
@@ -550,7 +556,7 @@ function drawTimelineData(specs)
             d => xScale(d.yearID),
             d => yScale(d.value),
             "orange",
-            d => `Year: ${d.yearID}\nAverage ${specs.YAxis}: ${d.value}`,
+            d => `Year: ${d.yearID}<br>Average ${specs.YAxis}: ${d.value}`,
             `Average ${specs.YAxis}`)
     }
     
@@ -572,7 +578,7 @@ function drawTimelineData(specs)
                      d => xScale(d.yearID), 
                      d => yScale(d[specs.YAxis]), 
                      "steelblue",
-                     d =>  `Year: ${d.yearID}\n` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`,
+                     d =>  `Year: ${d.yearID}<br>` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`,
                      label)
     }
 
@@ -868,13 +874,16 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs)
             .attr("height", specs.legendSpecs.rectHeight*1.2)
             .attr("opacity", 0.1)
             .attr("fill", "steelblue")
-            .on('mouseover', function(d)
+            .on('mouseover', function(e, d, i)
             {
                 // highlight, add title
                 d3.select(this)
                     .attr("opacity", 0.4)
-                    .append("svg:title")
-                    .text(label)
+                
+                tooltip.style("left", (e.pageX + 25) + "px")
+                        .style("top", (e.pageY - 28) + "px")
+                        .style("display", "block")
+                        .html(label)
 
                 // highlight associated timeline
                 scatterSvg.selectAll("g")
@@ -895,7 +904,8 @@ function drawEntitySelectors(legendSvg, scatterSvg, labels, specs)
                 // unhighlight, remove title
                 d3.select(this)
                     .attr("opacity", 0.1)
-                    .selectAll("*").remove()
+                
+                tooltip.style("display", "none")
 
                 // unhighlight associated timeline
                 scatterSvg.selectAll("g")
@@ -930,14 +940,17 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
         .attr("d", d3.line()
                     .x(xFunc)
                     .y(yFunc))
-        .on('mouseover', function(d, i)
+        .on('mouseover', function(e, d, i)
         {
             // highlight, add tooltip
             d3.select(this)
                 .raise()
                 .attr("opacity", 1)
-                .append("svg:title")
-                .text(label)
+
+            tooltip.style("left", (e.pageX + 25) + "px")
+                .style("top", (e.pageY - 28) + "px")
+                .style("display", "block")
+                .html(label)
 
             // highlight all the circles on this path
             newSvg.selectAll("circle")
@@ -950,7 +963,8 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
             // remove tooltip
             d3.select(this)
                 .attr("opacity", 0.2)
-                .selectAll("*").remove()
+            
+            tooltip.style("display", "none")
 
             // fade all the circles too
             newSvg.selectAll("circle")
@@ -970,7 +984,7 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
             .attr("fill",colorFunc)
             .attr("stroke", "black")
             .attr("stroke-width", 0)
-            .on('mouseover', function(d, i) 
+            .on('mouseover', function(e, d, i) 
             {
                 // add new tooltip
                 d3.select(this)
@@ -978,8 +992,11 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
                     .attr("opacity", 1)
                     .attr("r", specs.markSize * 1.5)
                     .attr("stroke-width", 0.5)
-                    .append("svg:title")
-                    .text(tooltipFunc(i))
+
+                tooltip.style("left", (e.pageX + 25) + "px")
+                    .style("top", (e.pageY - 28) + "px")
+                    .style("display", "block")
+                    .html(tooltipFunc(d))
 
                 // highlight path
                 newSvg.select("path")
@@ -996,7 +1013,8 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
                     .attr("opacity", 0.2)
                     .attr("r", specs.markSize)
                     .attr("stroke-width", 0)
-                    .selectAll("*").remove()
+                
+                tooltip.style("display", "none")
 
                 // unhighlight path
                 newSvg.select("path")
@@ -1219,14 +1237,14 @@ function drawScatterplotCircles(svg, specs, data, xScale, yScale, colorScale)
 function interactScatterplotCircles(svg, specs, colorScale)
 {
     svg.selectAll("circle")
-        .on('mouseover', function(d, i) 
+        .on('mouseover', function(e,d, i) 
         {
             // create tooltip text
-            let t = getTooltipText(specs, i)
+            let t = getTooltipText(specs, d)
 
-            t += `${specs.XAxis}: ${i[specs.XAxis]}\n`
-            t += `${specs.YAxis}: ${i[specs.YAxis]}\n`
-            t += `${specs.Color}: ${i[specs.Color]}`
+            t += `${specs.XAxis}: ${d[specs.XAxis]}<br>`
+            t += `${specs.YAxis}: ${d[specs.YAxis]}<br>`
+            t += `${specs.Color}: ${d[specs.Color]}`
 
             // add new tooltip
             d3.select(this)
@@ -1234,8 +1252,11 @@ function interactScatterplotCircles(svg, specs, colorScale)
               .attr("r", specs.markSize*1.5)
               .attr("stroke", "yellow")
               .attr("stroke-width", specs.strokeWidth * 1.5)
-              .append("svg:title")
-              .text(t)
+
+              tooltip.style("left", (e.pageX + 25) + "px")
+                .style("display", "block")
+                .style("top", (e.pageY - 28) + "px")
+                .html(t)
         })
         .on('mouseout', function(d, i) 
         {
@@ -1243,7 +1264,8 @@ function interactScatterplotCircles(svg, specs, colorScale)
             d3.select(this)
                 .attr("r", specs.markSize)
                 .attr("stroke", "black")
-                .selectAll("*").remove()
+            
+            tooltip.style("display", "none")
         })
         .on("click", function(d, i) 
         {
@@ -1354,7 +1376,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
             .attr("y", labelMargin + rectHeight*i)
             .attr("fill", colors[i])
             .attr("stroke", "black")
-            .on('mouseover', function(d) 
+            .on('mouseover', function(e, d, j) 
             {
                 // make all colors swatches faded
                 svg.selectAll("rect").attr("opacity", 0.2)
@@ -1362,8 +1384,11 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
                 // add new tooltip
                 d3.select(this)
                     .attr("opacity", 1) // unfade this one
-                    .append("svg:title")
-                    .text(`${stat}: ${cutoffs[i+1]}-${cutoffs[i]}`)
+
+                tooltip.style("left", (e.pageX + 25) + "px")
+                    .style("top", (e.pageY - 28) + "px")
+                    .style("display", "block")
+                    .html(`${stat}: ${cutoffs[i+1]}-${cutoffs[i]}`)
 
                 // make all other colors faded
                 scatterSvg.selectAll("circle")
@@ -1378,7 +1403,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
             .on('mouseout', function(d) 
             {
                 // remove tooltip
-                d3.select(this).selectAll("*").remove()
+                tooltip.style("display", "none")
 
                 // make everything not faded
                 svg.selectAll("rect").attr("opacity", 1)
@@ -1394,7 +1419,6 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
 
         // if it has more than 3 decimal points, need to truncate it.
         let decimal = t.split(".")
-        console.log(decimal)
         if (decimal.length > 1 && decimal[1].length > 3)
         { 
             t = +t

@@ -36,6 +36,18 @@ table {
     border-collapse: collapse;
 }
 
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    min-height: 10px;
+    overflow: hidden;
+    font-size: 0.7em;
+    background: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 3px;
+  }
+
 th {
     text-align: center;
     padding-right: 10px;
