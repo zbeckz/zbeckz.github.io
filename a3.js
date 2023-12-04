@@ -1394,7 +1394,6 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
 
         // if it has more than 3 decimal points, need to truncate it.
         let decimal = t.split(".")
-        console.log(decimal)
         if (decimal.length > 1 && decimal[1].length > 3)
         { 
             t = +t
