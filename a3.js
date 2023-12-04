@@ -1398,10 +1398,6 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
                                 {
                                     d3.select(this).attr("opacity", 0.1)
                                 }
-                                else
-                                {
-                                    d3.select(this).raise()
-                                }
                             })             
             })
             .on('mouseout', function(d) 
