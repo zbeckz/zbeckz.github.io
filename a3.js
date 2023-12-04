@@ -1389,10 +1389,22 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
     // loop through cutoffs and make labels
     for (let i = 0; i < cutoffs.length; i++)
     {
+        // get number as a string
+        let t = "" + cutoffs[i]
+
+        // if it has more than 3 decimal points, need to truncate it.
+        let decimal = t.split(".")
+        console.log(decimal)
+        if (decimal.length > 1 && decimal[1].length > 3)
+        { 
+            t = +t
+            t = t.toFixed(3)
+        }
+
         svg.append("text")
             .attr("x", widthMargin + rectWidth + 5)
             .attr("y", labelMargin + rectHeight*i)
-            .text(cutoffs[i].toFixed(2))
+            .text(t)
             .attr("class", "legendTick")
             .style("alignment-baseline", "middle")
     }
