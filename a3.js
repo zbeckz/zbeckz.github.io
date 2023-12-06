@@ -1798,7 +1798,7 @@ function controlsReset(specs)
 // display welcome message
 function welcomeMessage()
 {
-    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Please refer to the tables at the bottom for any clarification on abbreviations. Enjoy!')
+    alert('Welcome to the MLB 2010s Interactive Data Visualizer! This was created by Zach Becker for CS333: Interactive Information Visualization, at Northwestern University\n\nEither jump right in, or take a look at the help buttons at the top for an overview of how the different graphs function and interact with each other.\n\nPlease utilize the data source and help buttons if there is any confusion.\n\nIt may take a few seconds to load after closing this window. Please refer to the tables at the bottom for any clarification on abbreviations. Enjoy!')
 }
 
 
