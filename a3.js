@@ -484,7 +484,7 @@ function getTooltipText(specs, d)
     let t = ""
     for (let j = 0; j < specs.tooltipDisplay.length; j++)
     {
-        t += specs.tooltipDisplay[j].name
+        t += `<strong>${specs.tooltipDisplay[j].name}</strong>`
         t += d[specs.tooltipDisplay[j].stat]
         t += "<br>"
     }
@@ -556,7 +556,7 @@ function drawTimelineData(specs)
             d => xScale(d.yearID),
             d => yScale(d.value),
             "orange",
-            d => `Year: ${d.yearID}<br>Average ${specs.YAxis}: ${d.value}`,
+            d => `<strong>Year:</strong> ${d.yearID}<br><strong>Average ${specs.YAxis}:</strong> ${d.value}`,
             `Average ${specs.YAxis}`)
     }
     
@@ -578,7 +578,7 @@ function drawTimelineData(specs)
                      d => xScale(d.yearID), 
                      d => yScale(d[specs.YAxis]), 
                      "steelblue",
-                     d =>  `Year: ${d.yearID}<br>` + getTooltipText(specs, d) + `${specs.YAxis}: ${d[specs.YAxis]}`,
+                     d =>  `<strong>Year:</strong> ${d.yearID}<br>` + getTooltipText(specs, d) + `<strong>${specs.YAxis}:</strong> ${d[specs.YAxis]}`,
                      label)
     }
 
@@ -950,7 +950,7 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
             tooltip.style("left", (e.pageX + 25) + "px")
                 .style("top", (e.pageY - 28) + "px")
                 .style("display", "block")
-                .html(label)
+                .html(`${label}`)
 
             // highlight all the circles on this path
             newSvg.selectAll("circle")
@@ -1242,9 +1242,9 @@ function interactScatterplotCircles(svg, specs, colorScale)
             // create tooltip text
             let t = getTooltipText(specs, d)
 
-            t += `${specs.XAxis}: ${d[specs.XAxis]}<br>`
-            t += `${specs.YAxis}: ${d[specs.YAxis]}<br>`
-            t += `${specs.Color}: ${d[specs.Color]}`
+            t += `<strong>${specs.XAxis}:</strong> ${d[specs.XAxis]}<br>`
+            t += `<strong>${specs.YAxis}:</strong> ${d[specs.YAxis]}<br>`
+            t += `<strong>${specs.Color}:</strong> ${d[specs.Color]}`
 
             // add new tooltip
             d3.select(this)
@@ -1388,7 +1388,7 @@ function drawScatterplotLegend(svg, data, scale, stat, scatterSvg)
                 tooltip.style("left", (e.pageX + 25) + "px")
                     .style("top", (e.pageY - 28) + "px")
                     .style("display", "block")
-                    .html(`${stat}: ${cutoffs[i+1]}-${cutoffs[i]}`)
+                    .html(`<strong>${stat}:</strong> ${cutoffs[i+1]}-${cutoffs[i]}`)
 
                 // make all other colors faded
                 scatterSvg.selectAll("circle")
