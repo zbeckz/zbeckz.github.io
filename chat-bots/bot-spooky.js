@@ -75,7 +75,7 @@
           break
         default:
       }
-      panel.style.backgroundImage = `https://cdn.glitch.global/39ca4434-f765-4ea3-86c1-da81951132a3/${url}`
+      panel.style.backgroundImage = `data/${url}`
 		},
 
 		// If you need more input data, add it here, and pass it in
@@ -202,7 +202,7 @@
               break
             default:
           }
-          panel.style.backgroundImage = `url(https://cdn.glitch.global/39ca4434-f765-4ea3-86c1-da81951132a3/${url})`
+          panel.style.backgroundImage = `url(data/${url})`
           
           
         }
