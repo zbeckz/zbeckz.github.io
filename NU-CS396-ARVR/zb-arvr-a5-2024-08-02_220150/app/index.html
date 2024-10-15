@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+    <!-- The website stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@cb0bb8407968be713b79008548b7044908ba5729/dist/aframe-master.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+
+    <!-- The website JavaScript file -->
+    <script src="/script.js" defer></script>
+    <script src="/main.js" defer></script>
+   
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img
+          crossorigin="anonymous"
+          id="panorama-lone-pine"
+          src="https://cdn.glitch.global/3610a815-c272-4a38-aa87-e54173df0f6d/20190101_124429.jpg?v=1684624218396"
+        />
+        
+        <!-- Textures from https://www.texturelab.xyz/# -->
+        <!-- tiles -->
+        <img
+          crossorigin="anonymous"
+          id="sandstone-diffuse"
+          src="https://cdn.glitch.global/3610a815-c272-4a38-aa87-e54173df0f6d/sandstone%20diffuse%20map.png?v=1684625945922"
+        />
+        <img
+          crossorigin="anonymous"
+          id="sandstone-normal"
+          src="https://cdn.glitch.global/3610a815-c272-4a38-aa87-e54173df0f6d/sandstone%20normal%20map.png?v=1684625941430"
+        />
+        <img
+          crossorigin="anonymous"
+          id="metal-diffuse"
+          src="https://cdn.glitch.global/3610a815-c272-4a38-aa87-e54173df0f6d/metal%20with%20sand%20particles%20on%20it%20diffuse%20map.png?v=1684628648769"
+        />
+        <img
+          crossorigin="anonymous"
+          id="metal-normal"
+          src="https://cdn.glitch.global/3610a815-c272-4a38-aa87-e54173df0f6d/metal%20with%20sand%20particles%20on%20it%20normal%20map.png?v=1684628652665"
+        />
+        
+        
+      </a-assets>
+      <!--  These are controlled by different Vue components    -->
+      <a-entity id="scene"></a-entity>
+    </a-scene>
+
+    <div id="controls"></div>
+  </body>
+</html>

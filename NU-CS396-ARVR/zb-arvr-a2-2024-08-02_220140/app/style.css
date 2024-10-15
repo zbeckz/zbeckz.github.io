@@ -1,0 +1,73 @@
+html {
+  font-family: "Trebuchet ms";
+  background-color: rgb(100, 200, 255);
+}
+
+h1 {
+  margin: 0px;
+  text-align: center;
+  border: 1px solid black;
+  padding-bottom: 6px;
+  background-color: rgba(200, 245, 255, 1);
+  box-shadow: 0px 0px 5px black;
+}
+
+#dataDisplay {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+  padding-top: 50px;
+  height: 50px;
+}
+
+#dataTable {
+  text-align: right;
+}
+
+.data-entry {
+  text-align: center;
+}
+
+button {
+  background-color: rgba(200, 245, 255, 1);
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 75px;
+  box-shadow: 0px 0px 2px black;
+}
+
+button:hover {
+  background-color: rgba(188, 222, 244, 1);
+  cursor: pointer;
+  box-shadow: 0px 0px 5px black;
+}
+
+#gameDisplay {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 60px;
+  padding-top: 50px;
+}
+
+img, #leaderboard {
+  height: 300px;
+  width: 300px;
+  border: 2px solid black;
+}
+
+#clickImage:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 5px black;
+}
+
+#leaderboard {
+  background-color: rgba(200, 245, 255, 1);
+  overflow-y: scroll;
+}
+
+#leaderboardTable {
+  position: relative;
+  left: 100px;
+}

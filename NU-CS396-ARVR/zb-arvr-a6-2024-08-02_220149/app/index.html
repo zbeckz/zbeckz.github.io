@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- 
+      This is an HTML comment
+      You can write text in a comment and the content won't be visible in the page
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="icon" href="https://glitch.com/favicon.ico" /> -->
+
+    <!-- The website stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+	
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@cb0bb8407968be713b79008548b7044908ba5729/dist/aframe-master.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+
+    <script src="utilities.js" defer></script>
+    
+    <!-- Avatar management, including Vue/Aframe -->
+    <script src="avatar.js" defer></script>
+    
+    <!-- Firebase stuff -->
+    <script src="io.js" defer></script>
+
+    <!-- The main app and  -->
+    <script src="script.js" defer></script>
+
+    <!-- Scenes, TODO: add yours here -->
+    <script src="room-baseball.js" defer></script>
+  </head>
+ 
+  <body>
+    <a-scene physics>
+      <a-assets>
+        <!-- ASSETS GO HERE -->
+        <!-- COPY THEM INTO GLITCH "ASSETS", THEN PASTE THE URLS HERE -->
+        <!-- THEN USE THEM IN YOUR OBJECTS -->
+        
+        <img
+          crossorigin="anonymous"
+          id="gus0"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/gus0.jpg?v=1685834490797"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="gus1"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/gus1.jpg?v=1685834478757"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="gus2"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/gus2.jpg?v=1685834465879"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="gus3"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/gus3.jpg?v=1685834473267"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="gus4"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/gus4.jpg?v=1685834476933"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="gus5"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/gus5.jpg?v=1685834475728"
+        />
+        
+        <!-- https://substance3d.adobe.com/assets/collections/3d900e9d342a75a1cb9faa23adcafc1693d9f9bd/asset/5bdf8cb1ad50611d28081a193e65c8be5c3ea736 -->
+        <a-asset-item
+          id="glove"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/glove.glb?v=1685487842461"
+        ></a-asset-item>  
+        
+        <!-- "Baseball bat" (https://skfb.ly/ooZ8K) by Koyshem is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). -->
+        <a-asset-item
+          id="bat"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/bat.glb?v=1685632658878"
+        ></a-asset-item>  
+      
+        <!-- generated via https://skybox.blockadelabs.com/ -->
+        <img
+          id="corn-field"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/realistic_corn_farm.jpg?v=1685479376586"
+        />
+    
+        <!-- the below assets are from https://www.texturelab.xyz/ -->
+        <img
+          crossorigin="anonymous"
+          id="turf-diffuse"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/turf-diffuse?v=1685402472134"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="turf-normal"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/turf-normal.png?v=1685402499240"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="dirt-diffuse"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/dirt-diffuse.png?v=1685405884823"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="dirt-normal"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/dirt-normal.png?v=1685405881118"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="shirt-diffuse"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/shirt-diffuse.png?v=1685490003892"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="shirt-normal"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/shirt-normal.png?v=1685490066773"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="tee-diffuse"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/tee-diffuse.png?v=1685648460789"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="tee-normal"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/tee-normal.png?v=1685648469031"
+        />
+        
+        <img
+          crossorigin="anonymous"
+          id="fence-diffuse"
+          src="https://cdn.glitch.global/16646435-a455-4404-b7f8-357e7f25f170/fence-diffuse.png?v=1685745948837"
+        />
+
+      </a-assets>
+
+      <!-- Scene handled by Vue   -->
+      <a-entity id="scene"></a-entity>
+    </a-scene>
+  
+    <!-- Controls handled by Vue   -->
+    <div id="controls"></div>
+  </body>
+</html>

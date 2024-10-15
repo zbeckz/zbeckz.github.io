@@ -1,0 +1,109 @@
+html {
+  background-image: linear-gradient(to bottom right, rgb(0, 0, 0), rgb(235,97,35), rgb(0, 0, 0));
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}
+
+a:link {
+  color: rgb(50, 200, 255)
+}
+
+a:visited {
+  color: rgb(50, 200, 255)
+}
+
+#Title {
+  text-align: center;
+  margin: auto;
+  padding-bottom: 40px;
+  font-family: 'Trebuchet MS';
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#Intro {
+  gap: 90px;
+  padding-bottom: 40px;
+}
+
+#IntroParagraph {
+  width: 400px;
+  text-align: justify;
+}
+
+#IntroParagraph p {
+  font-size: larger;
+  font-family: 'Trebuchet MS';
+}
+
+#HalloweenDisplay {
+  width: 550px;
+  height: 250px;
+  gap: 40px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid black;
+}
+
+#HalloweenDisplay img {
+  width: 210px;
+  height: 210px;
+  transition: ease-in-out 0.15s;
+}
+
+#HalloweenDisplay img:hover {
+  cursor: pointer;
+  width: 230px;
+  height: 230px;
+  transition: ease-in-out 0.15s;
+}
+
+#HalloweenDisplay p {
+  width: 230px;
+  font-size: small;
+  font-family: 'Trebuchet MS';
+  text-align: justify;
+}
+
+#ProjectGrid {
+    margin: auto;
+    width: 600px;
+    height: 600px;
+    justify-content: center;
+    display: grid;
+    column-gap: 150px;
+    row-gap: 75px;
+    grid-template-columns: 250px 250px 250px;
+    grid-template-rows: 175px 175px;
+    padding-bottom: 50px;
+}
+
+.grid-item {
+    width: 250px;
+    height: 175px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid black;
+    justify-content: center;
+    align-items: center;
+    transition: ease-in-out 0.25s;
+    position: relative;
+}
+.grid-item:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+    transition: ease-in-out 0.25s;
+    cursor: pointer;
+}
+
+.grid-item u {
+    text-align: center;
+    justify-content: center;
+    font-size: x-large;
+    color: rgb(255, 255, 255);
+    font-family: 'Trebuchet MS';
+}

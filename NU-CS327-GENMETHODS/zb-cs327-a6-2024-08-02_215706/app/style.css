@@ -1,0 +1,159 @@
+body {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  flex-direction: column; /* Stack the children vertically */
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+  z-index: 100;
+}
+
+header h1 {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+}
+
+h3 {
+  margin: 7px 0px 0px 0px;
+}
+
+#app {
+ z-index: 50;
+ flex: 1; /* To allow the container to grow and consume the available space */
+ display: flex;
+ flex-direction: column;
+ overflow: hidden;
+}
+
+main {
+  flex: 1; /* To allow main to grow and consume the available space */
+
+}
+
+.canvas-holder {
+  position: relative;
+  background-color: grey;
+}
+
+
+button {
+  font-size: 16px;
+  margin: 2px;
+}
+
+button.active {
+  background-color: hsl(100, 100%, 50%);
+}
+
+
+canvas {
+  position: relative;
+  margin: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, .5);
+}
+
+.tools {
+  max-width: 300px;
+  
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, .5);
+}
+
+.system-controls {
+  margin: 3px;
+  border-radius: 10px;
+    background-color: white;
+  flex: 1;
+  padding: 3px;
+  border: 3px solid rgba(0, 0, 0, .2);
+}
+
+.system-controls-title {
+  font-weight: bold;
+}
+
+.columns {
+   overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+
+}
+
+.slider-label {
+  font-size: 80%;
+  font-style: italic;
+}
+.panel {
+  flex: 1
+}
+
+/*==================================================================*/
+/* CHAT STYLES                                                      */
+
+.chat-window {
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages-holder {
+
+  flex: 1;
+  overflow: scroll;
+}
+
+.chat-controls-holder {
+  flex: 1;
+  height: 120px;
+}
+
+.message-row {
+  padding: 3px;
+  display: flex;
+}
+
+
+.message-row-bot {
+  flex-direction: row;
+}
+.message-row-user {
+  flex-direction: row-reverse;
+}
+
+.message-text {
+  max-width: 90%;
+  padding: 2px 4px;
+  min-width: 1em;
+  min-height: 1em;
+  margin: 4px;
+  display: inline-block;
+  border: 1px solid grey;
+}
+
+.message-row-user .message-text {
+  border-radius: 10px 1px 10px 10px;
+}
+
+.message-row-bot .message-text {
+  border-radius: 1px 10px 10px 10px;
+}
+
+.message-from {
+  display: inline-block;
+  font-weight: bold;
+}
+

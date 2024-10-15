@@ -1,0 +1,33 @@
+html {
+  color: white;
+}
+
+body {
+  background-size: cover;
+  background-image: url("https://cdn.glitch.global/a7ebc29c-63b3-41eb-bd97-78bd6840d9aa/playground-park-bridge-young-outdoor-childhood.jpg?v=1682548282723");
+}
+
+img {
+  width: 120px;
+  height: 120px;
+}
+
+img:hover {
+  cursor: pointer;
+  width: 130px;
+  height: 130px;
+}
+
+.message-text {
+  color: white;
+  font-weight: bold;
+}
+
+.message-user {
+  color: white;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px 50px;
+}

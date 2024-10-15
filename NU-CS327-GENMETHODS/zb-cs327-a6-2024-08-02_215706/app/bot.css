@@ -1,0 +1,18 @@
+.bot-wavebot .chat-messages-holder {
+	color: white;
+}
+
+.bot-wavebot .panel {
+  background-color: white;
+}
+
+.bot-spookybot .chat-messages-holder {
+  background-color: black;
+  color: orange;
+}
+
+.bot-spookybot .panel {
+  background-image: url("https://cdn.glitch.global/39ca4434-f765-4ea3-86c1-da81951132a3/Vampire.jpg?v=1699290463596");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
