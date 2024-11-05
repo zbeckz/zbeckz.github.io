@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BeckerZach_ProjA</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="HTML5_canvas" width="450" height="450">
+    Please use a browser that supports HTML-5 "canvas" objects
+    </canvas>
+	<br>---> Click and drag your mouse up and down to rotate the Rubik's cube vertically!!
+	<br>---> Hold the q/Q or e/E keys to shrink or grow the orbiting tetrahedron joint chain :)
+	<br>---> Move the slider to change the radius of the orbit
+	<div class="slidecontainer">
+		<input type="range" min="40" max="90" value="70" class="slider" id="OrbitRadiusSlider">
+	</div>
+    <input type="button" id="Side1AngleButton" onclick="SideAngle1_runStop()" value="Side 1 Rotation ON">
+	<input type="button" id="CubeAngleButton" onclick="CubeAngle_runStop()" value="Cube Rotation ON">
+	<input type="button" id="Side2AngleButton" onclick="SideAngle2_runStop()" value="Side 2 Rotation ON">
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix-quat03.js"></script>
+    <script src="BeckerZach_ProjA.js"></script>
+  </body>
+</html>
