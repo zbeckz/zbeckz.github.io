@@ -37,7 +37,6 @@ Vue.component("classification-view", {
 })
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  console.log("DOM fully loaded and parsed");
 
   new Vue({
     template: `<div id="app">
@@ -114,18 +113,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
       },
 
       stopCameraAndTracking() {
-        console.log("TRACKING - STOP VIDEO CAPTURE");
         // this.capture.remove();
         this.tracker.isActive = false;
       },
 
       startCameraAndTracking() {
-        console.log("TRACKING - START VIDEO CAPTURE");
         if (this.capture) {
-          console.log("\treenable camera");
           this.tracker.isActive = true;
         } else {
-          console.log("\tstart camera");
           this.capture = this.settings.p.createCapture(this.settings.p.VIDEO);
           this.capture.hide();
 
@@ -135,11 +130,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
           const maxCount = 100;
           const interval = 50;
           const intervalId = setInterval(() => {
-            // console.log(this.capture.elt)
             if (this.capture.elt.width > 0) {
               // If the condition is met, stop the loop
               clearInterval(intervalId);
-              console.log("Condition met, stopping loop.");
               this.recorder.stopPlayback();
               this.tracker.setVideoSource(this.capture);
               this.tracker.initTracking();
@@ -199,14 +192,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     watch: {
       activeTask() {
         this.initializeTask();
-        console.log("Set last task", this.activeTask.name)
         localStorage.setItem("lastTask", this.activeTask.name);
       },
 
       "recorder.recordings": {
         deep: true,
         handler() {
-          console.log("Recordings changed");
           this.recorder.saveRecordings();
         },
       },

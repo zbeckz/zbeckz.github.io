@@ -39,8 +39,6 @@ Vue.component('chat-message', {
     		}
     	},
     	hasCustomMessageComponent() {
-    		// console.log(this.bot.name, this.$options.components)
-    		// return this.$options.components[`message-${this.bot.name}`]
     		return false
     	},
     	classes() {

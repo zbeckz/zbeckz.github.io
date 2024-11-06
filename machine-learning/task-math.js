@@ -48,10 +48,6 @@
     },
 
     train(epochs = 30) {
-      console.log(
-        "\n------------------------\nTrain network for task:",
-        this.name
-      );
       // Following the steps from here:
       // https://learn.ml5js.org/#/reference/neural-network
 
@@ -62,18 +58,12 @@
       // Get all the training data from our dataset
       let data = recorder.toData(this);
 
-      console.log(`\tTraining on ${data.length} frames`);
-
       // Add each input/output set to the nn for training
       data.forEach(({ input, output }) => {
         // Each data is a pair of input data (lots of flattened vectors, and the output)
         this.nn.addData(input, output);
       });
 
-      console.log(`\t\tEach input is ${data[0].input.length} numbers`);
-      console.log(`\t\tEach output is ${data[0].output.length} numbers`);
-
-      console.log("\tNormalize data (make it between 0-1)", this.nn.data);
       this.nn.normalizeData();
 
       // Train your neural network
@@ -83,10 +73,8 @@
       };
 
       // **** STEP 3: train - show the network all the data and record patterns *****
-      console.log("\tTrain", this.name, "on");
       this.nn.train(trainingOptions, () => {
         // When finished
-        console.log("Finished training!");
         // **** STEP 4: get the model *****
       this.nn.save();
       });
@@ -95,7 +83,6 @@
     loadModel() {
       // **** STEP 5: load a model *****
       if (task.weightsURL && task.metadataURL && task.weightsURL) {
-        console.log("Load model");
         // This is where we load the model from
         // Make sure your model is in the folder "models"  with the prefix "example_"
         //  (or what your task's name is)
@@ -109,11 +96,9 @@
         try {
           this.nn.load(modelDetails, () => {
             // Once the model is loaded, do.... something
-            console.log("\tModel successfully loaded for task:", task.name);
             this.modelIsLoaded = true;
           });
         } catch (err) {
-          console.log("\tError in loading model", err);
         }
       }
     },
@@ -122,15 +107,10 @@
        // **** STEP 6: make predictions *****
      // Predict on hands or faces
       let objectsToPredictOn = task.mode === "hands" ? hands : faces;
-      // console.log(
-      //   `Make a classification for ${objectsToPredictOn.length} ${task.mode}`
-      // );
 
       objectsToPredictOn.forEach((obj) => {
         // Get the data for this object
         let input = obj.toData().flat();
-        // console.log("Input size:", input.length);
-        // console.log(data)
         
         // Predict a label for this object
         this.nn.predict(input, (error, rawPrediction) => {
@@ -193,7 +173,6 @@
         let operation = "?"
         let size = 30;
         if (hand.classification) {
-            console.log(hand.classification.winner.label)
             operation = this.getOperator(hand.classification.winner.label)
             size = hand.classification.winner.score * 30;
         }

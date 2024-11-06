@@ -60,7 +60,6 @@ window.onload = function (e) {
     
     
   mounted() {
-    console.log("Scene!")
     
     // Rotate the scene on a turntable
     setInterval(() => {

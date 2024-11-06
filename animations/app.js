@@ -1,7 +1,4 @@
-console.log("Hello, sasdfasdfa")
-
 document.addEventListener("DOMContentLoaded", (event) => {
-	console.log("DOM fully loaded and parsed");
 
   // We have all the elements, get one with id "app"
 

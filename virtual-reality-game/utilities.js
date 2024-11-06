@@ -50,17 +50,10 @@ AFRAME.registerComponent("colorchanger", {
         }
       });
 
-      console.log(
-        "Added material lookup table for submodels:",
-        Object.keys(this.materialsByID)
-      );
-
       el.changeColor = (table) => {
-        // console.log("ChangeColor")
         Object.keys(table).forEach((key) => {
           // table[key]
           let c = new THREE.Color(table[key]);
-          // console.log(this.materialsByID["Node-Mesh"])
           this.materialsByID[key].color = c;
         });
       };
@@ -1070,9 +1063,6 @@ function drawRandom(array, min, max) {
 //  if (i == 0)
 //    s = "hello, white cat"
 
-//  console.log(s)
-//  console.log(detectGrammarMatch(testGrammar, `#color# #animal#`, s))
-//  console.log(detectGrammarMatch(testGrammar, `#greeting#.*#animal#`, s))
 // }
 
 function detectGrammarMatch(grammar, rule, s) {

@@ -11,7 +11,6 @@ settings.scenes.baseball = {
   gloveSide: "Left",
 
   setup() {
-    console.log("Setup!");
     // Do something when we start this mode
   },
 

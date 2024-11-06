@@ -1,16 +1,6 @@
-/**
- * Starter code
- * 
- */
-/* globals Vue, p5 */
-// GLOBAL VALUES, CHANGE IF YOU WANT
-
-
 const bots = []
 
 document.addEventListener("DOMContentLoaded", (event) => {
-	console.log("DOM fully loaded and parsed");
-
 	// We have all the elements, get one with id "app"
 
 	new Vue({

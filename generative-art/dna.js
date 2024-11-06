@@ -12,10 +12,6 @@ class Individual {
   }
 
   loadFromLandmark(landmark) {
-    console.log(
-      `Setting individual to landmark "${landmark.name}"`,
-      landmark.dna.map((s) => s.toFixed(2))
-    );
     this.copyDNA(landmark.dna);
   }
 
@@ -34,10 +30,7 @@ class Individual {
 }
 
 function evolveNewPopulationFrom({ parent, population, mutationRate = 0.2 }) {
-  console.log(`Evolve new generation from`, parent);
-
   // Clone everyone from the partent
-  // console.log(parent.dna)
 
   // FIRST CLONE, THEN MUTATE
   population.forEach((ind) => {

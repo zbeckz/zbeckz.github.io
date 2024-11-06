@@ -133,7 +133,6 @@ class Vector2D {
 		// Or from pt0 along a vector v
 		// it may be offset some distance with the normal (n) 
 		// it may be offset some distance along the direction of the edge (m) 
-		// console.log(this.magnitude)
 		
 		// No vector, just use the two endpoints
 		if (!v)

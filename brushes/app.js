@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-	console.log("DOM fully loaded and parsed");
-
   // We have all the elements, get one with id "app"
 
 	new Vue({
@@ -67,7 +65,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       
       // used in the html template, binded to button's click event. set the active brush, call its setup
       setTool(brush) {
-          console.log("Set brush", brush)
           this.activeBrush = brush
           this.activeBrush.setup?.(this.p)
       }

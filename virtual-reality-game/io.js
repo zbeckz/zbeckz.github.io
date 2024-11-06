@@ -115,7 +115,6 @@ let IO = {
   },
 
   setup() {
-    console.log(`IO - setup, userID ${IO.userID}`);
     setupAvatars();
   },
 
@@ -140,7 +139,6 @@ let IO = {
 
       // Did you move enough to need to post an update to the server?
       if (d > MIN_UPDATE_TURN) {
-        // console.log(d)
         this.dirServer.copy(this.dir);
 
         let rText = this.rot.toAFrame();
@@ -170,10 +168,6 @@ let IO = {
     // but keep me
     avatars.push(userAvatar);
 
-    console.log(
-      "-------------\n" + `IO - enter room - app:'${appID}', room:'${roomID}'`
-    );
-
     // Setup all references
     IO.roomRef = firebase.database().ref(`${appID}/rooms/${roomID}`);
     IO.roomDataRef = IO.roomRef.child(`data`);
@@ -182,7 +176,6 @@ let IO = {
     // Subscribe to room changes
     IO.roomDataRef.on("value", (snapshot) => {
       let data = snapshot.val();
-      // console.log("IO - roomData changed", data);
       // Object.assign(value)
       setFromServerData(IO.activeScene.roomData, data);
     });
@@ -225,7 +218,6 @@ let IO = {
             ...pos,
             role,
           });
-          // console.log(`   - assigned role:${role} to ${a}`, pos);
         }
       });
 
@@ -252,7 +244,6 @@ let IO = {
         console.log(`IO - avatar leaves on Firebase: ${uid.slice(-4)}`);
       // This avatar was removed
       let index = avatars.findIndex((a) => a.uid === uid);
-      console.log("Remove at ", index);
       avatars.splice(index, 1);
     });
   },
@@ -286,7 +277,6 @@ let IO = {
     if (role === undefined) {
       role = getRandom(IO.getEmptyRoles());
     }
-    console.log(`Assign role ${role} to ${a}`);
     a.setFromData({
       role,
       ...IO.getPositionByRole(role),
@@ -327,7 +317,6 @@ let IO = {
 try {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  console.log("FIREBASE INIT!");
 
   // Create the database
   IO.db = firebase.database();
@@ -349,7 +338,6 @@ function setFromServerData(obj, data) {
     let target = obj[key];
     let val = data[key];
 
-    //     console.log(" _ ", key, target, val, typeof target);
 
     if (Array.isArray(target)) {
     } else if (target?.copy) {

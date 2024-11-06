@@ -209,8 +209,6 @@ function initVertexBuffer()
     var lineAxes = makeLineAxes();
     var groundVerts = makeGroundGrid();
     var orbitVerts = makeOrbitLines();
-
-    console.log(orbitVerts);
     
     var nn = myShapes.length + groundVerts.length + lineAxes.length + orbitVerts.length;
 

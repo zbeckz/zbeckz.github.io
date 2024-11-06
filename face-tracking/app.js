@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     methods: {
       toggleLive() {
-        console.log("TOGGLE LIVE MODE", this.capture);
         if (this.capture === undefined) {
           this.startCameraAndTracking();
         } else {
@@ -45,7 +44,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       },
 
       startCameraAndTracking() {
-        console.log("TRACKING - START VIDEO CAPTURE");
         this.capture = this.settings.p.createCapture(this.settings.p.VIDEO);
         this.capture.hide();
 
@@ -54,11 +52,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const interval = 50;
 
         const intervalId = setInterval(() => {
-          // console.log(this.capture.elt)
           if (this.capture.elt.width > 0) {
             // If the condition is met, stop the loop
             clearInterval(intervalId);
-            console.log("Condition met, stopping loop.");
             this.tracker.setVideoSource(this.capture);
             this.tracker.initTracking();
           } else if (count >= maxCount) {
@@ -108,8 +104,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         };
 
         p.preload = () => {
-          console.log(window);
-          // this.facemesh = ml5.facemesh( { maxFaces: 1, refineLandmarks: false, flipHorizontal: true });
         };
 
         p.draw = () => {

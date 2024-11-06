@@ -363,7 +363,6 @@ function drawAll()
     drawRubiksCube()
 
     // draw tetrahedron chain
-    console.log(g_tetraOrbitRadius);
     g_modelMatrix.setTranslate(g_tetraOrbitRadius * Math.cos(g_tetraOrbitAngle), g_tetraOrbitRadius * Math.sin(g_tetraOrbitAngle), 0.0); 
     g_modelMatrix.scale(g_tetraSize, g_tetraSize, g_tetraSize);
     g_modelMatrix.rotate(g_tetraAngle, 0, 1, 0);  // spin around y axis

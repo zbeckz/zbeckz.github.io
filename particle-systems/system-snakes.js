@@ -92,7 +92,6 @@
         // save previous position to trail
         pt.trail.splice(0, 1)
         pt.trail.push({x: pt.x, y: pt.y})
-        console.log(pt.trail)
 
 				// Apply the velocity to the position
 				pt.addMultiple(pt.velocity, deltaTime)

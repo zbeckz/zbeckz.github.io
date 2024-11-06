@@ -17,7 +17,6 @@ function drawBackground(p, {}) {
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-	console.log("DOM fully loaded and parsed");
 
 	// We have all the elements, get one with id "app"
 
@@ -227,7 +226,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		methods: {
 			startSpace() {
-				console.log("space changed!", this.selectedSpace.name)
 				localStorage.setItem("lastSpace", this.selectedSpace.name )
 				this.selectedSpace.setup?.(this.settings)
 				this.population.forEach(individual => this.selectedSpace.setupIndividual?.(individual, this.settings))
@@ -276,7 +274,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			},
 			copyToClipboard() {
 				let dnaText = this.selectedIndividual.dna.slice(0,this.currentDNALength).map(s => s.toFixed(2))
-				console.log("DNA copied to clipboard", dnaText)
 				navigator.clipboard.writeText(dnaText);
 
 

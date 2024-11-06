@@ -47,7 +47,6 @@ class Trackable {
   }
 
   setLandmarksFromTracker(landmarks, imageDimensions) {
-    // console.log("set to landmarks", landmarks)
     this.landmarks.forEach((pt, index) => {
       // Scale and mirror the positions, so they are in screen space
       pt.setTo(
@@ -61,7 +60,6 @@ class Trackable {
   drawDebugData(p) {
     p.fill(...this.idColor);
     p.stroke(0);
-    // console.log(this.landmarks)
     this.landmarks.forEach((pt) => {
       // Landmarks are relative to the image size
       p.circle(...pt, 6);
@@ -397,7 +395,6 @@ class Tracker {
 
   togglePlayback() {
     if (this.playbackInterval) {
-      console.log("STOP PLAYBACK");
     } else {
       this.frameIndex = 0;
 
@@ -458,7 +455,6 @@ class Tracker {
   }
 
   async initTracking() {
-    console.log("TRACKER - initiate tracking!");
     this.mediapipe_module = await import(
       "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
     );

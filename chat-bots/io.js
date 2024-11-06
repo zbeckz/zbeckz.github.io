@@ -27,10 +27,6 @@ function makeRequestFromHuggingFace({ modelURL, payload }) {
       'Content-Type': 'application/json',
     };
 
-    console.log("==========\nHUGGING FACE REQUEST!");
-    console.log("Payload:\n", JSON.stringify(payload, null, 2));
-    console.log("Headers:\n", JSON.stringify(headers, null, 2));
-
     // Make the fetch request
     fetch(API_URL, {
       method: 'POST',
@@ -45,11 +41,10 @@ function makeRequestFromHuggingFace({ modelURL, payload }) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         resolve(data); // Resolve the promise with the fetched data
       })
       .catch((error) => {
-        console.error(error);
+        console.error(`Error making POST request to ${API_URL}: `, error);
         reject(error); // Reject the promise with the error
       });
   });

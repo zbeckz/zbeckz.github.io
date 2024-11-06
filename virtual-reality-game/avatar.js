@@ -37,7 +37,6 @@ class Avatar {
     };
     
     // Add to the list of avatars
-    console.log(`Adding ${this} to list of avatars`, avatars)
     avatars.push(this);
 
     
@@ -54,7 +53,6 @@ class Avatar {
   // Where is my head?
   // This is from the Cardboard/Quest *relative* to the current pos/rot
   get headRot() {
-    // console.log(this.head.rot.toAFrame())
     return this.head.rot.toAFrame();
   }
   // get headPos() {

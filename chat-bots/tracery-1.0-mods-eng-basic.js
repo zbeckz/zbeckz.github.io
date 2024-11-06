@@ -69,11 +69,9 @@ var baseEngModifiers = {
 	},
 
 	firstS : function(s) {
-		console.log(s);
 		var s2 = s.split(" ");
 
 		var finished = baseEngModifiers.s(s2[0]) + " " + s2.slice(1).join(" ");
-		console.log(finished);
 		return finished;
 	},
 

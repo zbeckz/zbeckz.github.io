@@ -12,7 +12,6 @@ let systems = []
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-	console.log("DOM fully loaded and parsed");
 
 	// We have all the elements, get one with id "app"
 
@@ -65,7 +64,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 					p.mousePos = new Vector2D()
 					p.mouseVelocity = new Vector2D()
 
-					console.log("Setting up starting systems", this.activeSystems.map(a => a.name))
 					this.activeSystems.forEach(s => s.setup(p, this.settings))
 				}
 
@@ -141,7 +139,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 						toggleSystem(sys) {
 							sys.isActive = !sys.isActive
 							if (sys.isActive) {
-								console.log("activate system: ", sys.name, " - ", sys.description)
 								sys.setup(this.p, this.settings)
                 this.activeSystems.forEach(s => {
                   if (s != sys) {s.isActive = false}

@@ -15,12 +15,6 @@ window.onload = function (e) {
   settings.activeSceneID =
     PARAMS.room || settings.activeSceneID || Object.keys(settings.scenes)[0];
 
-  console.log("SCRIPT - STARTING SCENE", settings.activeSceneID);
-  console.log(
-    "SCRIPT - room data: ",
-    JSON.stringify(settings.scenes[settings.activeSceneID].roomData, null, 2)
-  );
-
   // A Vue element for the controls
   new Vue({
     template: `<div id="controls">
@@ -171,14 +165,12 @@ window.onload = function (e) {
       //-------------------------------------
 
       activeSceneSettings() {
-        // console.log(this.settings.activeSceneID, this.settings[this.settings.activeSceneID])
         return this.settings.scenes[this.settings.activeSceneID];
       },
     },
 
     watch: {
       "settings.activeSceneID"() {
-        console.log("CHANGE SCENE", settings.activeSceneID);
         this.startScene();
       },
     },
