@@ -59,7 +59,7 @@ function predictionToClassification(labels, rawPrediction) {
     sorted: [],
   };
 
-  rawPrediction.forEach && rawPrediction.forEach((option, index) => {
+  rawPrediction.forEach((option, index) => {
     let label = labels[index];
     classification.scoresByLabel[label] = option.value;
     classification.sorted.push({
