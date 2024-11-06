@@ -1,12 +1,10 @@
 
 
-/* globals Vue, p5, masks, CONTOURS, Vector2D */
 (function () 
 {  
   let mask = 
   {
     //=========================================================================================
-    // TODO: custom data
 
     hide: false,
     name: "meteor", // Lowercase only no spaces! (we reuse this for some Vue stuff)
@@ -70,16 +68,6 @@
         this.lastSpawn = t
         this.spawnMeteor(p)
       }
-    },
-
-    setupHand({ p, hand }) 
-    {
-      
-    },
-
-    setupFace({ p, face }) 
-    {
-      
     },
 
     drawHand({ p, hand }) 
@@ -216,24 +204,21 @@
   };
 
   //============================================================
-  /**
-   * Input controls for this bot.
-   * Do we just need a chat input? Do we need anything else?
-   * What about game controls, useful buttons, sliders?
-   **/
 
   Vue.component(`input-${mask.name}`, {
     // Custom inputs for this bot
-    template: `
-    <div>
-			<div> Meteor Frequency: <input type="range" v-model="mask.meteorFreq" min="1" max="5" step="0.5" /></div>
-      <div> Meteor Speed: <input type="range" v-model="mask.meteorSpeed" min="1" max="10" step="0.5" /></div>
-      <div> Random Movement: <input type="range" v-model="mask.randomness" min="1" max="100" step="0.5" /></div>
-		</div>
+    template: 
+    `
+      <div>
+        <div> Meteor Frequency: <input type="range" v-model="mask.meteorFreq" min="1" max="5" step="0.5" /></div>
+        <div> Meteor Speed: <input type="range" v-model="mask.meteorSpeed" min="1" max="10" step="0.5" /></div>
+        <div> Random Movement: <input type="range" v-model="mask.randomness" min="1" max="100" step="0.5" /></div>
+      </div>
     `,
 
     // Custom data for these controls
-    data() {
+    data() 
+    {
       return {};
     },
     props: { mask: { required: true, type: Object } }, // We need to have bot

@@ -23,7 +23,7 @@ const sketches = [
 
     draw(p) 
     {
-      if (this.pause) { return; }
+      if (this.pause) return;
       
       // transparent to cause fading
       p.background(19, 83, 0, 0.05)
@@ -34,11 +34,10 @@ const sketches = [
         let emoji = p.random(this.emojis)
         p.text(emoji, p.random(0, WIDTH), p.random(0, HEIGHT))
       }
+
       this.count++
-      if (this.count == 15)
-      {
-        this.count = 0
-      }
+
+      if (this.count == 15) this.count = 0
     }
   },
   
@@ -66,7 +65,7 @@ const sketches = [
 
     draw(p) 
     {
-      if (this.pause) { return; }
+      if (this.pause) return;
       
       for (let pass = 0; pass < 4; pass++)
       {
@@ -174,7 +173,7 @@ const sketches = [
 
     draw(p)
     {
-      if (this.pause) { return; }
+      if (this.pause) return;
       
       var t = p.millis() * 0.0005
       
@@ -229,7 +228,7 @@ const sketches = [
 
     draw(p)
     {
-      if (this.pause) { return; }
+      if (this.pause) return;
       
       // black background
       p.background(19, 83, 0)
@@ -337,7 +336,7 @@ const sketches = [
 
     draw(p)
     {
-      if (this.pause) { return; }
+      if (this.pause) return;
       
       // draw the background
       p.background(110, 96, 21)
@@ -387,7 +386,7 @@ const sketches = [
 
     draw(p)
     {
-      if (this.pause) { return; }
+      if (this.pause) return;
       
       p.background(19, 83, 0)
       let r = 0

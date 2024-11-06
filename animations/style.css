@@ -17,14 +17,13 @@ h1, h4 {
 
 #app {
     z-index: 50;
-	  flex: 1; /* To allow the container to grow and consume the available space */
+	flex: 1; /* To allow the container to grow and consume the available space */
     display: flex;
     flex-direction: column;
 }
 
 main {
     flex: 1; /* To allow main to grow and consume the available space */
-   
 }
 
 .sketch-holder {

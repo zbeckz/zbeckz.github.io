@@ -1,10 +1,8 @@
-/* globals Vue, p5, masks, CONTOURS, Vector2D */
 (function () 
 {
   let mask = 
   {
     //=========================================================================================
-    // TODO: custom data
 
     hide: false,
     name: "lightning", // Lowercase only no spaces! (we reuse this for some Vue stuff)
@@ -73,16 +71,6 @@
           cloud.seed = p.random(1, 10000)
         }
       }
-    },
-
-    setupHand({ p, hand }) 
-    {
-      
-    },
-
-    setupFace({ p, face }) 
-    {
-      
     },
 
     drawHand({ p, hand }) 
@@ -215,24 +203,21 @@
   };
 
   //============================================================
-  /**
-   * Input controls for this bot.
-   * Do we just need a chat input? Do we need anything else?
-   * What about game controls, useful buttons, sliders?
-   **/
 
   Vue.component(`input-${mask.name}`, {
     // Custom inputs for this bot
-    template: `
-    <div>
-			<div> Cloud Size: <input type="range" v-model="mask.cloudSize" min="10" max="30" step="0.5" /></div>
-      <div> Lightning Size: <input type="range" v-model="mask.lightningSize" min="1" max="10" step="0.5" /></div>
-      <div> Lightning Color: <color-picker v-model="mask.lightningColor" /> </div>
-		</div>
+    template: 
+    `
+      <div>
+        <div> Cloud Size: <input type="range" v-model="mask.cloudSize" min="10" max="30" step="0.5" /></div>
+        <div> Lightning Size: <input type="range" v-model="mask.lightningSize" min="1" max="10" step="0.5" /></div>
+        <div> Lightning Color: <color-picker v-model="mask.lightningColor" /> </div>
+      </div>
     `,
 
     // Custom data for these controls
-    data() {
+    data() 
+    {
       return {};
     },
     props: { mask: { required: true, type: Object } }, // We need to have bot

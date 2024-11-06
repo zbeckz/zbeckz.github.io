@@ -12,11 +12,6 @@ let brushes = [
     label: "❌",
     hide: false,
     description: "Eraser: turns canvas completely white",
-
-    setup(p, settings) 
-    {
-      
-    },
     
     draw(p, settings)
     {
@@ -29,11 +24,6 @@ let brushes = [
       p.background(backgroundColor);
       p.colorMode(p.HSL)
     },
-
-    mouseDragged(p, settings) 
-    {
-      // nothing happens when they drag eraser  
-    }
   },
   
 ////////////////////////////////////////////////////////////////////////////////

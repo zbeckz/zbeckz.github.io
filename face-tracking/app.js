@@ -1,10 +1,3 @@
-/**
- * Starter code
- *
- */
-/* globals Vue, p5, Tracker */
-// GLOBAL VALUES, CHANGE IF YOU WANT
-
 const DEFAULT_FRAME_RATE = 30;
 
 let masks = [];
@@ -12,30 +5,31 @@ let masks = [];
 const WIDTH = 600;
 const HEIGHT = 400;
 
-document.addEventListener("DOMContentLoaded", (event) => {
-  console.log("DOM fully loaded and parsed");
-
+document.addEventListener("DOMContentLoaded", () => {
   new Vue({
-    template: `<div id="app">
-      
-			<div ref="p5"></div>
-      
-      <div class="controls">
-        <div class="controls-section" style="width:200px">
-        Draw debug data:<input type="checkbox" v-model="drawDebugData" />
-        <select v-model="activeMask">
-          <option v-for="mask in masks.filter(b=>!b.hide)" :value="mask">{{mask.name}}</option>
-        </select>
-        <button @click="toggleLive">🎥 START FACE-TRACKING</button>
-        <button v-if="false" @click="tracker.toggleRecording()">⏺️ record</button>
-        <button v-if="false" @click="tracker.togglePlayback()">⏯️ playback</button>
-       	</div>
-        <component class="controls-section" :is="'input-' + activeMask.name" :mask="activeMask" />
+    template: 
+    `
+      <div id="app">
+        <div ref="p5"></div>
+        <div class="controls">
+          <div class="controls-section" style="width:200px">
+            Draw debug data:<input type="checkbox" v-model="drawDebugData" />
+            <select v-model="activeMask">
+              <option v-for="mask in masks.filter(b=>!b.hide)" :value="mask">{{mask.name}}</option>
+            </select>
+            <button @click="toggleLive">🎥 START FACE-TRACKING</button>
+            <button v-if="false" @click="tracker.toggleRecording()">⏺️ record</button>
+            <button v-if="false" @click="tracker.togglePlayback()">⏯️ playback</button>
+          </div>
+          <component class="controls-section" :is="'input-' + activeMask.name" :mask="activeMask" />
+        </div>
       </div>
-		</div>`,
+    `,
 
-    methods: {
-      toggleLive() {
+    methods: 
+    {
+      toggleLive() 
+      {
         if (this.capture === undefined) {
           this.startCameraAndTracking();
         } else {
@@ -43,7 +37,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
       },
 
-      startCameraAndTracking() {
+      startCameraAndTracking() 
+      {
         this.capture = this.settings.p.createCapture(this.settings.p.VIDEO);
         this.capture.hide();
 

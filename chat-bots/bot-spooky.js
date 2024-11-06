@@ -18,8 +18,7 @@
 		botDisplayName: "👻",
     
     // bot response grammar
-    grammar: new tracery.Grammar(
-    {
+    grammar: new tracery.Grammar({
       "ghost": ["#ghost_scare# #ghost_talk#"],
       "ghost_scare": ["Boo!", "OoOoooOoo"],
       "ghost_talk": ["Give me your soul!", "Mwahahaha", "You look scared...", "Prepare to be haunted", "I need ectoplasm"],
@@ -43,21 +42,18 @@
 		setup() 
     { 
       this.botDisplayName = "👻"
-      this.messages.push
-      ({
+      this.messages.push({
 				text: "Hello there! I'm currently feeling like a " + this.botDisplayName + ". Try saying some spooky words and my mood may change",
 				from: "bot"
 			})
       
-      setInterval(() => 
-      {
+      setInterval(() => {
         this.botResponse()
       }, 5000)
       
       let panel = document.getElementsByClassName("panel")[0]
       let url
-      switch(this.botDisplayName) 
-      {
+      switch(this.botDisplayName) {
         case "👻":
           url = "Ghost.png"
           break
@@ -141,9 +137,6 @@
 			})
     }
 	};
-
-	const WIDTH = 600;
-	const HEIGHT = 400;
 
 	Vue.component(`panel-${bot.name}`, 
   {
@@ -245,6 +238,7 @@
     {
 			return { inputText: "", }
 		},
+    
 		props: {"bot":{required:true, type:Object}} // We need to have bot
 	})
 
