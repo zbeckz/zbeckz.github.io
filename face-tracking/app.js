@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let p = this.settings.p;
         this.activeMask.setup({ p });
         this.tracker.hands.forEach((hand) =>
-          this.activeMask.setupHand({ p, hand })
+          this.activeMask.setupHand && this.activeMask.setupHand({ p, hand })
         );
         this.tracker.faces.forEach((face) =>
-          this.activeMask.setupFace({ p, face })
+          this.activeMask.setupFace && this.activeMask.setupFace({ p, face })
         );
       },
     },
