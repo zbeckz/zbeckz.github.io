@@ -18,8 +18,6 @@ async function getProjectInfo()
               .then(responseObject => responseObject.text())
               .then(textString => textString.split('\r\n'));
         */
-
-        console.log(csvRows);
     } 
     catch (error)
     {
