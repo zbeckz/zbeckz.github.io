@@ -1,3 +1,12 @@
+/* GLOBAL VARIABLES */
+let stars = [];
+let canvas;
+let maxWindowWidth;
+let minWindowWidth;
+
+/* FUNCTIONS */ 
+
+// Fetches data from a csv file and formats it for usage on the page
 async function getProjectInfo()
 {
     // first, load project info csv data
@@ -21,8 +30,65 @@ async function getProjectInfo()
     } 
     catch (error)
     {
-
+        console.log('Error fetching project data:', error)
     }
 };
 
+// Sets the canvas to the size of the window
+function resizeCanvas()
+{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+function setupStars()
+{
+    for (let i = 0; i < window.innerWidth; i++)
+    {
+        for (let j = 0; j < window.innerHeight; j++)
+        {
+            if (Math.random() > 0.9996)
+            {
+                stars.push({x: i, y: j});
+            }
+        }
+    }
+}
+
+function drawStars()
+{
+    const context = canvas.getContext('2d');
+    const radius = 1;
+
+    stars.forEach((star) => {
+        if (star.x > maxWindowWidth || star.y > maxWindowHeight) return;
+        context.beginPath();
+        context.arc(star.x, star.y, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = 'white';
+        context.fill();
+        context.lineWidth = 1;
+        context.strokeStyle = 'white';
+        context.stroke();
+    })
+}
+
+/* CODE THAT RUNS IMMEDIATELY*/
+
+// grab project data
 getProjectInfo();
+
+// fires when DOM is loaded
+window.addEventListener('load', () => {
+    canvas = document.getElementById('backgroundScene');
+    maxWindowWidth = window.innerWidth;
+    maxWindowHeight = window.innerHeight;
+    resizeCanvas();
+    setupStars();
+    drawStars();
+});
+
+// fires when window is resized
+window.addEventListener('resize', () => {
+    resizeCanvas();
+});
+
