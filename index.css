@@ -1,24 +1,183 @@
+:root {
+    --homePageSectionWidth: 300px;
+    --homePageSectionHeight: 400px;
+    --homePageSectionBorderRadius: 12px;
+    --homePageColorOne: white;
+    --homePageColorTwo: rgb(125, 125, 255);
+}
+
 html, body {
     margin: 0px;
     padding: 0px;
 }
 
-#aboutMeContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+body {
+    display: grid;
+    grid-template: 1fr / 1fr;
+    justify-items: center;
+    align-items: center;
 }
 
-#aboutMePhoto {
-    display: flex;
-    justify-content: center;
-
-    img {
-        width: 50%;
-    }
+span {
+    position: absolute;
+    top: 2.5%;
+    font-size: 2.5rem;
 }
 
 canvas {
     background-color: black;
-    display: block;
+    grid-area: 1 / 1 / 1 / 1;
+}
+
+#homePageContent {
+    grid-area: 1 / 1 / 1 / 1;
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    align-items: center;
+}
+
+.homePageSection {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: var(--homePageSectionBorderRadius);
+    transition: all 0.3s;
+    position: relative;
+    width: var(--homePageSectionWidth);
+    height: var(--homePageSectionHeight);
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    img {
+        width: 75%;
+        border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
+        transition: all 0.3s;
+    }
+
+    button {
+        z-index: 1;
+        width: 50%;
+        height: calc(var(--homePageSectionHeight) * 0.075);
+        border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
+        background: var(--homePageColorOne);
+        border: none;
+        font-size: 1.25rem;
+        transition: font-size 0.3s, background 0.2s;
+        font-weight: 500;
+
+        &:hover {
+            cursor: pointer;
+            background: var(--homePageColorTwo);
+
+            + .animatedBorder {
+                .line {
+                    stroke: var(--homePageColorTwo);
+                }
+            }
+        }
+    }
+
+    &:hover {
+        width: calc(var(--homePageSectionWidth) * 1.2);
+        height: calc(var(--homePageSectionHeight) * 1.2);
+
+        .animatedBorder, .line {
+            width: calc(var(--homePageSectionWidth) * 1.2);
+            height: calc(var(--homePageSectionHeight) * 1.2);
+            opacity: 100%;
+        }
+
+        button {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+#homePageContent:has(#aboutMeContainer:hover) #projectsContainer,
+#homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
+    width: calc(var(--homePageSectionWidth) * 0.8);
+    height: calc(var(--homePageSectionHeight) * 0.8);
+}
+
+.animatedBorder, .line {
+    width: var(--homePageSectionWidth);
+    height: var(--homePageSectionHeight);
+    transition: all 0.3s;
+    opacity: 0%;
+}
+
+.animatedBorder {
+    position: absolute;
+    z-index: 0;
+    border-radius: var(--homePageSectionBorderRadius);
+}
+
+.line {
+    rx: var(--homePageSectionBorderRadius);
+    ry: var(--homePageSectionBorderRadius);
+    stroke-linejoin: round;
+    stroke-dasharray: 50;
+    stroke-width: 10px;
+    fill: transparent;
+    stroke: var(--homePageColorOne);
+    animation: borderAnimation 5.0s linear infinite;
+}
+
+@keyframes borderAnimation {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: 500;
+    }
+}
+
+/* https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025 */
+@property --color-1 {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #000;
+}
+  
+@property --color-2 {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #000;
+}
+  
+@keyframes color-change {
+    to {
+        --color-1: var(--_color-1-to);
+        --color-2: var(--_color-2-to);
+    }
+}
+  
+.gradient-text {
+    --_space: ;
+
+    --_color-1-from: var(--homePageColorOne);
+    --_color-1-to: var(--homePageColorTwo);
+    --_color-2-from: var(--homePageColorTwo);
+    --_color-2-to: var(--homePageColorOne);
+
+    --color-1: var(--_color-1-from);
+    --color-2: var(--_color-2-from);
+
+    animation: color-change 2s linear infinite alternate;
+
+    background: linear-gradient(
+        to right var(--_space),
+        var(--color-1),
+        var(--color-2)
+    );
+
+    /* modern browser version */
+    background-clip: text;
+    color: transparent;
+
+    @supports (background: linear-gradient(in oklch, #fff, #fff)) {
+        --_space: in oklch;
+    }
 }

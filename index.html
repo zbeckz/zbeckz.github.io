@@ -17,6 +17,12 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="index.css" />
 
+    <!-- Utility Scripts -->
+    <script src="utilities/globals.js"></script>
+    <script src="utilities/constants.js"></script>
+    <script src="utilities/data.js"></script>
+    <script src="utilities/draw.js"></script>
+
     <!-- Home Page Script -->
     <script src="index.js"></script>
 
@@ -24,6 +30,23 @@
 
   <body>
     <canvas id="backgroundScene"></canvas>
+    <span id="homePageTitle" class="gradient-text">Zach Becker's Web Development Portfolio (WORK IN PROGRESS)</span>
+    <div id="homePageContent">
+      <div id="aboutMeContainer" class="homePageSection">
+        <img id="aboutMeImage" src="assets/headshot.jpg"/>
+        <button>About Me</button>
+        <svg class="animatedBorder">
+          <rect class="line"/>
+        </svg>
+      </div>
+      <div id="projectsContainer" class="homePageSection">
+        <img id="projectsImage" src="assets/headshot.jpg"/>
+        <button>Projects</button>
+        <svg class="animatedBorder">
+          <rect class="line"/>
+        </svg>
+      </div>
+    </div>
   </body>
 
 </html>

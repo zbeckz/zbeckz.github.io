@@ -1,0 +1,1 @@
+const star_threshold = 0.9996;

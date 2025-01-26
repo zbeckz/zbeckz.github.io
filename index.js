@@ -1,39 +1,3 @@
-/* GLOBAL VARIABLES */
-let stars = [];
-let canvas;
-let maxWindowWidth;
-let minWindowWidth;
-
-/* FUNCTIONS */ 
-
-// Fetches data from a csv file and formats it for usage on the page
-async function getProjectInfo()
-{
-    // first, load project info csv data
-    try 
-    {
-        // use built-in js fetch to grab csv data
-        const projectData = await fetch('data/project-info.csv');
-
-        // convert the response object to a text string
-        const textString = await projectData.text();
-
-        // use split the string into an array where each element is a row of the csv
-        const csvRows = textString.split('\r\n');
-
-        // alternatively, could use .then() like below. But above way looks more readable with comments
-        /* 
-            const projectData = await fetch('data/project-info.csv')
-              .then(responseObject => responseObject.text())
-              .then(textString => textString.split('\r\n'));
-        */
-    } 
-    catch (error)
-    {
-        console.log('Error fetching project data:', error)
-    }
-};
-
 // Sets the canvas to the size of the window
 function resizeCanvas()
 {
@@ -41,13 +5,13 @@ function resizeCanvas()
     canvas.height = window.innerHeight;
 }
 
-function setupStars()
+function createStars(xMin, xMax, yMin, yMax)
 {
-    for (let i = 0; i < window.innerWidth; i++)
+    for (let i = xMin; i < xMax; i++)
     {
-        for (let j = 0; j < window.innerHeight; j++)
+        for (let j = yMin; j < yMax; j++)
         {
-            if (Math.random() > 0.9996)
+            if (Math.random() > star_threshold)
             {
                 stars.push({x: i, y: j});
             }
@@ -58,24 +22,12 @@ function setupStars()
 function drawStars()
 {
     const context = canvas.getContext('2d');
-    const radius = 1;
 
     stars.forEach((star) => {
         if (star.x > maxWindowWidth || star.y > maxWindowHeight) return;
-        context.beginPath();
-        context.arc(star.x, star.y, radius, 0, 2 * Math.PI, false);
-        context.fillStyle = 'white';
-        context.fill();
-        context.lineWidth = 1;
-        context.strokeStyle = 'white';
-        context.stroke();
+        drawCircle(context, star.x, star.y, 1.5, '#ffffff')
     })
 }
-
-/* CODE THAT RUNS IMMEDIATELY*/
-
-// grab project data
-getProjectInfo();
 
 // fires when DOM is loaded
 window.addEventListener('load', () => {
@@ -83,12 +35,26 @@ window.addEventListener('load', () => {
     maxWindowWidth = window.innerWidth;
     maxWindowHeight = window.innerHeight;
     resizeCanvas();
-    setupStars();
+    createStars(0, maxWindowWidth, 0, maxWindowHeight);
     drawStars();
 });
 
 // fires when window is resized
 window.addEventListener('resize', () => {
     resizeCanvas();
+
+    if (window.innerWidth > maxWindowWidth) 
+    {
+        createStars(maxWindowWidth, window.innerWidth, 0, maxWindowHeight)        
+        maxWindowWidth = window.innerWidth;
+    }
+
+    if (window.innerHeight > maxWindowHeight) 
+    {
+        createStars(0, maxWindowWidth, maxWindowHeight, window.innerHeight)        
+        maxWindowHeight = window.innerHeight;
+    }
+
+    drawStars();
 });
 
