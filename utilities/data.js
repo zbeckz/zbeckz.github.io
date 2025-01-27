@@ -1,31 +1,22 @@
-// Fetches data from a csv file and formats it for usage on the page
+// Fetches data from a json file and formats it for usage on the page
 async function getProjectInfo()
 {
-    // first, load project info csv data
     try 
     {
-        // use built-in js fetch to grab csv data
-        const data = await fetch('data/project-info.csv');
-        console.log(data);
+        // use built-in js fetch to grab json data
+        const data = await fetch('data/project-info.json');
 
-        // convert the response object to a text string
-        const textString = await data.text();
-        console.log(textString);
+        // process data
+        const json = await data.json();
 
-        // use split to split the string into an array where each element is a row of the csv
-        const csvRows = textString.split('\r\n');
-        console.log(csvRows);
-
-        // use split to map each element into an object with named attributes. Save that to project data global var
-        projectData = csvRows.map(row => {
-            const rowSplit = row.split('\t');
+        // format it as array, save in global var
+        projectData = Object.entries(json).map(([key, value]) => {
             return {
-                title: rowSplit[0],
-                url: rowSplit[1],
-                previewImg: rowSplit[2]
-            }
+                title: key,
+                url: value.url,
+                previewImg: value.previewImg
+            };
         });
-        console.log(projectData)
 
         setInterval(() => {
             currentProjectPreview === projectData.length - 1 ? currentProjectPreview = -1 : currentProjectPreview++;
@@ -37,13 +28,6 @@ async function getProjectInfo()
                 imgElement.style.opacity = '100%';
             }, 1000);
         }, 10000)
-
-        // alternatively, could use .then() like below. But above way looks more readable with comments
-        /* 
-            const projectData = await fetch('data/project-info.csv')
-              .then(responseObject => responseObject.text())
-              .then(textString => textString.split('\r\n'));
-        */
     } 
     catch (error)
     {

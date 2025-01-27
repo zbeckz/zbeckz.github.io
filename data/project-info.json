@@ -1,0 +1,58 @@
+{
+    "Animations": {
+      "url": "/projects/animations",
+      "previewImg": "/assets/animations.png"
+    },
+    "Brushes": {
+      "url": "/projects/brushes",
+      "previewImg": "/assets/brushes.png"
+    },
+    "3D Animation": {
+      "url": "/projects/3d-animation-webgl",
+      "previewImg": "/assets/3d-animation-webgl.png"
+    },
+    "Chat Bots": {
+      "url": "/projects/chat-bots",
+      "previewImg": "/assets/chat-bots.png"
+    },
+    "Computational Lighting": {
+      "url": "/projects/computational-lighting-webgl",
+      "previewImg": "/assets/computational-lighting-webgl.png"
+    },
+    "Face Tracking": {
+      "url": "/projects/face-tracking",
+      "previewImg": "/assets/face-tracking.png"
+    },
+    "Generative Art": {
+      "url": "/projects/generative-art",
+      "previewImg": "/assets/generative-art.png"
+    },
+    "Idle Game": {
+      "url": "/projects/idle-game",
+      "previewImg": "/assets/idle-game.png"
+    },
+    "Interactive World": {
+      "url": "/projects/interactive-world-webgl",
+      "previewImg": "/assets/interactive-world-webgl.png"
+    },
+    "Machine Learning": {
+      "url": "/projects/machine-learning",
+      "previewImg": "/assets/machine-learning.png"
+    },
+    "Particle Systems": {
+      "url": "/projects/particle-systems",
+      "previewImg": "/assets/particle-systems.png"
+    },
+    "Virtual Reality Game": {
+      "url": "/projects/virtual-reality-game",
+      "previewImg": "/assets/virtual-reality-game.png"
+    },
+    "Virtual Reality Space": {
+      "url": "/projects/virtual-reality-space",
+      "previewImg": "/assets/virtual-reality-space.png"
+    },
+    "Data Visualization": {
+      "url": "/projects/data-visualization",
+      "previewImg": "/assets/data-visualization.png"
+    }
+}
