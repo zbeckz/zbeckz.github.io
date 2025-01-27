@@ -6,12 +6,15 @@ async function getProjectInfo()
     {
         // use built-in js fetch to grab csv data
         const data = await fetch('data/project-info.csv');
+        console.log(data);
 
         // convert the response object to a text string
         const textString = await data.text();
+        console.log(textString);
 
         // use split to split the string into an array where each element is a row of the csv
         const csvRows = textString.split('\r\n');
+        console.log(csvRows);
 
         // use split to map each element into an object with named attributes. Save that to project data global var
         projectData = csvRows.map(row => {
@@ -22,6 +25,7 @@ async function getProjectInfo()
                 previewImg: rowSplit[2]
             }
         });
+        console.log(projectData)
 
         setInterval(() => {
             currentProjectPreview === projectData.length - 1 ? currentProjectPreview = -1 : currentProjectPreview++;
