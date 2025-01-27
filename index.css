@@ -4,6 +4,7 @@
     --homePageSectionBorderRadius: 12px;
     --homePageColorOne: white;
     --homePageColorTwo: rgb(125, 125, 255);
+    --homePageTransitionDuration: 0.3s;
 }
 
 html, body {
@@ -39,10 +40,10 @@ canvas {
 
 .homePageSection {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: var(--homePageSectionBorderRadius);
-    transition: all 0.3s;
+    transition: all var(--homePageTransitionDuration);
     position: relative;
     width: var(--homePageSectionWidth);
     height: var(--homePageSectionHeight);
@@ -50,10 +51,18 @@ canvas {
     align-items: center;
     gap: 20px;
 
-    img {
-        width: 75%;
+    .homePageImageContainer {
         border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
-        transition: all 0.3s;
+        border: 4px solid var(--homePageColorOne);
+        width: 70%;
+        transition: all var(--homePageTransitionDuration)
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        transition: all var(--homePageTransitionDuration), opacity 1s;
+        opacity: 100%;
     }
 
     button {
@@ -64,17 +73,21 @@ canvas {
         background: var(--homePageColorOne);
         border: none;
         font-size: 1.25rem;
-        transition: font-size 0.3s, background 0.2s;
+        transition: font-size var(--homePageTransitionDuration), background 0.2s;
         font-weight: 500;
 
         &:hover {
             cursor: pointer;
             background: var(--homePageColorTwo);
 
-            + .animatedBorder {
+            ~ .animatedBorder {
                 .line {
                     stroke: var(--homePageColorTwo);
                 }
+            }
+
+            ~ .homePageImageContainer {
+                border-color: var(--homePageColorTwo);
             }
         }
     }
@@ -104,7 +117,7 @@ canvas {
 .animatedBorder, .line {
     width: var(--homePageSectionWidth);
     height: var(--homePageSectionHeight);
-    transition: all 0.3s;
+    transition: all var(--homePageTransitionDuration);
     opacity: 0%;
 }
 

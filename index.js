@@ -58,3 +58,4 @@ window.addEventListener('resize', () => {
     drawStars();
 });
 
+getProjectInfo();
