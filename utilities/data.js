@@ -17,20 +17,15 @@ async function getProjectInfo()
                 previewImg: value.previewImg
             };
         });
-
-        setInterval(() => {
-            currentProjectPreview === projectData.length - 1 ? currentProjectPreview = -1 : currentProjectPreview++;
-            const imgElement = document.getElementById('projectsImage');
-            imgElement.style.opacity = '0%';
-            
-            setTimeout(() => {
-                imgElement.src = currentProjectPreview === -1 ? 'assets/code-snippet.png' : projectData[currentProjectPreview].previewImg;
-                imgElement.style.opacity = '100%';
-            }, 1000);
-        }, 10000)
     } 
     catch (error)
     {
         console.log('Error fetching project data:', error)
     }
 };
+
+// given a min and max number, returns a random decimal number within that range. [min, max)
+function getRandomFloat(min, max)
+{
+    return Math.random() * (max - min) + min;
+}

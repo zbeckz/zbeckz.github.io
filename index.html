@@ -19,7 +19,6 @@
 
     <!-- Utility Scripts -->
     <script src="utilities/globals.js"></script>
-    <script src="utilities/constants.js"></script>
     <script src="utilities/data.js"></script>
     <script src="utilities/draw.js"></script>
 
@@ -29,9 +28,16 @@
   </head>
 
   <body>
+    <!-- This acts as the background element to the home, projects, and about me pages -->
     <canvas id="backgroundScene"></canvas>
-    <span id="homePageTitle" class="gradient-text">Zach Becker's Web Development Portfolio (WORK IN PROGRESS)</span>
+
+    <!-- Title -->
+    <span id="homePageTitle">Zach Becker's Web Development Portfolio (WORK IN PROGRESS)</span>
+
+    <!-- Main container for the home page content-->
     <div id="homePageContent">
+
+      <!-- About me image, button, and border -->
       <div id="aboutMeContainer" class="homePageSection">
         <button>About Me</button>
         <div class="homePageImageContainer">
@@ -41,6 +47,8 @@
           <rect class="line"/>
         </svg>
       </div>
+
+      <!-- Projects image, button, and border -->
       <div id="projectsContainer" class="homePageSection">
         <button>Projects</button>
         <div class="homePageImageContainer">
@@ -50,6 +58,7 @@
           <rect class="line"/>
         </svg>
       </div>
+
     </div>
   </body>
 

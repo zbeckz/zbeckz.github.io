@@ -5,13 +5,16 @@
     --homePageColorOne: white;
     --homePageColorTwo: rgb(125, 125, 255);
     --homePageTransitionDuration: 0.3s;
+    --homePageImageTransitionDuration: 0.5s;
 }
 
+/* Allows canvas to take up full window */
 html, body {
     margin: 0px;
     padding: 0px;
 }
 
+/* Allows the content in the body to be centered even with the weird canvas stuff */
 body {
     display: grid;
     grid-template: 1fr / 1fr;
@@ -19,17 +22,20 @@ body {
     align-items: center;
 }
 
+/* Title */
 span {
     position: absolute;
     top: 2.5%;
     font-size: 2.5rem;
 }
 
+/* Essentially the background */
 canvas {
     background-color: black;
     grid-area: 1 / 1 / 1 / 1;
 }
 
+/* Centered in window, contains both projects and about me windows */
 #homePageContent {
     grid-area: 1 / 1 / 1 / 1;
     display: flex;
@@ -38,6 +44,7 @@ canvas {
     align-items: center;
 }
 
+/* Both projects and about me window */
 .homePageSection {
     display: flex;
     flex-direction: column-reverse;
@@ -51,6 +58,7 @@ canvas {
     align-items: center;
     gap: 20px;
 
+    /* Div within that has image border */
     .homePageImageContainer {
         border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
         border: 4px solid var(--homePageColorOne);
@@ -58,13 +66,15 @@ canvas {
         transition: all var(--homePageTransitionDuration)
     }
 
+    /* Image itself */
     img {
         width: 100%;
         height: 100%;
-        transition: all var(--homePageTransitionDuration), opacity 1s;
+        transition: all var(--homePageTransitionDuration), opacity var(--homePageImageTransitionDuration);
         opacity: 100%;
     }
 
+    /* About me and projects button */
     button {
         z-index: 1;
         width: 50%;
@@ -73,9 +83,10 @@ canvas {
         background: var(--homePageColorOne);
         border: none;
         font-size: 1.25rem;
-        transition: font-size var(--homePageTransitionDuration), background 0.2s;
+        transition: all var(--homePageTransitionDuration);
         font-weight: 500;
 
+        /* On hover, change own color and other border colors */
         &:hover {
             cursor: pointer;
             background: var(--homePageColorTwo);
@@ -92,6 +103,7 @@ canvas {
         }
     }
 
+    /* Make bigger on section hover, cause border to appear */
     &:hover {
         width: calc(var(--homePageSectionWidth) * 1.2);
         height: calc(var(--homePageSectionHeight) * 1.2);
@@ -108,12 +120,14 @@ canvas {
     }
 }
 
+/* Allows the other section to shrink when one section is hovered on */
 #homePageContent:has(#aboutMeContainer:hover) #projectsContainer,
 #homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
     width: calc(var(--homePageSectionWidth) * 0.8);
     height: calc(var(--homePageSectionHeight) * 0.8);
 }
 
+/* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
 .animatedBorder, .line {
     width: var(--homePageSectionWidth);
     height: var(--homePageSectionHeight);
@@ -146,8 +160,9 @@ canvas {
         stroke-dashoffset: 500;
     }
 }
+/* ---------------------------------------------------------------------------------------------- */
 
-/* https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025 */
+/* BELOW CSS IS MODIFIED FROM https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025 */
 @property --color-1 {
     syntax: "<color>";
     inherits: false;
@@ -167,7 +182,7 @@ canvas {
     }
 }
   
-.gradient-text {
+#homePageTitle {
     --_space: ;
 
     --_color-1-from: var(--homePageColorOne);
@@ -194,3 +209,4 @@ canvas {
         --_space: in oklch;
     }
 }
+/* ---------------------------------------------------------------------------------- */
