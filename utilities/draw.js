@@ -157,12 +157,28 @@ function createSuns(xMin, xMax, yMin, yMax)
                     }
                 }
 
+                // create planets
+                let planets = [];
+                const numPlanets = getRandomFloat(planetGeneration.minAmount, planetGeneration.maxAmount);
+                for (let n = 0; n < numPlanets; n++)
+                {
+                    planets.push({
+                        theta: getRandomFloat(0, 2*Math.PI),
+                        orbitRadius: getRandomFloat(planetGeneration.minOrbitRadius, planetGeneration.maxOrbitRadius),
+                        radius: getRandomFloat(planetGeneration.minRadius, planetGeneration.maxRadius),
+                        color: `hsl(${getRandomFloat(planetGeneration.minHue, planetGeneration.maxHue)}, ${getRandomFloat(planetGeneration.minSaturation, planetGeneration.maxSaturation)}%, ${getRandomFloat(planetGeneration.minLightness, planetGeneration.maxLightness)}%)`,
+                        speed: getRandomFloat(planetGeneration.minSpeed, planetGeneration.maxSpeed)
+                    })
+                }
+
                 suns.push({
                     x: i + getRandomFloat(-1 * sunSpreadRandomness, sunSpreadRandomness),
                     y: j + getRandomFloat(-1 * sunSpreadRandomness, sunSpreadRandomness),
                     radius: radius,
                     color: getSunColor(),
-                    spots: spots
+                    spots: spots,
+                    planets: planets,
+                    orbitDirection: Math.random(0, 1) < 0.5 ? 1 : -1
                 })
             }
         }
@@ -194,9 +210,17 @@ function updateSun(sun)
             spot.lifeSpan--;
         }
     })
+
+    // loop through all the planets
+    sun.planets.forEach(planet => {
+        // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
+        planet.theta += planet.speed * sun.orbitDirection;
+        if (planet.theta < 0) planet.theta += 2*Math.PI
+        if (planet.theta > 2*Math.PI) planet.theta -= 2*Math.PI
+    })
 }
 
-// draws a sun and it's spots
+// draws a sun, its spots, and its planets
 function drawSun(sun)
 {
     // if the star is outside the current window dimensions, don't bother to draw
@@ -208,5 +232,10 @@ function drawSun(sun)
     // loop through all the sun spots and draw each one
     sun.spots.forEach(spot => {
         drawCircle(sun.x + spot.x, sun.y + spot.y, spot.radius, spot.color);
+    })
+
+    // loop through all planets and draw each one
+    sun.planets.forEach(planet => {
+        drawCircle(sun.x + planet.orbitRadius*Math.cos(planet.theta), sun.y + planet.orbitRadius*Math.sin(planet.theta), planet.radius, planet.color);
     })
 }

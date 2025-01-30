@@ -19,7 +19,7 @@ window.addEventListener('load', () => {
 
     // create stars and suns for current window size
     createStars(0, maxWindowWidth, 0, maxWindowHeight);
-    createSuns(0, maxWindowWidth, 0, maxWindowHeight)
+    createSuns(0, maxWindowWidth, 0, maxWindowHeight);
 
     // set interval to update canvas background
     setInterval(() => {

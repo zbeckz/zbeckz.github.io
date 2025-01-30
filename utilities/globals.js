@@ -40,6 +40,23 @@ const sunSpots = { // config for how many sun spots there are, threshold for cre
     maxLifeSpan: 20
 }
 
+const planetGeneration = {
+    minAmount: 1,
+    maxAmount: 5,
+    minOrbitRadius: 50,
+    maxOrbitRadius: 100,
+    minRadius: 5,
+    maxRadius: 10,
+    minSpeed: 0.0005,
+    maxSpeed: 0.01,
+    minHue: 0,
+    maxHue: 360,
+    minSaturation: 75,
+    maxSaturation: 100,
+    minLightness: 40,
+    maxLightness: 60
+}
+
 
 // GLOBAL VARS
 let projectData; // array of project data fetched from the project-info.json

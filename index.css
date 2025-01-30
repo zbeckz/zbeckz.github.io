@@ -57,6 +57,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 20px;
+    opacity: 70%;
 
     /* Div within that has image border */
     .homePageImageContainer {
@@ -71,7 +72,6 @@ body {
         width: 100%;
         height: 100%;
         transition: all var(--homePageTransitionDuration), opacity var(--homePageImageTransitionDuration);
-        opacity: 100%;
     }
 
     /* About me and projects button */
@@ -105,6 +105,8 @@ body {
 
     /* Make bigger on section hover, cause border to appear */
     &:hover {
+        opacity: 90%;
+            
         width: calc(var(--homePageSectionWidth) * 1.2);
         height: calc(var(--homePageSectionHeight) * 1.2);
 
@@ -125,6 +127,7 @@ body {
 #homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
     width: calc(var(--homePageSectionWidth) * 0.8);
     height: calc(var(--homePageSectionHeight) * 0.8);
+    opacity: 50%;
 }
 
 /* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
