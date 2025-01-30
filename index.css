@@ -23,14 +23,14 @@ body {
 }
 
 /* Title */
-span {
+#homePageTitle {
     position: absolute;
     top: 2.5%;
     font-size: 2.5rem;
 }
 
-/* Essentially the background */
-canvas {
+/* Canvas element that is essentially the background */
+#backgroundScene {
     background-color: black;
     grid-area: 1 / 1 / 1 / 1;
 }

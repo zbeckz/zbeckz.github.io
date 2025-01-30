@@ -17,17 +17,18 @@ window.addEventListener('load', () => {
     maxWindowHeight = window.innerHeight;
     resizeCanvas();
 
-    // create stars for current window size
+    // create stars and suns for current window size
     createStars(0, maxWindowWidth, 0, maxWindowHeight);
+    createSuns(0, maxWindowWidth, 0, maxWindowHeight)
 
     // set interval to update canvas background
     setInterval(() => {
-        updateStars();
-
         // clear the canvas
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        drawStars();
+        // handle updating and drawing the stars and suns
+        handleStars();
+        handleSuns();
     }, canvasUpdateDelta)
 });
 
@@ -36,17 +37,19 @@ window.addEventListener('resize', () => {
     // resize the canvas based on new window
     resizeCanvas();
 
-    // if the new window is now wider than it has been before during this session, need to create new stars to account for that
+    // if the new window is now wider than it has been before during this session, need to create new suns to account for that
     if (window.innerWidth > maxWindowWidth) 
     {
-        createStars(maxWindowWidth, window.innerWidth, 0, maxWindowHeight)        
+        createStars(maxWindowWidth, window.innerWidth, 0, maxWindowHeight);
+        createSuns(maxWindowWidth, window.innerWidth, 0, maxWindowHeight); 
         maxWindowWidth = window.innerWidth;
     }
 
-    // if the new window is now taller than it has been before during this session, need to create new stars to account for that
+    // if the new window is now taller than it has been before during this session, need to create new suns to account for that
     if (window.innerHeight > maxWindowHeight) 
     {
-        createStars(0, maxWindowWidth, maxWindowHeight, window.innerHeight)        
+        createStars(0, maxWindowWidth, maxWindowHeight, window.innerHeight);
+        createSuns(0, maxWindowWidth, maxWindowHeight, window.innerHeight);          
         maxWindowHeight = window.innerHeight;
     }
 });

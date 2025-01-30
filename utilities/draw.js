@@ -62,48 +62,151 @@ function createStars(xMin, xMax, yMin, yMax)
     }
 }
 
-// updates the brightness and radius of each star to mimic twinkling
-function updateStars()
+// loops through all stars, updates and draws. This allows for one pass of the stars array
+function handleStars()
 {
     stars.forEach(star => {
-        // add a random amount to the star radius and brightness
-        star.radius += Math.random() * starRadius.multiplier * star.radiusDelta;
-        star.brightness += Math.random() * starBrightness.multiplier * star.brightnessDelta;
+        updateStar(star);
+        drawStar(star)
+    })
+}
 
-        // if star radius is bigger than max or smaller than min, reset it to bounds and update the delta
-        if (star.radius < starRadius.min)
+// updates the brightness and radius of a single star to mimic twinkling
+function updateStar(star)
+{
+    // add a random amount to the star radius and brightness
+    star.radius += Math.random() * starRadius.multiplier * star.radiusDelta;
+    star.brightness += Math.random() * starBrightness.multiplier * star.brightnessDelta;
+
+    // if star radius is bigger than max or smaller than min, reset it to bounds and update the delta
+    if (star.radius < starRadius.min)
+    {
+        star.radius = starRadius.min;
+        star.radiusDelta = 1;
+    } 
+    else if (star.radius > starRadius.max)
+    {
+        star.radius = starRadius.max;
+        star.radiusDelta = -1;
+    }
+
+    // if star brightness is bigger than max or smaller than min, reset it to bounds and update the delta
+    if (star.brightness < starBrightness.min)
+    {
+        star.brightness = starBrightness.min;
+        star.brightnessDelta = 1;
+    } 
+    else if (star.brightness > starBrightness.max)
+    {
+        star.brightness = starBrightness.max;
+        star.brightnessDelta = -1;
+    }
+}
+
+// draws all the stars in the stars array
+function drawStar(star)
+{
+    // if the star is outside the current window dimensions, don't bother to draw
+    if (star.x > window.innerWidth || star.y > window.innerHeight) return;
+
+    // draw a cicle with the star's specs
+    drawCircle(star.x, star.y, star.radius, `rgba(255, 255, 255, ${star.brightness})`)
+}
+
+// returns a random hsl string using sun specs
+function getSunColor()
+{
+    return `hsl(${getRandomFloat(sunHue.min, sunHue.max)}, ${getRandomFloat(sunSaturation.min, sunSaturation.max)}%, ${getRandomFloat(sunLightness.min, sunLightness.max)}%)`
+}
+
+// returns a single sun spot object
+function createSunSpot(r, theta)
+{
+    return {
+        x: r*Math.cos(theta),
+        y: r*Math.sin(theta),
+        radius: getRandomFloat(sunSpots.minRadius, sunSpots.maxRadius),
+        color: getSunColor(),
+        lifeSpan: getRandomFloat(sunSpots.minLifeSpan, sunSpots.maxLifeSpan)
+    }
+}
+
+// Creates new suns for a given part of the canvas
+function createSuns(xMin, xMax, yMin, yMax)
+{
+    // loop through the given range
+    for (let i = xMin; i < xMax; i++)
+    {
+        for (let j = yMin; j < yMax; j++)
         {
-            star.radius = starRadius.min;
-            star.radiusDelta = 1;
-        } 
-        else if (star.radius > starRadius.max)
-        {
-            star.radius = starRadius.max;
-            star.radiusDelta = -1;
+            // if the x and y are both divisible by the spread, generate new sun
+            if (i % sunSpreadDistance === 0 && j % sunSpreadDistance === 0)
+            {
+                const radius = getRandomFloat(sunRadius.min, sunRadius.max);
+                    
+                // use polar coordinates to loop throughout the suns area, create sun spots
+                let spots = []
+                for (let r = 0; r < radius; r++)
+                {
+                    for (let theta = 0; theta < 2 * Math.PI; theta += 0.1)
+                    {
+                        if (Math.random() > sunSpots.threshold)
+                        {
+                            spots.push(createSunSpot(r, theta))
+                        }
+                    }
+                }
+
+                suns.push({
+                    x: i + getRandomFloat(-1 * sunSpreadRandomness, sunSpreadRandomness),
+                    y: j + getRandomFloat(-1 * sunSpreadRandomness, sunSpreadRandomness),
+                    radius: radius,
+                    color: getSunColor(),
+                    spots: spots
+                })
+            }
         }
+    }
+}
 
-        // if star brightness is bigger than max or smaller than min, reset it to bounds and update the delta
-        if (star.brightness < starBrightness.min)
+// loop through the suns array, update and draw each. One pass of the suns array
+function handleSuns()
+{
+    suns.forEach(sun => {
+        updateSun(sun);
+        drawSun(sun);
+    })
+}
+
+// updates a sun (spot lifespan and re-creation)
+function updateSun(sun)
+{
+    // loop through all the spots
+    sun.spots.forEach((spot, index) => {
+        if (spot.lifeSpan <= 0)
         {
-            star.brightness = starBrightness.min;
-            star.brightnessDelta = 1;
-        } 
-        else if (star.brightness > starBrightness.max)
+            // delete this spot, add new one at a random location within the star
+            sun.spots.splice(index, 1);
+            sun.spots.push(createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, 2*Math.PI)));
+        }
+        else
         {
-            star.brightness = starBrightness.max;
-            star.brightnessDelta = -1;
+            spot.lifeSpan--;
         }
     })
 }
 
-function drawStars()
+// draws a sun and it's spots
+function drawSun(sun)
 {
-    // loop through all stars
-    stars.forEach(star => {
-        // if the star is outside the current window dimensions, don't bother to draw
-        if (star.x > window.innerWidth || star.y > window.innerHeight) return;
+    // if the star is outside the current window dimensions, don't bother to draw
+    if (sun.x > window.innerWidth || sun.y > window.innerHeight) return;
 
-        // draw a cicle with the star's specs
-        drawCircle(star.x, star.y, star.radius, `rgba(255, 255, 255, ${star.brightness})`)
+    // draw a cicle with the sun's specs
+    drawCircle(sun.x, sun.y, sun.radius, sun.color);
+
+    // loop through all the sun spots and draw each one
+    sun.spots.forEach(spot => {
+        drawCircle(sun.x + spot.x, sun.y + spot.y, spot.radius, spot.color);
     })
 }
