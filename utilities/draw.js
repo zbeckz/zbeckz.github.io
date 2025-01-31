@@ -174,7 +174,10 @@ function createSuns(xMin, xMax, yMin, yMax)
                         orbitRadius: getRandomFloat(planetConfig.orbit.min, planetConfig.orbit.max),
                         radius: getRandomFloat(planetConfig.radius.min, planetConfig.radius.max),
                         color: getPlanetColor(),
-                        speed: getRandomFloat(planetConfig.speed.min, planetConfig.speed.max)
+                        speed: getRandomFloat(planetConfig.speed.min, planetConfig.speed.max),
+                        rotationDirection: Math.random() < 0.5 ? 1 : -1,
+                        rotationTheta: 0,
+                        rotationSpeed: getRandomFloat(planetConfig.rotationSpeed.min, planetConfig.rotationSpeed.max)
                     };
 
                     // create dots for the planet
@@ -183,11 +186,9 @@ function createSuns(xMin, xMax, yMin, yMax)
                     const dotColor = getPlanetColor()
                     for (let d = 0; d < numDots; d++)
                     {
-                        const r = getRandomFloat(0, planet.radius*0.9)
-                        const theta = getRandomFloat(0, TwoPi)
                         dots.push({
-                            x: r*Math.cos(theta),
-                            y: r*Math.sin(theta),
+                            r: getRandomFloat(0, planet.radius*0.9),
+                            theta: getRandomFloat(0, TwoPi),
                             color: dotColor,
                             radius: getRandomFloat(planetConfig.dots.radius.min, planetConfig.dots.radius.max)
                         })
@@ -244,6 +245,11 @@ function updateSun(sun)
         planet.theta += planet.speed * sun.orbitDirection;
         if (planet.theta < 0) planet.theta += TwoPi
         if (planet.theta > TwoPi) planet.theta -= TwoPi
+
+        // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
+        planet.rotationTheta += planet.rotationSpeed * planet.rotationDirection;
+        if (planet.rotationTheta < 0) planet.rotationTheta += TwoPi
+        if (planet.rotationTheta > TwoPi) planet.rotationTheta -= TwoPi
     })
 }
 
@@ -268,7 +274,7 @@ function drawSun(sun)
         drawCircle(planetX, planetY, planet.radius, planet.color);
 
         planet.dots.forEach(dot => {
-            drawCircle(planetX + dot.x, planetY + dot.y, dot.radius, dot.color);
+            drawCircle(planetX + dot.r*Math.cos(dot.theta + planet.rotationTheta), planetY + dot.r*Math.sin(dot.theta + planet.rotationTheta), dot.radius, dot.color);
         })
     })
 }
