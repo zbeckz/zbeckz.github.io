@@ -140,13 +140,13 @@ function createSunSpot(r, theta, isInitial=false)
 // Creates new suns for a given part of the canvas
 function createSuns(xMin, xMax, yMin, yMax)
 {
-    // loop through the given range
-    for (let i = xMin; i < xMax; i++)
+    // loop through the given range, but not edges where a sun could clip off screen
+    for (let i = xMin + sunConfig.radius.max; i < xMax - sunConfig.radius.max; i++)
     {
-        for (let j = yMin; j < yMax; j++)
+        for (let j = yMin + sunConfig.radius.max; j < yMax - sunConfig.radius.max; j++)
         {
             // if the x and y are both divisible by the spread, generate new sun
-            if (i % sunConfig.spread.distance === 0 && j % sunConfig.spread.distance === 0)
+            if (i % sunConfig.spread.horizontal.distance === 0 && j % sunConfig.spread.vertical.distance === 0)
             {
                 const radius = getRandomFloat(sunConfig.radius.min, sunConfig.radius.max);
                     
@@ -200,8 +200,8 @@ function createSuns(xMin, xMax, yMin, yMax)
                 }
 
                 suns.push({
-                    x: i + getRandomFloat(-1 * sunConfig.spread.randomness, sunConfig.spread.randomness),
-                    y: j + getRandomFloat(-1 * sunConfig.spread.randomness, sunConfig.spread.randomness),
+                    x: i + getRandomFloat(-1 * sunConfig.spread.horizontal.randomness, sunConfig.spread.horizontal.randomness),
+                    y: j + getRandomFloat(-1 * sunConfig.spread.vertical.randomness, sunConfig.spread.vertical.randomness),
                     radius: radius,
                     color: getSunColor(),
                     spots: spots,

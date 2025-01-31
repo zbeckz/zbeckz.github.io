@@ -20,12 +20,18 @@ const starConfig = {
 
 const sunConfig = {
     spread: {
-        distance: 350,
-        randomness: 100
+        horizontal: {
+            distance: 350,
+            randomness: 100
+        },
+        vertical: {
+            distance: 300,
+            randomness: 150
+        }
     },
     radius: {
-        min: 20,
-        max: 30
+        min: 40,
+        max: 70
     },
     hue: {
         min: 22,
@@ -58,12 +64,12 @@ const planetConfig = {
         max: 5,
     },
     orbit: {
-        min: 40,
-        max: 70
+        min: 75,
+        max: 100
     },
     radius: {
-        min: 5,
-        max: 10
+        min: 8,
+        max: 18
     },
     speed: {
         min: 0.00075,
