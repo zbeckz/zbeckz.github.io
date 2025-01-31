@@ -1,60 +1,84 @@
 // GLOBAL CONSTS
-const canvasUpdateDelta = 10; // in ms, how frequently canvas gets redrawn
-const homePageSlideshowDelta = 10000; // in ms, how long between each picture transition for project preview\
+const canvasUpdateDelta = 1000 / 60; // in ms, how frequently canvas gets redrawn. 60 FPS
+const homePageSlideshowDelta = 10000; // in ms, how long between each picture transition for project preview
 
-const starThreshold = 0.9996; // determines density of stars that are generated. Higher number = LESS stars
-const starRadius = { // config for radius twinkling
-    min: 1.25,
-    max: 1.75,
-    multiplier: 0.03,
-};
-const starBrightness = { // config for brightness twinkling
-    min: 0.75,
-    max: 1,
-    multiplier: 0.03,
-}
-
-const sunSpreadDistance = 350; // pixels between suns on average
-const sunSpreadRandomness = 100; // pixel randomness
-const sunRadius = { // config for sun generation radii
-    min: 20,
-    max: 30
-}
-const sunHue = { // config for sun hue generation, typically yellow orange red
-    min: 22,
-    max: 60,
-}
-const sunSaturation = { // config for sun saturation, pretty saturated
-    min: 75,
-    max: 100
-}
-const sunLightness = { // config for sun lightness, pretty middle
-    min: 40,
-    max: 60
-}
-const sunSpots = { // config for how many sun spots there are, threshold for creating new one spontaneously, threshold for re-creation
-    threshold: 0.95,
-    minRadius: 1,
-    maxRadius: 5,
-    minLifeSpan: 10,
-    maxLifeSpan: 20
+const starConfig = {
+    threshold: 0.9996,
+    radius: {
+        min: 1.25,
+        max: 1.75,
+        multiplier: 0.04,
+    },
+    brightness: {
+        min: 0.75,
+        max: 1,
+        multiplier: 0.04,
+    }
 }
 
-const planetGeneration = {
-    minAmount: 1,
-    maxAmount: 5,
-    minOrbitRadius: 50,
-    maxOrbitRadius: 100,
-    minRadius: 5,
-    maxRadius: 10,
-    minSpeed: 0.0005,
-    maxSpeed: 0.01,
-    minHue: 0,
-    maxHue: 360,
-    minSaturation: 75,
-    maxSaturation: 100,
-    minLightness: 40,
-    maxLightness: 60
+const sunConfig = {
+    spread: {
+        distance: 350,
+        randomness: 100
+    },
+    radius: {
+        min: 20,
+        max: 30
+    },
+    hue: {
+        min: 22,
+        max: 60,
+    },
+    saturation: {
+        min: 75,
+        max: 100
+    },
+    lightness: {
+        min: 40,
+        max: 60
+    },
+    spots: { 
+        threshold: 0.95,
+        radius: {
+            min: 1,
+            max: 5
+        },
+        lifeSpan: {
+            min: 10,
+            max: 20
+        }
+    }
+}
+
+const planetConfig = {
+    amount: {
+        min: 1,
+        max: 5,
+    },
+    orbit: {
+        min: 40,
+        max: 70
+    },
+    radius: {
+        min: 5,
+        max: 10
+    },
+    speed: {
+        min: 0.00075,
+        max: 0.0075,
+    },
+    hue: {
+        min: 0,
+        max: 360
+    },
+    saturation: {
+        min: 75,
+        max: 100
+    },
+    lightness: {
+        min: 40,
+        max: 60
+    }
 }
 
 

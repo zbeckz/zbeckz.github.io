@@ -47,14 +47,14 @@ function createStars(xMin, xMax, yMin, yMax)
         for (let j = yMin; j < yMax; j++)
         {
             // if the random number between 0 and 1 is bigger than the threshold, create new star at this location
-            if (Math.random() > starThreshold)
+            if (Math.random() > starConfig.threshold)
             {
                 stars.push({
                     x: i, 
                     y: j, 
-                    radius: getRandomFloat(starRadius.min, starRadius.max), 
+                    radius: getRandomFloat(starConfig.radius.min, starConfig.radius.max), 
                     radiusDelta: Math.random() < 0.5 ? -1 : 1,
-                    brightness: getRandomFloat(starBrightness.min, starBrightness.max),
+                    brightness: getRandomFloat(starConfig.brightness.min, starConfig.brightness.max),
                     brightnessDelta: Math.random() < 0.5 ? -1 : 1,
                 });
             }
@@ -75,30 +75,30 @@ function handleStars()
 function updateStar(star)
 {
     // add a random amount to the star radius and brightness
-    star.radius += Math.random() * starRadius.multiplier * star.radiusDelta;
-    star.brightness += Math.random() * starBrightness.multiplier * star.brightnessDelta;
+    star.radius += Math.random() * starConfig.radius.multiplier * star.radiusDelta;
+    star.brightness += Math.random() * starConfig.brightness.multiplier * star.brightnessDelta;
 
     // if star radius is bigger than max or smaller than min, reset it to bounds and update the delta
-    if (star.radius < starRadius.min)
+    if (star.radius < starConfig.radius.min)
     {
-        star.radius = starRadius.min;
+        star.radius = starConfig.radius.min;
         star.radiusDelta = 1;
     } 
-    else if (star.radius > starRadius.max)
+    else if (star.radius > starConfig.radius.max)
     {
-        star.radius = starRadius.max;
+        star.radius = starConfig.radius.max;
         star.radiusDelta = -1;
     }
 
     // if star brightness is bigger than max or smaller than min, reset it to bounds and update the delta
-    if (star.brightness < starBrightness.min)
+    if (star.brightness < starConfig.brightness.min)
     {
-        star.brightness = starBrightness.min;
+        star.brightness = starConfig.brightness.min;
         star.brightnessDelta = 1;
     } 
-    else if (star.brightness > starBrightness.max)
+    else if (star.brightness > starConfig.brightness.max)
     {
-        star.brightness = starBrightness.max;
+        star.brightness = starConfig.brightness.max;
         star.brightnessDelta = -1;
     }
 }
@@ -116,7 +116,7 @@ function drawStar(star)
 // returns a random hsl string using sun specs
 function getSunColor()
 {
-    return `hsl(${getRandomFloat(sunHue.min, sunHue.max)}, ${getRandomFloat(sunSaturation.min, sunSaturation.max)}%, ${getRandomFloat(sunLightness.min, sunLightness.max)}%)`
+    return `hsl(${getRandomFloat(sunConfig.hue.min, sunConfig.hue.max)}, ${getRandomFloat(sunConfig.saturation.min, sunConfig.saturation.max)}%, ${getRandomFloat(sunConfig.lightness.min, sunConfig.lightness.max)}%)`
 }
 
 // returns a single sun spot object
@@ -125,9 +125,9 @@ function createSunSpot(r, theta)
     return {
         x: r*Math.cos(theta),
         y: r*Math.sin(theta),
-        radius: getRandomFloat(sunSpots.minRadius, sunSpots.maxRadius),
+        radius: getRandomFloat(sunConfig.spots.radius.min, sunConfig.spots.radius.max),
         color: getSunColor(),
-        lifeSpan: getRandomFloat(sunSpots.minLifeSpan, sunSpots.maxLifeSpan)
+        lifeSpan: getRandomFloat(sunConfig.spots.lifeSpan.min, sunConfig.spots.lifeSpan.max)
     }
 }
 
@@ -140,9 +140,9 @@ function createSuns(xMin, xMax, yMin, yMax)
         for (let j = yMin; j < yMax; j++)
         {
             // if the x and y are both divisible by the spread, generate new sun
-            if (i % sunSpreadDistance === 0 && j % sunSpreadDistance === 0)
+            if (i % sunConfig.spread.distance === 0 && j % sunConfig.spread.distance === 0)
             {
-                const radius = getRandomFloat(sunRadius.min, sunRadius.max);
+                const radius = getRandomFloat(sunConfig.radius.min, sunConfig.radius.max);
                     
                 // use polar coordinates to loop throughout the suns area, create sun spots
                 let spots = []
@@ -150,7 +150,7 @@ function createSuns(xMin, xMax, yMin, yMax)
                 {
                     for (let theta = 0; theta < 2 * Math.PI; theta += 0.1)
                     {
-                        if (Math.random() > sunSpots.threshold)
+                        if (Math.random() > sunConfig.spots.threshold)
                         {
                             spots.push(createSunSpot(r, theta))
                         }
@@ -159,21 +159,21 @@ function createSuns(xMin, xMax, yMin, yMax)
 
                 // create planets
                 let planets = [];
-                const numPlanets = getRandomFloat(planetGeneration.minAmount, planetGeneration.maxAmount);
+                const numPlanets = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max);
                 for (let n = 0; n < numPlanets; n++)
                 {
                     planets.push({
                         theta: getRandomFloat(0, 2*Math.PI),
-                        orbitRadius: getRandomFloat(planetGeneration.minOrbitRadius, planetGeneration.maxOrbitRadius),
-                        radius: getRandomFloat(planetGeneration.minRadius, planetGeneration.maxRadius),
-                        color: `hsl(${getRandomFloat(planetGeneration.minHue, planetGeneration.maxHue)}, ${getRandomFloat(planetGeneration.minSaturation, planetGeneration.maxSaturation)}%, ${getRandomFloat(planetGeneration.minLightness, planetGeneration.maxLightness)}%)`,
-                        speed: getRandomFloat(planetGeneration.minSpeed, planetGeneration.maxSpeed)
+                        orbitRadius: getRandomFloat(planetConfig.orbit.min, planetConfig.orbit.max),
+                        radius: getRandomFloat(planetConfig.radius.min, planetConfig.radius.max),
+                        color: `hsl(${getRandomFloat(planetConfig.hue.min, planetConfig.hue.max)}, ${getRandomFloat(planetConfig.saturation.min, planetConfig.saturation.max)}%, ${getRandomFloat(planetConfig.lightness.min, planetConfig.lightness.max)}%)`,
+                        speed: getRandomFloat(planetConfig.speed.min, planetConfig.speed.max)
                     })
                 }
 
                 suns.push({
-                    x: i + getRandomFloat(-1 * sunSpreadRandomness, sunSpreadRandomness),
-                    y: j + getRandomFloat(-1 * sunSpreadRandomness, sunSpreadRandomness),
+                    x: i + getRandomFloat(-1 * sunConfig.spread.randomness, sunConfig.spread.randomness),
+                    y: j + getRandomFloat(-1 * sunConfig.spread.randomness, sunConfig.spread.randomness),
                     radius: radius,
                     color: getSunColor(),
                     spots: spots,
