@@ -5,7 +5,7 @@ function drawCircle(x, y, radius, color)
     context.beginPath();
 
     // draw an arc at position (x, y) with given radius, start angle 0, end angle 2pi.
-    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.arc(x, y, radius, 0, TwoPi);
 
     // fill in the circle
     context.fillStyle = color;
@@ -116,7 +116,12 @@ function drawStar(star)
 // returns a random hsl string using sun specs
 function getSunColor()
 {
-    return `hsl(${getRandomFloat(sunConfig.hue.min, sunConfig.hue.max)}, ${getRandomFloat(sunConfig.saturation.min, sunConfig.saturation.max)}%, ${getRandomFloat(sunConfig.lightness.min, sunConfig.lightness.max)}%)`
+    return `hsl(${getRandomFloat(sunConfig.hue.min, sunConfig.hue.max)}, ${getRandomFloat(sunConfig.saturation.min, sunConfig.saturation.max)}%, ${getRandomFloat(sunConfig.lightness.min, sunConfig.lightness.max)}%)`;
+}
+
+function getPlanetColor()
+{
+    return  `hsl(${getRandomFloat(planetConfig.hue.min, planetConfig.hue.max)}, ${getRandomFloat(planetConfig.saturation.min, planetConfig.saturation.max)}%, ${getRandomFloat(planetConfig.lightness.min, planetConfig.lightness.max)}%)`;
 }
 
 // returns a single sun spot object
@@ -149,7 +154,7 @@ function createSuns(xMin, xMax, yMin, yMax)
                 let spots = []
                 for (let r = 0; r < radius; r++)
                 {
-                    for (let theta = 0; theta < 2 * Math.PI; theta += 0.1)
+                    for (let theta = 0; theta < TwoPi; theta += 0.1)
                     {
                         if (Math.random() > sunConfig.spots.threshold)
                         {
@@ -163,13 +168,34 @@ function createSuns(xMin, xMax, yMin, yMax)
                 const numPlanets = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max);
                 for (let n = 0; n < numPlanets; n++)
                 {
-                    planets.push({
-                        theta: getRandomFloat(0, 2*Math.PI),
+                    // create planet
+                    let planet = {
+                        theta: getRandomFloat(0, TwoPi),
                         orbitRadius: getRandomFloat(planetConfig.orbit.min, planetConfig.orbit.max),
                         radius: getRandomFloat(planetConfig.radius.min, planetConfig.radius.max),
-                        color: `hsl(${getRandomFloat(planetConfig.hue.min, planetConfig.hue.max)}, ${getRandomFloat(planetConfig.saturation.min, planetConfig.saturation.max)}%, ${getRandomFloat(planetConfig.lightness.min, planetConfig.lightness.max)}%)`,
+                        color: getPlanetColor(),
                         speed: getRandomFloat(planetConfig.speed.min, planetConfig.speed.max)
-                    })
+                    };
+
+                    // create dots for the planet
+                    let dots = [];
+                    const numDots = getRandomFloat(planetConfig.dots.amount.min, planetConfig.dots.amount.max);
+                    const dotColor = getPlanetColor()
+                    for (let d = 0; d < numDots; d++)
+                    {
+                        const r = getRandomFloat(0, planet.radius*0.9)
+                        const theta = getRandomFloat(0, TwoPi)
+                        dots.push({
+                            x: r*Math.cos(theta),
+                            y: r*Math.sin(theta),
+                            color: dotColor,
+                            radius: getRandomFloat(planetConfig.dots.radius.min, planetConfig.dots.radius.max)
+                        })
+                    }
+
+                    // add the planet
+                    planet.dots = dots;
+                    planets.push(planet);
                 }
 
                 suns.push({
@@ -203,7 +229,7 @@ function updateSun(sun)
         if (spot.lifeSpan <= 0)
         {
             // replace this spot with a new one
-            sun.spots[index] =(createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, 2*Math.PI)));
+            sun.spots[index] =(createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, TwoPi)));
         }
         else
         {
@@ -216,8 +242,8 @@ function updateSun(sun)
     sun.planets.forEach(planet => {
         // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
         planet.theta += planet.speed * sun.orbitDirection;
-        if (planet.theta < 0) planet.theta += 2*Math.PI
-        if (planet.theta > 2*Math.PI) planet.theta -= 2*Math.PI
+        if (planet.theta < 0) planet.theta += TwoPi
+        if (planet.theta > TwoPi) planet.theta -= TwoPi
     })
 }
 
@@ -237,6 +263,12 @@ function drawSun(sun)
 
     // loop through all planets and draw each one
     sun.planets.forEach(planet => {
-        drawCircle(sun.x + planet.orbitRadius*Math.cos(planet.theta), sun.y + planet.orbitRadius*Math.sin(planet.theta), planet.radius, planet.color);
+        let planetX = sun.x + planet.orbitRadius*Math.cos(planet.theta)
+        let planetY = sun.y + planet.orbitRadius*Math.sin(planet.theta)
+        drawCircle(planetX, planetY, planet.radius, planet.color);
+
+        planet.dots.forEach(dot => {
+            drawCircle(planetX + dot.x, planetY + dot.y, dot.radius, dot.color);
+        })
     })
 }

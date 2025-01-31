@@ -1,4 +1,6 @@
 // GLOBAL CONSTS
+const TwoPi = 2 * Math.PI;
+
 const canvasUpdateDelta = 1000 / 60; // in ms, how frequently canvas gets redrawn. 60 FPS
 const homePageSlideshowDelta = 10000; // in ms, how long between each picture transition for project preview
 
@@ -68,8 +70,8 @@ const planetConfig = {
         max: 0.0075,
     },
     hue: {
-        min: 0,
-        max: 360
+        min: 100,
+        max: 335
     },
     saturation: {
         min: 75,
@@ -78,6 +80,16 @@ const planetConfig = {
     lightness: {
         min: 40,
         max: 60
+    },
+    dots: {
+        amount: {
+            min: 0,
+            max: 10
+        },
+        radius: {
+            min: 0.5,
+            max: 1.5
+        }
     }
 }
 
