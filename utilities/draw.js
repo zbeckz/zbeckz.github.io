@@ -230,7 +230,7 @@ function updateSun(sun)
         if (spot.lifeSpan <= 0)
         {
             // replace this spot with a new one
-            sun.spots[index] =(createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, TwoPi)));
+            sun.spots[index] = createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, TwoPi));
         }
         else
         {

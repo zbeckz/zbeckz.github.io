@@ -40,7 +40,7 @@ const sunConfig = {
         max: 60
     },
     spots: { 
-        threshold: 0.85,
+        threshold: 0.975,
         radius: {
             min: 1,
             max: 2
