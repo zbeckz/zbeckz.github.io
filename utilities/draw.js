@@ -120,14 +120,15 @@ function getSunColor()
 }
 
 // returns a single sun spot object
-function createSunSpot(r, theta)
+// isInitial lowers the lifespan of first generation of sun spots so it looks more fluid upon page load
+function createSunSpot(r, theta, isInitial=false)
 {
     return {
         x: r*Math.cos(theta),
         y: r*Math.sin(theta),
         radius: getRandomFloat(sunConfig.spots.radius.min, sunConfig.spots.radius.max),
         color: getSunColor(),
-        lifeSpan: getRandomFloat(sunConfig.spots.lifeSpan.min, sunConfig.spots.lifeSpan.max)
+        lifeSpan: getRandomFloat(isInitial ? 1 : sunConfig.spots.lifeSpan.min, sunConfig.spots.lifeSpan.max) 
     }
 }
 
@@ -201,13 +202,13 @@ function updateSun(sun)
     sun.spots.forEach((spot, index) => {
         if (spot.lifeSpan <= 0)
         {
-            // delete this spot, add new one at a random location within the star
-            sun.spots.splice(index, 1);
-            sun.spots.push(createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, 2*Math.PI)));
+            // replace this spot with a new one
+            sun.spots[index] =(createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, 2*Math.PI)));
         }
         else
         {
             spot.lifeSpan--;
+            spot.radius += 0.05;
         }
     })
 
