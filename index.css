@@ -58,6 +58,7 @@ body {
     align-items: center;
     gap: 20px;
     opacity: 100%;
+    border: 4px solid white;
 
     /* Div within that has image border */
     .homePageImageContainer {
