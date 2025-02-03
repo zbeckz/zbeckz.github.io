@@ -157,7 +157,7 @@ function createSuns(xMin, xMax, yMin, yMax)
 // updates a sun (spot lifespan and re-creation)
 function updateSun(sun)
 {
-    // loop through all the spots
+    // loop through all the spots. Use standard for loop because we need to access the index
     for (let i = 0, n = sun.spots.length; i < n; i++)
     {
         const spot = sun.spots[i];
@@ -174,10 +174,8 @@ function updateSun(sun)
     }
 
     // loop through all the planets
-    for (let i = 0, n = sun.planets.length; i < n; i++)
+    for (const planet of sun.planets)
     {
-        const planet = sun.planets[i];
-        
         // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
         planet.theta += planet.speed * sun.orbitDirection;
         if (planet.theta < 0) planet.theta += TwoPi

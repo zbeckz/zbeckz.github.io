@@ -27,16 +27,14 @@ window.addEventListener('load', () => {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         // handle updating and drawing the stars and suns
-        for (let i = 0, n = stars.length; i < n; i++)
+        for (const star of stars)
         {
-            const star = stars[i];
             updateStar(star);
             drawStar(star);
         }
 
-        for (let i = 0, n = suns.length; i < n; i++)
+        for (const sun of suns)
         {
-            const sun = suns[i];
             updateSun(sun);
             drawSun(sun);
         }
