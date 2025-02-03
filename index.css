@@ -48,7 +48,7 @@ body {
 .homePageSection {
     display: flex;
     flex-direction: column-reverse;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(80, 80, 80, 0.6);
     border-radius: var(--homePageSectionBorderRadius);
     transition: all var(--homePageTransitionDuration);
     position: relative;
@@ -58,6 +58,7 @@ body {
     align-items: center;
     gap: 20px;
     opacity: 100%;
+    border: 4px solid white;
 
     /* Div within that has image border */
     .homePageImageContainer {
@@ -107,11 +108,14 @@ body {
     &:hover {
         width: calc(var(--homePageSectionWidth) * 1.2);
         height: calc(var(--homePageSectionHeight) * 1.2);
+        background-color: rgba(60, 60, 60, 0.8);
+        border: none;
 
         .animatedBorder, .line {
             width: calc(var(--homePageSectionWidth) * 1.2);
             height: calc(var(--homePageSectionHeight) * 1.2);
             opacity: 100%;
+            animation: borderAnimation 5.0s linear infinite;
         }
 
         button {
@@ -150,7 +154,6 @@ body {
     stroke-width: 10px;
     fill: transparent;
     stroke: var(--homePageColorOne);
-    animation: borderAnimation 5.0s linear infinite;
 }
 
 @keyframes borderAnimation {

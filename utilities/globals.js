@@ -54,7 +54,8 @@ const sunConfig = {
         lifeSpan: {
             min: 12,
             max: 32
-        }
+        },
+        growthrate: 0.05
     }
 }
 
