@@ -108,7 +108,7 @@ body {
     &:hover {
         width: calc(var(--homePageSectionWidth) * 1.2);
         height: calc(var(--homePageSectionHeight) * 1.2);
-        background-color: rgba(60, 60, 60, 0.8);
+        background-color: rgba(50, 50, 50, 0.9);
         border: none;
 
         .animatedBorder, .line {

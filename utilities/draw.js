@@ -51,18 +51,23 @@ function drawSun(sun)
     drawCircle(sun.x, sun.y, sun.radius, sun.color);
 
     // loop through all the sun spots and draw each one
-    sun.spots.forEach(spot => {
+    for (let i = 0, n = sun.spots.length; i < n; i++)
+    {
+        const spot = sun.spots[i];
         drawCircle(sun.x + spot.x, sun.y + spot.y, spot.radius, spot.color);
-    })
+    }
 
-    // loop through all planets and draw each one
-    sun.planets.forEach(planet => {
+    for (let i = 0, n = sun.planets.length; i < n; i++)
+    {
+        const planet = sun.planets[i];
         let planetX = sun.x + planet.orbitRadius*Math.cos(planet.theta)
         let planetY = sun.y + planet.orbitRadius*Math.sin(planet.theta)
         drawCircle(planetX, planetY, planet.radius, planet.color);
 
-        planet.dots.forEach(dot => {
+        for (let j = 0, k = planet.dots.length; j < k; j++)
+        {
+            const dot = planet.dots[j];
             drawCircle(planetX + dot.r*Math.cos(dot.theta + planet.rotationTheta), planetY + dot.r*Math.sin(dot.theta + planet.rotationTheta), dot.radius, dot.color);
-        })
-    })
+        }
+    }
 }

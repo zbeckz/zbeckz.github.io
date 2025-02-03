@@ -158,29 +158,34 @@ function createSuns(xMin, xMax, yMin, yMax)
 function updateSun(sun)
 {
     // loop through all the spots
-    sun.spots.forEach((spot, index) => {
+    for (let i = 0, n = sun.spots.length; i < n; i++)
+    {
+        const spot = sun.spots[i];
         if (spot.lifeSpan <= 0)
         {
             // replace this spot with a new one
-            sun.spots[index] = createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, TwoPi));
+            sun.spots[i] = createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, TwoPi));
         }
         else
         {
             spot.lifeSpan--;
             spot.radius += sunConfig.spots.growthrate;
         }
-    })
+    }
 
     // loop through all the planets
-    sun.planets.forEach(planet => {
+    for (let i = 0, n = sun.planets.length; i < n; i++)
+    {
+        const planet = sun.planets[i];
+        
         // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
         planet.theta += planet.speed * sun.orbitDirection;
         if (planet.theta < 0) planet.theta += TwoPi
         if (planet.theta > TwoPi) planet.theta -= TwoPi
 
-        // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
+        // rotate planet, reset theta to within 0-2pi if necessary to avoid exploding values
         planet.rotationTheta += planet.rotationSpeed * planet.rotationDirection;
         if (planet.rotationTheta < 0) planet.rotationTheta += TwoPi
         if (planet.rotationTheta > TwoPi) planet.rotationTheta -= TwoPi
-    })
+    }
 }
