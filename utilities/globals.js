@@ -20,7 +20,7 @@ const starConfig = {
 
 const sunConfig = {
     spread: {
-       distance: 350,
+       distance: 300,
        randomness: 100
     },
     radius: {

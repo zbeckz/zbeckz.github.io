@@ -82,9 +82,15 @@ function createSun(x, y)
 
 function spawnSuns(xMin, xMax, yMin, yMax)
 {
-    for (let i = xMin + sunConfig.radius.max; i < xMax; i += sunConfig.spread.distance)
+    // keeps entirely within screen
+    const bufferDist =  sunConfig.radius.max + sunConfig.spread.randomness
+    for (let i = xMin + bufferDist; i < xMax - bufferDist; i += sunConfig.spread.distance)
     {
-        suns.push(createSun(i + getRandomFloat(-1*sunConfig.spread.randomness, sunConfig.spread.randomness), getRandomFloat(yMin, yMax)))
+        suns.push(
+            createSun(
+                i + getRandomFloat(-1*sunConfig.spread.randomness, sunConfig.spread.randomness), 
+                getRandomFloat(yMin+sunConfig.radius.max, yMax-sunConfig.radius.max))
+        )
     }
 }
 
