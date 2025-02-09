@@ -125,6 +125,7 @@ let context; // context part of canvas element
 let homePageProjectImg; // image element
 let currentProjectPreview = -1; // current index into the projectData array (-1 means the code image)
 let homePageImageTransitionDuration; // will get from css root config to ensure it matches the css transition time
+let homePageSectionTransitionDuration; // will also get from css root config
 
 let maxWindowWidth; // used for background generation upon bigger canvas sizes
 let minWindowWidth; // used for background generation upon bigger canvas sizes

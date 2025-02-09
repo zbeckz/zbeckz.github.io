@@ -6,6 +6,8 @@ window.addEventListener('load', () => {
     // get the transition duration from the css root. Will be formated like '0.1s', so need to extract the number and multiply by 1000 to get ms
     homePageImageTransitionDuration = 
         window.getComputedStyle(document.documentElement).getPropertyValue('--homePageImageTransitionDuration').split('s')[0] * 1000;
+    homePageSectionTransitionDuration = 
+        window.getComputedStyle(document.documentElement).getPropertyValue('--homePageTransitionDuration').split('s')[0] * 1000;
 
     // begin data load, start home page slide show upon completion
     getProjectInfo().then(() => setHomepageSlideshow());
