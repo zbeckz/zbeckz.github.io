@@ -20,14 +20,8 @@ const starConfig = {
 
 const sunConfig = {
     spread: {
-        horizontal: {
-            distance: 350,
-            randomness: 100
-        },
-        vertical: {
-            distance: 300,
-            randomness: 150
-        }
+       distance: 350,
+       randomness: 100
     },
     radius: {
         min: 40,
@@ -45,18 +39,22 @@ const sunConfig = {
         min: 40,
         max: 60
     },
-    spots: { 
-        threshold: 0.975,
-        radius: {
-            min: 1,
-            max: 2
-        },
-        lifeSpan: {
-            min: 12,
-            max: 32
-        },
-        growthrate: 0.05
-    }
+}
+
+const sunSpotConfig = {
+    amount: {
+        min: 50,
+        max: 100
+    },
+    radius: {
+        min: 1,
+        max: 2
+    },
+    lifeSpan: {
+        min: 12,
+        max: 32
+    },
+    growthrate: 0.05
 }
 
 const planetConfig = {
@@ -65,8 +63,8 @@ const planetConfig = {
         max: 5,
     },
     orbit: {
-        min: 75,
-        max: 100
+        min: 10,
+        max: 50
     },
     radius: {
         min: 8,
@@ -74,7 +72,7 @@ const planetConfig = {
     },
     speed: {
         min: 0.00075,
-        max: 0.0075,
+        max: 0.0025,
     },
     hue: {
         min: 100,
@@ -88,20 +86,33 @@ const planetConfig = {
         min: 40,
         max: 60
     },
-    dots: {
-        amount: {
-            min: 0,
-            max: 10
-        },
-        radius: {
-            min: 0.5,
-            max: 1.5
-        }
-    },
     rotationSpeed: {
         min: 0.01,
-        max: 0.05,
+        max: 0.03,
     }
+}
+
+const planetDotConfig = {
+    amount: {
+        min: 0,
+        max: 10
+    },
+    radius: {
+        min: 0.5,
+        max: 2.5
+    },
+    hue: {
+        min: 0,
+        max: 360
+    },
+    saturation: {
+        min: 75,
+        max: 100
+    },
+    lightness: {
+        min: 40,
+        max: 60
+    },
 }
 
 
@@ -120,3 +131,6 @@ let minWindowWidth; // used for background generation upon bigger canvas sizes
 
 let stars = []; // array of stars to draw and stuff
 let suns = []; // array of suns
+let sunSpots = []; // array of spots that flicker within suns to look like solar activity
+let planets = [];
+let planetDots = [];

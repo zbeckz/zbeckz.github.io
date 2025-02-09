@@ -18,15 +18,22 @@ window.addEventListener('load', () => {
     resizeCanvas();
 
     // create stars and suns for current window size
-    createStars(0, maxWindowWidth, 0, maxWindowHeight);
-    createSuns(0, maxWindowWidth, 0, maxWindowHeight);
+    spawnStars(0, maxWindowWidth, 0, maxWindowHeight);
+    spawnSuns(0, maxWindowWidth, 0, maxWindowHeight);
+
+    // create sun spots and planets for the newly created suns
+    spawnSunSpots(suns);
+    spawnPlanets(suns);
+
+    // create planet dots for the newly crated planets
+    spawnPlanetDots(planets);
 
     // set interval to update canvas background
     setInterval(() => {
         // clear the canvas
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        // handle updating and drawing the stars and suns
+        // handle updating and drawing the stars, suns, sun spots, planets, and planet dots
         for (const star of stars)
         {
             updateStar(star);
@@ -35,8 +42,26 @@ window.addEventListener('load', () => {
 
         for (const sun of suns)
         {
-            updateSun(sun);
             drawSun(sun);
+        }
+
+        // needs to be a loop that includes index because updating a sun spot may include replacing it in the array
+        for (let i = 0, n = sunSpots.length; i < n; i++)
+        {
+            const sunSpot = sunSpots[i];
+            updateSunSpot(sunSpot, i);
+            drawSunSpot(sunSpot);
+        }
+
+        for (const planet of planets)
+        {
+            updatePlanet(planet);
+            drawPlanet(planet);
+        }
+
+        for (const planetDot of planetDots)
+        {
+            drawPlanetDot(planetDot);
         }
     }, canvasUpdateDelta)
 });
@@ -49,14 +74,14 @@ window.addEventListener('resize', () => {
     // if the new window is now wider than it has been before during this session, need to create new stars
     if (window.innerWidth > maxWindowWidth) 
     {
-        createStars(maxWindowWidth, window.innerWidth, 0, maxWindowHeight);
+        spawnStars(maxWindowWidth, window.innerWidth, 0, maxWindowHeight);
         maxWindowWidth = window.innerWidth;
     }
 
     // if the new window is now taller than it has been before during this session, need to create new stars
     if (window.innerHeight > maxWindowHeight) 
     {
-        createStars(0, maxWindowWidth, maxWindowHeight, window.innerHeight);      
+        spawnStars(0, maxWindowWidth, maxWindowHeight, window.innerHeight);      
         maxWindowHeight = window.innerHeight;
     }
 });

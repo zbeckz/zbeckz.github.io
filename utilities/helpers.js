@@ -1,5 +1,27 @@
+// returns a random hsl string using given specs
+function getRandomColor(config)
+{
+    const hue = getRandomFloat(config.hue.min, config.hue.max);
+    const sat = getRandomFloat(config.saturation.min, config.saturation.max);
+    const light = getRandomFloat(config.lightness.min, config.lightness.max)
+    return `hsl(${hue}, ${sat}%, ${light}%)`;
+}
+
+// returns a new star object at a given location
+function createStar(x, y)
+{
+    return {
+        x: x, 
+        y: y, 
+        radius: getRandomFloat(starConfig.radius.min, starConfig.radius.max), 
+        radiusDelta: Math.random() < 0.5 ? -1 : 1,
+        brightness: getRandomFloat(starConfig.brightness.min, starConfig.brightness.max),
+        brightnessDelta: Math.random() < 0.5 ? -1 : 1,
+    }
+}
+
 // Creates new stars for a given part of the canvas
-function createStars(xMin, xMax, yMin, yMax)
+function spawnStars(xMin, xMax, yMin, yMax)
 {
     // loop through the given range
     for (let i = xMin; i < xMax; i++)
@@ -9,14 +31,7 @@ function createStars(xMin, xMax, yMin, yMax)
             // if the random number between 0 and 1 is bigger than the threshold, create new star at this location
             if (Math.random() > starConfig.threshold)
             {
-                stars.push({
-                    x: i, 
-                    y: j, 
-                    radius: getRandomFloat(starConfig.radius.min, starConfig.radius.max), 
-                    radiusDelta: Math.random() < 0.5 ? -1 : 1,
-                    brightness: getRandomFloat(starConfig.brightness.min, starConfig.brightness.max),
-                    brightnessDelta: Math.random() < 0.5 ? -1 : 1,
-                });
+                stars.push(createStar(i, j));
             }
         }
     }
@@ -54,136 +69,140 @@ function updateStar(star)
     }
 }
 
-// returns a random hsl string using sun specs
-function getSunColor()
+// returns a single sun object
+function createSun(x, y)
 {
-    return `hsl(${getRandomFloat(sunConfig.hue.min, sunConfig.hue.max)}, ${getRandomFloat(sunConfig.saturation.min, sunConfig.saturation.max)}%, ${getRandomFloat(sunConfig.lightness.min, sunConfig.lightness.max)}%)`;
+    return {
+        x: x,
+        y: y,
+        radius: getRandomFloat(sunConfig.radius.min, sunConfig.radius.max),
+        color: getRandomColor(sunConfig),
+    }
 }
 
-function getPlanetColor()
+function spawnSuns(xMin, xMax, yMin, yMax)
 {
-    return  `hsl(${getRandomFloat(planetConfig.hue.min, planetConfig.hue.max)}, ${getRandomFloat(planetConfig.saturation.min, planetConfig.saturation.max)}%, ${getRandomFloat(planetConfig.lightness.min, planetConfig.lightness.max)}%)`;
+    for (let i = xMin + sunConfig.radius.max; i < xMax; i += sunConfig.spread.distance)
+    {
+        suns.push(createSun(i + getRandomFloat(-1*sunConfig.spread.randomness, sunConfig.spread.randomness), getRandomFloat(yMin, yMax)))
+    }
 }
 
 // returns a single sun spot object
-// isInitial lowers the lifespan of first generation of sun spots so it looks more fluid upon page load
-function createSunSpot(r, theta, isInitial=false)
+function createSunSpot(sunX, sunY, sunRadius)
 {
+    const r = getRandomFloat(0, sunRadius);
+    const theta = getRandomFloat(0, TwoPi);
     return {
+        sunX: sunX,
+        sunY: sunY,
+        sunRadius: sunRadius,
         x: r*Math.cos(theta),
         y: r*Math.sin(theta),
-        radius: getRandomFloat(sunConfig.spots.radius.min, sunConfig.spots.radius.max),
-        color: getSunColor(),
-        lifeSpan: getRandomFloat(isInitial ? 1 : sunConfig.spots.lifeSpan.min, sunConfig.spots.lifeSpan.max) 
+        radius: getRandomFloat(sunSpotConfig.radius.min, sunSpotConfig.radius.max),
+        color: getRandomColor(sunConfig),
+        lifeSpan: getRandomFloat(sunSpotConfig.lifeSpan.min, sunSpotConfig.lifeSpan.max) 
     }
 }
 
-// Creates new suns for a given part of the canvas
-function createSuns(xMin, xMax, yMin, yMax)
+function spawnSunSpots(currSuns)
 {
-    // loop through the given range, but not edges where a sun could clip off screen
-    for (let i = xMin + sunConfig.radius.max; i < xMax - sunConfig.radius.max; i++)
+    // loop through all the suns that currently need new sun spots
+    for (const sun of currSuns)
     {
-        for (let j = yMin + sunConfig.radius.max; j < yMax - sunConfig.radius.max; j++)
+        const amount = getRandomFloat(sunSpotConfig.amount.min, sunSpotConfig.amount.max)
+        for (let i = 0; i < amount; i++)
         {
-            // if the x and y are both divisible by the spread, generate new sun
-            if (i % sunConfig.spread.horizontal.distance === 0 && j % sunConfig.spread.vertical.distance === 0)
-            {
-                const radius = getRandomFloat(sunConfig.radius.min, sunConfig.radius.max);
-                    
-                // use polar coordinates to loop throughout the suns area, create sun spots
-                let spots = []
-                for (let r = 0; r < radius; r++)
-                {
-                    for (let theta = 0; theta < TwoPi; theta += 0.1)
-                    {
-                        if (Math.random() > sunConfig.spots.threshold)
-                        {
-                            spots.push(createSunSpot(r, theta))
-                        }
-                    }
-                }
-
-                // create planets
-                let planets = [];
-                const numPlanets = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max);
-                for (let n = 0; n < numPlanets; n++)
-                {
-                    // create planet
-                    let planet = {
-                        theta: getRandomFloat(0, TwoPi),
-                        orbitRadius: getRandomFloat(planetConfig.orbit.min, planetConfig.orbit.max),
-                        radius: getRandomFloat(planetConfig.radius.min, planetConfig.radius.max),
-                        color: getPlanetColor(),
-                        speed: getRandomFloat(planetConfig.speed.min, planetConfig.speed.max),
-                        rotationDirection: Math.random() < 0.5 ? 1 : -1,
-                        rotationTheta: 0,
-                        rotationSpeed: getRandomFloat(planetConfig.rotationSpeed.min, planetConfig.rotationSpeed.max)
-                    };
-
-                    // create dots for the planet
-                    let dots = [];
-                    const numDots = getRandomFloat(planetConfig.dots.amount.min, planetConfig.dots.amount.max);
-                    const dotColor = getPlanetColor()
-                    for (let d = 0; d < numDots; d++)
-                    {
-                        dots.push({
-                            r: getRandomFloat(0, planet.radius*0.9),
-                            theta: getRandomFloat(0, TwoPi),
-                            color: dotColor,
-                            radius: getRandomFloat(planetConfig.dots.radius.min, planetConfig.dots.radius.max)
-                        })
-                    }
-
-                    // add the planet
-                    planet.dots = dots;
-                    planets.push(planet);
-                }
-
-                suns.push({
-                    x: i + getRandomFloat(-1 * sunConfig.spread.horizontal.randomness, sunConfig.spread.horizontal.randomness),
-                    y: j + getRandomFloat(-1 * sunConfig.spread.vertical.randomness, sunConfig.spread.vertical.randomness),
-                    radius: radius,
-                    color: getSunColor(),
-                    spots: spots,
-                    planets: planets,
-                    orbitDirection: Math.random(0, 1) < 0.5 ? 1 : -1
-                })
-            }
+            sunSpots.push(createSunSpot(sun.x, sun.y, sun.radius));
         }
     }
 }
 
-// updates a sun (spot lifespan and re-creation)
-function updateSun(sun)
+function updateSunSpot(sunSpot, index)
 {
-    // loop through all the spots. Use standard for loop because we need to access the index
-    for (let i = 0, n = sun.spots.length; i < n; i++)
+    if (sunSpot.lifeSpan <= 0)
     {
-        const spot = sun.spots[i];
-        if (spot.lifeSpan <= 0)
+        // replace this spot with a new one
+        sunSpots[index] = createSunSpot(sunSpot.sunX, sunSpot.sunY, sunSpot.sunRadius);
+    }
+    else
+    {
+        sunSpot.lifeSpan--;
+        sunSpot.radius += sunSpotConfig.growthrate;
+    }
+}
+
+function createPlanet(sunX, sunY, sunRadius, orbitDirection)
+{
+    return {
+        sunX: sunX,
+        sunY: sunY,
+        theta: getRandomFloat(0, TwoPi),
+        orbitRadius: sunRadius + getRandomFloat(planetConfig.orbit.min, planetConfig.orbit.max),
+        radius: getRandomFloat(planetConfig.radius.min, planetConfig.radius.max),
+        color: getRandomColor(planetConfig),
+        speed: orbitDirection * getRandomFloat(planetConfig.speed.min, planetConfig.speed.max),
+        rotationDirection: Math.random() < 0.5 ? 1 : -1,
+        rotationTheta: 0,
+        rotationSpeed: getRandomFloat(planetConfig.rotationSpeed.min, planetConfig.rotationSpeed.max)
+    };
+};
+
+function spawnPlanets(currSuns)
+{
+    // loop through all the suns that currently need planets
+    for (const sun of currSuns)
+    {
+        const amount = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max)
+
+        // planets orbiting around the same sun should have the same orbit direction
+        const orbitDirection = Math.random() < 0.5 ? 1 : -1
+        for (let i = 0; i < amount; i++)
         {
-            // replace this spot with a new one
-            sun.spots[i] = createSunSpot(getRandomFloat(0, sun.radius), getRandomFloat(0, TwoPi));
-        }
-        else
-        {
-            spot.lifeSpan--;
-            spot.radius += sunConfig.spots.growthrate;
+            planets.push(createPlanet(sun.x, sun.y, sun.radius, orbitDirection))
         }
     }
+}
 
-    // loop through all the planets
-    for (const planet of sun.planets)
+function updatePlanet(planet)
+{
+   // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
+   planet.theta += planet.speed;
+   if (planet.theta < 0) planet.theta += TwoPi
+   if (planet.theta > TwoPi) planet.theta -= TwoPi
+
+   // update x and y value. This is stored so that planet dots can access it in their reference
+   planet.x = planet.sunX + planet.orbitRadius*Math.cos(planet.theta);
+   planet.y = planet.sunY + planet.orbitRadius*Math.sin(planet.theta);
+
+   // rotate planet, reset theta to within 0-2pi if necessary to avoid exploding values
+   planet.rotationTheta += planet.rotationSpeed * planet.rotationDirection;
+   if (planet.rotationTheta < 0) planet.rotationTheta += TwoPi
+   if (planet.rotationTheta > TwoPi) planet.rotationTheta -= TwoPi
+}
+
+function createPlanetDot(planet, color)
+{
+    const radius = getRandomFloat(planetDotConfig.radius.min, planetDotConfig.radius.max)
+    return {
+        planetRef: planet,
+        r: getRandomFloat(0, planet.radius - radius),
+        theta: getRandomFloat(0, TwoPi),
+        color: color,
+        radius: radius
+    }
+}
+
+function spawnPlanetDots(currPlanets)
+{
+    for (const planet of currPlanets)
     {
-        // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
-        planet.theta += planet.speed * sun.orbitDirection;
-        if (planet.theta < 0) planet.theta += TwoPi
-        if (planet.theta > TwoPi) planet.theta -= TwoPi
+        const amount = getRandomFloat(planetDotConfig.amount.min, planetDotConfig.amount.max);
+        const color = getRandomColor(planetDotConfig);
 
-        // rotate planet, reset theta to within 0-2pi if necessary to avoid exploding values
-        planet.rotationTheta += planet.rotationSpeed * planet.rotationDirection;
-        if (planet.rotationTheta < 0) planet.rotationTheta += TwoPi
-        if (planet.rotationTheta > TwoPi) planet.rotationTheta -= TwoPi
+        for (let i = 0; i < amount; i++)
+        {
+            planetDots.push(createPlanetDot(planet, color));
+        }
     }
 }

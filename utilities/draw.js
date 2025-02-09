@@ -47,24 +47,26 @@ function drawStar(star)
 // draws a sun, its spots, and its planets
 function drawSun(sun)
 {
-    // draw a cicle with the sun's specs
     drawCircle(sun.x, sun.y, sun.radius, sun.color);
+}
 
-    // loop through all the sun spots and draw each one
-    for (const spot of sun.spots)
-    {
-        drawCircle(sun.x + spot.x, sun.y + spot.y, spot.radius, spot.color);
-    }
+function drawSunSpot(sunSpot)
+{
+    drawCircle(sunSpot.sunX + sunSpot.x, sunSpot.sunY + sunSpot.y, sunSpot.radius, sunSpot.color);
+}
 
-    for (const planet of sun.planets)
-    {
-        let planetX = sun.x + planet.orbitRadius*Math.cos(planet.theta)
-        let planetY = sun.y + planet.orbitRadius*Math.sin(planet.theta)
-        drawCircle(planetX, planetY, planet.radius, planet.color);
+function drawPlanet(planet)
+{
+    drawCircle(planet.x, planet.y, planet.radius, planet.color);
+}
 
-        for (const dot of planet.dots)
-        {
-            drawCircle(planetX + dot.r*Math.cos(dot.theta + planet.rotationTheta), planetY + dot.r*Math.sin(dot.theta + planet.rotationTheta), dot.radius, dot.color);
-        }
-    }
+function drawPlanetDot(planetDot)
+{
+    const newTheta = planetDot.theta + planetDot.planetRef.rotationTheta
+    drawCircle(
+        planetDot.planetRef.x + planetDot.r*Math.cos(newTheta),
+        planetDot.planetRef.y + planetDot.r*Math.sin(newTheta),
+        planetDot.radius,
+        planetDot.color
+    )
 }
