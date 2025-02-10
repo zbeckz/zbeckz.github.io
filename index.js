@@ -65,7 +65,15 @@ window.addEventListener('load', () => {
         {
             drawPlanetDot(planetDot);
         }
+
+        if (asteroid)
+        {
+            updateAsteroid();
+            drawAsteroid();
+        }
     }, canvasUpdateDelta)
+
+    setAsteroidTimeout();
 });
 
 // fires when window is resized

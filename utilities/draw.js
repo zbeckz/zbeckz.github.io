@@ -89,3 +89,21 @@ function drawPlanetDot(planetDot)
         planetDot.color
     )
 }
+
+function drawAsteroid()
+{
+    // draw trailing fire
+    const trail = 10;
+    for (let i = 2; i <= trail; i++)
+    {
+        drawCircle(
+            asteroid.x - asteroid.velocity.x*i*asteroid.radius*0.05, 
+            asteroid.y - asteroid.velocity.y*i*asteroid.radius*0.05, 
+            asteroid.radius - asteroid.radius*(i/trail), 
+            `rgba(255, 165, 0, ${1 - i/trail})`
+        )
+    }
+
+    // draw main asteroid
+    drawCircle(asteroid.x, asteroid.y, asteroid.radius, asteroid.color);
+}

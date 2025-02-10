@@ -115,6 +115,21 @@ const planetDotConfig = {
     },
 }
 
+const asteroidConfig = {
+    time: {
+        min: 5000, // 5 seconds
+        max: 20000 // 20 seconds
+    },
+    radius: {
+        min: 5,
+        max: 15
+    },
+    speed: {
+        min: 10,
+        max: 15
+    }
+}
+
 
 // GLOBAL VARS
 let projectData; // array of project data fetched from the project-info.json
@@ -135,3 +150,4 @@ let suns = []; // array of suns
 let sunSpots = []; // array of spots that flicker within suns to look like solar activity
 let planets = [];
 let planetDots = [];
+let asteroid;
