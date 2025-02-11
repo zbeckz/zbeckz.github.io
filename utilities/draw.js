@@ -33,6 +33,7 @@ function goToProjects()
     // hide when shrinking is done
     setTimeout(() => {
         aboutMeSection.style.display = "none";
+        startTransition();
     }, homePageSectionTransitionDuration);
 }
 

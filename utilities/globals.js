@@ -130,6 +130,15 @@ const asteroidConfig = {
     }
 }
 
+const transitionConfig = {
+    speed: {
+        min: 0,
+        max: 15,
+    },
+    acceleration: 0.1,
+    loopTime: 2000 // 2 seconds
+}
+
 
 // GLOBAL VARS
 let projectData; // array of project data fetched from the project-info.json
@@ -151,3 +160,8 @@ let sunSpots = []; // array of spots that flicker within suns to look like solar
 let planets = [];
 let planetDots = [];
 let asteroid;
+let pageState;
+let transitionSpeed;
+let transitionAcceleration;
+let transitionState;
+let transitionWaiting;

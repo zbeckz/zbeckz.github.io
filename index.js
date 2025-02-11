@@ -30,47 +30,19 @@ window.addEventListener('load', () => {
     // create planet dots for the newly crated planets
     spawnPlanetDots(planets);
 
+    pageState = 0;
+
     // set interval to update canvas background
     setInterval(() => {
-        // clear the canvas
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        // handle updating and drawing the stars, suns, sun spots, planets, and planet dots
-        for (const star of stars)
+        switch (pageState)
         {
-            updateStar(star);
-            drawStar(star);
+            case 0:
+                staticCanvasUpdate();
+                break;
+            case 1:
+                transitionCanvasUpdate();
         }
-
-        for (const sun of suns)
-        {
-            drawSun(sun);
-        }
-
-        // needs to be a loop that includes index because updating a sun spot may include replacing it in the array
-        for (let i = 0, n = sunSpots.length; i < n; i++)
-        {
-            const sunSpot = sunSpots[i];
-            updateSunSpot(sunSpot, i);
-            drawSunSpot(sunSpot);
-        }
-
-        for (const planet of planets)
-        {
-            updatePlanet(planet);
-            drawPlanet(planet);
-        }
-
-        for (const planetDot of planetDots)
-        {
-            drawPlanetDot(planetDot);
-        }
-
-        if (asteroid)
-        {
-            updateAsteroid();
-            drawAsteroid();
-        }
+        
     }, canvasUpdateDelta)
 
     setAsteroidTimeout();
