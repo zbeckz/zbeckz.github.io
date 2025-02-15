@@ -52,9 +52,13 @@ const sunSpotConfig = {
     },
     lifeSpan: {
         min: 12,
-        max: 32
+        max: 42
     },
-    growthrate: 0.05
+    growthrate: {
+        min: 0.01,
+        max: 0.09,
+    }
+
 }
 
 const planetConfig = {
@@ -165,3 +169,45 @@ let transitionSpeed;
 let transitionAcceleration;
 let transitionState;
 let transitionWaiting;
+
+// GLOBAL CLASSES
+
+// Represents common functionality accross all space objects (asteroid, star, sun, sunSpot, planet, planetDot)
+class SpaceObject {
+    constructor(x, y, radius, color) 
+    {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+    }
+
+    // this function can be overriden by sub classes, but some may not
+    update() 
+    {
+        return;
+    }
+
+    // this function can be overriden by sub classes, but some may not
+    draw() 
+    {
+        drawCircle(this.x, this.y, this.radius, this.color);
+    }
+
+    transition()
+    {
+        this.x -= transitionSpeed;
+
+        // if off screen, loop back onto screen with a random height
+        if (this.x + this.radius < 0)
+        {
+            this.x = canvas.width - this.x;
+            this.y = getRandomFloat(0, canvas.height);
+        }
+    }
+
+    static Spawn()
+    {
+        throw new Error('Spawn() Must be overriden by subclass!')
+    }
+}

@@ -1,36 +1,33 @@
-function createPlanetDot(planet, color)
+class PlanetDot extends SpaceObject
 {
-    const radius = getRandomFloat(planetDotConfig.radius.min, planetDotConfig.radius.max)
-    return {
-        planetRef: planet,
-        r: getRandomFloat(0, planet.radius - radius),
-        theta: getRandomFloat(0, TwoPi),
-        color: color,
-        radius: radius
-    }
-}
-
-function spawnPlanetDots(currPlanets)
-{
-    for (const planet of currPlanets)
+    constructor(planetRef, color)
     {
-        const amount = getRandomFloat(planetDotConfig.amount.min, planetDotConfig.amount.max);
-        const color = getRandomColor(planetDotConfig);
+        const radius = getRandomFromConfig(planetDotConfig.radius);
+        const theta = getRandomFloat(0, TwoPi);
+        const r = getRandomFloat(0, planetRef.radius - radius);
+        super(planetRef.x + r*Math.cos(planetRef.rotationTheta + theta), planetRef.y + r*Math.sin(planetRef.rotationTheta + theta), radius, color);
+        this.planetRef = planetRef;
+        this.theta = theta;
+        this.r = r;
+    }
 
-        for (let i = 0; i < amount; i++)
+    update()
+    {
+        this.x = this.planetRef.x + this.r*Math.cos(this.planetRef.rotationTheta + this.theta);
+        this.y = this.planetRef.y + this.r*Math.sin(this.planetRef.rotationTheta + this.theta);
+    }
+
+    static Spawn(currPlanets=planets)
+    {
+        for (const planet of currPlanets)
         {
-            planetDots.push(createPlanetDot(planet, color));
+            const amount = getRandomFromConfig(planetDotConfig.amount);
+            const color = getRandomColorFromConfig(planetDotConfig);
+    
+            for (let i = 0; i < amount; i++)
+            {
+                planetDots.push(new PlanetDot(planet, color));
+            }
         }
     }
-}
-
-function drawPlanetDot(planetDot)
-{
-    const newTheta = planetDot.theta + planetDot.planetRef.rotationTheta
-    drawCircle(
-        planetDot.planetRef.x + planetDot.r*Math.cos(newTheta),
-        planetDot.planetRef.y + planetDot.r*Math.sin(newTheta),
-        planetDot.radius,
-        planetDot.color
-    )
 }

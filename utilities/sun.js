@@ -1,30 +1,21 @@
-// returns a single sun object
-function createSun(x, y)
+class Sun extends SpaceObject 
 {
-    return {
-        x: x,
-        y: y,
-        radius: getRandomFloat(sunConfig.radius.min, sunConfig.radius.max),
-        color: getRandomColor(sunConfig),
-    }
-}
-
-function spawnSuns(xMin, xMax, yMin, yMax)
-{
-    // keeps entirely within screen
-    const bufferDist =  sunConfig.radius.max + sunConfig.spread.randomness
-    for (let i = xMin + bufferDist; i < xMax - bufferDist; i += sunConfig.spread.distance)
+    constructor(x, y)
     {
-        suns.push(
-            createSun(
-                i + getRandomFloat(-1*sunConfig.spread.randomness, sunConfig.spread.randomness), 
-                getRandomFloat(yMin+sunConfig.radius.max, yMax-sunConfig.radius.max))
-        )
+        super(x, y, getRandomFromConfig(sunConfig.radius), getRandomColorFromConfig(sunConfig));
     }
-}
 
-// draws a sun, its spots, and its planets
-function drawSun(sun)
-{
-    drawCircle(sun.x, sun.y, sun.radius, sun.color);
+    static Spawn(xMin=0, xMax=canvas.width, yMin=0, yMax=canvas.height)
+    {
+        // keeps entirely within screen
+        const bufferDist = sunConfig.radius.max + sunConfig.spread.randomness
+        for (let i = xMin + bufferDist; i < xMax - bufferDist; i += sunConfig.spread.distance)
+        {
+            suns.push(
+                new Sun(
+                    i + getRandomFloat(-1*sunConfig.spread.randomness, sunConfig.spread.randomness), 
+                    getRandomFloat(yMin+sunConfig.radius.max, yMax-sunConfig.radius.max))
+            )
+        }
+    }
 }

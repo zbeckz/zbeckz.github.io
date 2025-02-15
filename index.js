@@ -19,16 +19,12 @@ window.addEventListener('load', () => {
     maxWindowHeight = window.innerHeight;
     resizeCanvas();
 
-    // create stars and suns for current window size
-    spawnStars(0, maxWindowWidth, 0, maxWindowHeight);
-    spawnSuns(0, maxWindowWidth, 0, maxWindowHeight);
-
-    // create sun spots and planets for the newly created suns
-    spawnSunSpots(suns);
-    spawnPlanets(suns);
-
-    // create planet dots for the newly crated planets
-    spawnPlanetDots(planets);
+    // spawn the types of space objects
+    Star.Spawn()
+    Sun.Spawn();
+    SunSpot.Spawn();
+    Planet.Spawn();
+    PlanetDot.Spawn();
 
     pageState = 0;
 
@@ -45,6 +41,8 @@ window.addEventListener('load', () => {
         
     }, canvasUpdateDelta)
 
+    // create dummy asteroid
+    asteroid = new Asteroid(-1 * asteroidConfig.radius.max, -1 * asteroidConfig.radius.max, 0, 0, 0);
     setAsteroidTimeout();
 });
 
@@ -56,14 +54,14 @@ window.addEventListener('resize', () => {
     // if the new window is now wider than it has been before during this session, need to create new stars
     if (window.innerWidth > maxWindowWidth) 
     {
-        spawnStars(maxWindowWidth, window.innerWidth, 0, maxWindowHeight);
+        Star.Spawn(maxWindowWidth, window.innerWidth, 0, maxWindowHeight);
         maxWindowWidth = window.innerWidth;
     }
 
     // if the new window is now taller than it has been before during this session, need to create new stars
     if (window.innerHeight > maxWindowHeight) 
     {
-        spawnStars(0, maxWindowWidth, maxWindowHeight, window.innerHeight);      
+        Star.Spawn(0, maxWindowWidth, maxWindowHeight, window.innerHeight);      
         maxWindowHeight = window.innerHeight;
     }
 });

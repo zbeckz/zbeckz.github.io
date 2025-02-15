@@ -1,53 +1,49 @@
-function createPlanet(sunX, sunY, sunRadius, orbitDirection)
+class Planet extends SpaceObject 
 {
-    return {
-        sunX: sunX,
-        sunY: sunY,
-        theta: getRandomFloat(0, TwoPi),
-        orbitRadius: sunRadius + getRandomFloat(planetConfig.orbit.min, planetConfig.orbit.max),
-        radius: getRandomFloat(planetConfig.radius.min, planetConfig.radius.max),
-        color: getRandomColor(planetConfig),
-        speed: orbitDirection * getRandomFloat(planetConfig.speed.min, planetConfig.speed.max),
-        rotationDirection: Math.random() < 0.5 ? 1 : -1,
-        rotationTheta: 0,
-        rotationSpeed: getRandomFloat(planetConfig.rotationSpeed.min, planetConfig.rotationSpeed.max)
-    };
-};
-
-function spawnPlanets(currSuns)
-{
-    // loop through all the suns that currently need planets
-    for (const sun of currSuns)
+    constructor(sunRef, orbitDirection)
     {
-        const amount = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max)
+        const orbitRadius = sunRef.radius + getRandomFromConfig(planetConfig.orbit);
+        const theta = getRandomFloat(0, TwoPi);
+        super(sunRef.x +orbitRadius*Math.cos(theta), sunRef.y + orbitRadius*Math.sin(theta), getRandomFromConfig(planetConfig.radius), getRandomColorFromConfig(planetConfig));
+        this.sunRef = sunRef;
+        this.theta = theta
+        this.orbitRadius = orbitRadius;
+        this.speed = orbitDirection * getRandomFromConfig(planetConfig.speed);
+        this.rotationDirection = Math.random() < 0.5 ? 1 : -1;
+        this.rotationTheta = 0;
+        this.rotationSpeed = getRandomFromConfig(planetConfig.rotationSpeed);
+    }
 
-        // planets orbiting around the same sun should have the same orbit direction
-        const orbitDirection = Math.random() < 0.5 ? 1 : -1
-        for (let i = 0; i < amount; i++)
+    update()
+    {
+        // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
+        this.theta += this.speed;
+        if (this.theta < 0) this.theta += TwoPi
+        if (this.theta > TwoPi) this.theta -= TwoPi
+
+        // update x and y value. This is stored so that planet dots can access it in their reference
+        this.x = this.sunRef.x + this.orbitRadius*Math.cos(this.theta);
+        this.y = this.sunRef.y + this.orbitRadius*Math.sin(this.theta);
+
+        // rotate planet, reset theta to within 0-2pi if necessary to avoid exploding values
+        this.rotationTheta += this.rotationSpeed * this.rotationDirection;
+        if (this.rotationTheta < 0) this.rotationTheta += TwoPi
+        if (this.rotationTheta > TwoPi) this.rotationTheta -= TwoPi
+    }
+
+    static Spawn(currSuns=suns)
+    {
+        // loop through all the suns that currently need planets
+        for (const sun of currSuns)
         {
-            planets.push(createPlanet(sun.x, sun.y, sun.radius, orbitDirection))
+            const amount = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max)
+    
+            // planets orbiting around the same sun should have the same orbit direction
+            const orbitDirection = Math.random() < 0.5 ? 1 : -1
+            for (let i = 0; i < amount; i++)
+            {
+                planets.push(new Planet(sun, orbitDirection));
+            }
         }
     }
-}
-
-function updatePlanet(planet)
-{
-   // move planet, reset theta to within 0-2pi if necessary to avoid exploding values
-   planet.theta += planet.speed;
-   if (planet.theta < 0) planet.theta += TwoPi
-   if (planet.theta > TwoPi) planet.theta -= TwoPi
-
-   // update x and y value. This is stored so that planet dots can access it in their reference
-   planet.x = planet.sunX + planet.orbitRadius*Math.cos(planet.theta);
-   planet.y = planet.sunY + planet.orbitRadius*Math.sin(planet.theta);
-
-   // rotate planet, reset theta to within 0-2pi if necessary to avoid exploding values
-   planet.rotationTheta += planet.rotationSpeed * planet.rotationDirection;
-   if (planet.rotationTheta < 0) planet.rotationTheta += TwoPi
-   if (planet.rotationTheta > TwoPi) planet.rotationTheta -= TwoPi
-}
-
-function drawPlanet(planet)
-{
-    drawCircle(planet.x, planet.y, planet.radius, planet.color);
 }

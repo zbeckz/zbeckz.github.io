@@ -1,5 +1,5 @@
 // returns a random hsl string using given specs
-function getRandomColor(config)
+function getRandomColorFromConfig(config)
 {
     const hue = getRandomFloat(config.hue.min, config.hue.max);
     const sat = getRandomFloat(config.saturation.min, config.saturation.max);
@@ -7,46 +7,25 @@ function getRandomColor(config)
     return `hsl(${hue}, ${sat}%, ${light}%)`;
 }
 
+// returns a random float from a config object with min and max properties
+function getRandomFromConfig(config)
+{
+    return getRandomFloat(config.min, config.max)
+}
+
 function staticCanvasUpdate()
 {
     // clear the canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // handle updating and drawing the stars, suns, sun spots, planets, and planet dots
-    for (const star of stars)
+    // loop through all the space object arrays
+    for (const arr of [stars, suns, sunSpots, planets, planetDots, [asteroid]])
     {
-        updateStar(star);
-        drawStar(star);
-    }
-
-    for (const sun of suns)
-    {
-        drawSun(sun);
-    }
-
-    // needs to be a loop that includes index because updating a sun spot may include replacing it in the array
-    for (let i = 0, n = sunSpots.length; i < n; i++)
-    {
-        const sunSpot = sunSpots[i];
-        updateSunSpot(sunSpot, i);
-        drawSunSpot(sunSpot);
-    }
-
-    for (const planet of planets)
-    {
-        updatePlanet(planet);
-        drawPlanet(planet);
-    }
-
-    for (const planetDot of planetDots)
-    {
-        drawPlanetDot(planetDot);
-    }
-
-    if (asteroid)
-    {
-        updateAsteroid();
-        drawAsteroid();
+        for (const spaceObj of arr)
+        {
+            spaceObj.update();
+            spaceObj.draw();
+        }
     }
 }
 
@@ -56,18 +35,6 @@ function startTransition()
     pageState = 1;
     transitionSpeed = transitionConfig.speed.min;
     transitionState = 0;
-}
-
-function transitionObject(object)
-{
-    object.x -= transitionSpeed;
-
-    // if off screen, loop back onto screen with a random height
-    if (object.x + object.radius < 0)
-    {
-        object.x = canvas.width - object.x;
-        object.y = getRandomFloat(0, canvas.height);
-    }
 }
 
 function transitionCanvasUpdate()
@@ -90,8 +57,8 @@ function transitionCanvasUpdate()
     else if (transitionState == 1)
     {
         if (!transitionWaiting) {
+            transitionWaiting = true;
             setTimeout(() => {
-                transitionWaiting = true;
                 transitionState = 2;
             }, transitionConfig.loopTime)
         }
@@ -106,23 +73,23 @@ function transitionCanvasUpdate()
         {
             pageState = 0;
             sunSpots = [];
-            spawnSunSpots(suns);
+            SunSpot.Spawn();
             planets = []
-            spawnPlanets(suns);
+            Planet.Spawn();
             planetDots = [];
-            spawnPlanetDots(planets);
+            PlanetDot.Spawn();
         }
     }
 
     for (const star of stars)
     {
-        transitionObject(star);
-        drawStar(star);
+        star.transition();
+        star.draw();
     }
 
     for (const sun of suns)
     {
-        transitionObject(sun);
-        drawSun(sun);
+        sun.transition();
+        sun.draw();
     }
 }

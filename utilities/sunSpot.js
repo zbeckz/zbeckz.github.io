@@ -1,48 +1,42 @@
-// returns a single sun spot object
-function createSunSpot(sunX, sunY, sunRadius)
+class SunSpot extends SpaceObject 
 {
-    const r = getRandomFloat(0, sunRadius);
-    const theta = getRandomFloat(0, TwoPi);
-    return {
-        sunX: sunX,
-        sunY: sunY,
-        sunRadius: sunRadius,
-        x: r*Math.cos(theta),
-        y: r*Math.sin(theta),
-        radius: getRandomFloat(sunSpotConfig.radius.min, sunSpotConfig.radius.max),
-        color: getRandomColor(sunConfig),
-        lifeSpan: getRandomFloat(sunSpotConfig.lifeSpan.min, sunSpotConfig.lifeSpan.max) 
-    }
-}
-
-function spawnSunSpots(currSuns)
-{
-    // loop through all the suns that currently need new sun spots
-    for (const sun of currSuns)
+    constructor(sunRef, index)
     {
-        const amount = getRandomFloat(sunSpotConfig.amount.min, sunSpotConfig.amount.max)
-        for (let i = 0; i < amount; i++)
+        const r = getRandomFloat(0, sunRef.radius);
+        const theta = getRandomFloat(0, TwoPi);
+        super(sunRef.x + r*Math.cos(theta), sunRef.y + r*Math.sin(theta), getRandomFromConfig(sunSpotConfig.radius), getRandomColorFromConfig(sunConfig));
+        this.lifeSpan = getRandomFromConfig(sunSpotConfig.lifeSpan);
+        this.growthRate = getRandomFromConfig(sunSpotConfig.growthrate);
+        this.sunRef = sunRef;
+        this.index = index;
+    }
+
+    update()
+    {
+        if (this.lifeSpan <= 0)
         {
-            sunSpots.push(createSunSpot(sun.x, sun.y, sun.radius));
+            // replace this spot with a new one
+           sunSpots[this.index] = new SunSpot(this.sunRef, this.index);
+        }
+        else
+        {
+            this.lifeSpan--;
+            this.radius += this.growthRate;
         }
     }
-}
 
-function updateSunSpot(sunSpot, index)
-{
-    if (sunSpot.lifeSpan <= 0)
+    static Spawn(currSuns=suns)
     {
-        // replace this spot with a new one
-        sunSpots[index] = createSunSpot(sunSpot.sunX, sunSpot.sunY, sunSpot.sunRadius);
+        // loop through all the suns that currently need new sun spots
+        let num = 0;
+        for (const sun of currSuns)
+        {
+            const amount = getRandomFromConfig(sunSpotConfig.amount);
+            for (let i = 0; i < amount; i++)
+            {
+                sunSpots.push(new SunSpot(sun, num));
+                num++;
+            }
+        }
     }
-    else
-    {
-        sunSpot.lifeSpan--;
-        sunSpot.radius += sunSpotConfig.growthrate;
-    }
-}
-
-function drawSunSpot(sunSpot)
-{
-    drawCircle(sunSpot.sunX + sunSpot.x, sunSpot.sunY + sunSpot.y, sunSpot.radius, sunSpot.color);
 }
