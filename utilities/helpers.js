@@ -29,12 +29,51 @@ function staticCanvasUpdate()
     }
 }
 
-function startTransition()
+function startTransition(transition_direction)
 {
-    if (pageState == 1) return;
-    pageState = 1;
+    // if already transitioning, don't do anything
+    if (pageState == PAGE_STATE.transition) return;
+
+    // set transition in motion
+    pageState = PAGE_STATE.transition;
     transitionSpeed = transitionConfig.speed.min;
-    transitionState = 0;
+    transitionState = TRANSITION_STATE.accel;
+    transitionDirection = transition_direction;
+}
+
+function handleAccelTransition()
+{
+    // go up to max acceleration
+    if (transitionSpeed < transitionConfig.speed.max)
+    {
+        transitionSpeed += transitionConfig.acceleration;
+    }
+    else // or, ste to coast for given amount of time
+    {
+        transitionState = TRANSITION_STATE.coast;
+        setTimeout(() => {
+            transitionState = TRANSITION_STATE.deccel;
+        }, transitionConfig.loopTime)
+    }
+}
+
+function handleDeccelTransition()
+{
+    // decelerate to 0
+    if (transitionSpeed > 0)
+    {
+        transitionSpeed -= transitionConfig.acceleration
+    }
+    else // respawn other space objects and reset
+    {
+        pageState = PAGE_STATE.home;
+        sunSpots = [];
+        SunSpot.Spawn();
+        planets = []
+        Planet.Spawn();
+        planetDots = [];
+        PlanetDot.Spawn();
+    }
 }
 
 function transitionCanvasUpdate()
@@ -42,54 +81,21 @@ function transitionCanvasUpdate()
     context.fillStyle = 'rgba(0, 0, 0, 0.2)';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    if (transitionState == 0) 
+    switch (transitionState)
     {
-        if (transitionSpeed < transitionConfig.speed.max)
-        {
-            transitionSpeed += transitionConfig.acceleration;
-        }
-        else
-        {
-            transitionState = 1;
-        }
-        
-    }
-    else if (transitionState == 1)
-    {
-        if (!transitionWaiting) {
-            transitionWaiting = true;
-            setTimeout(() => {
-                transitionState = 2;
-            }, transitionConfig.loopTime)
-        }
-    }
-    else
-    {
-        if (transitionSpeed > 0)
-        {
-            transitionSpeed -= transitionConfig.acceleration
-        }
-        else
-        {
-            pageState = 0;
-            sunSpots = [];
-            SunSpot.Spawn();
-            planets = []
-            Planet.Spawn();
-            planetDots = [];
-            PlanetDot.Spawn();
-        }
+        case TRANSITION_STATE.accel:
+            handleAccelTransition();
+            break;
+        case TRANSITION_STATE.deccel:
+            handleDeccelTransition();
     }
 
-    for (const star of stars)
+    for (const spaceObjArr of [stars, suns])
     {
-        star.transition();
-        star.draw();
-    }
-
-    for (const sun of suns)
-    {
-        sun.transition();
-        sun.draw();
+        for (const spaceObj of spaceObjArr)
+        {
+            spaceObj.transition();
+            spaceObj.draw();
+        }
     }
 }

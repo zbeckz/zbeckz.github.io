@@ -26,16 +26,16 @@ window.addEventListener('load', () => {
     Planet.Spawn();
     PlanetDot.Spawn();
 
-    pageState = 0;
+    pageState = PAGE_STATE.home;
 
     // set interval to update canvas background
     setInterval(() => {
         switch (pageState)
         {
-            case 0:
+            case PAGE_STATE.home:
                 staticCanvasUpdate();
                 break;
-            case 1:
+            case PAGE_STATE.transition:
                 transitionCanvasUpdate();
         }
         

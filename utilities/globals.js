@@ -158,17 +158,35 @@ let homePageSectionTransitionDuration; // will also get from css root config
 let maxWindowWidth; // used for background generation upon bigger canvas sizes
 let minWindowWidth; // used for background generation upon bigger canvas sizes
 
-let stars = []; // array of stars to draw and stuff
-let suns = []; // array of suns
-let sunSpots = []; // array of spots that flicker within suns to look like solar activity
+// SPACE OBJECTS
+let stars = [];
+let suns = [];
+let sunSpots = []; 
 let planets = [];
 let planetDots = [];
 let asteroid;
+
+// Page and transition states
 let pageState;
+const PAGE_STATE = {
+    home: 0,
+    transition: 1,
+}
+
+let transitionState;
+const TRANSITION_STATE = {
+    accel: 0,
+    coast: 1,
+    deccel: 2
+}
 let transitionSpeed;
 let transitionAcceleration;
-let transitionState;
-let transitionWaiting;
+
+let transitionDirection;
+const TRANSITION_DIRECTION = {
+    left: 0,
+    right: 1,
+}
 
 // GLOBAL CLASSES
 
@@ -196,12 +214,12 @@ class SpaceObject {
 
     transition()
     {
-        this.x -= transitionSpeed;
+        this.x += transitionSpeed * (transitionDirection === TRANSITION_DIRECTION.left ? -1 : 1);
 
         // if off screen, loop back onto screen with a random height
-        if (this.x + this.radius < 0)
+        if (transitionDirection === TRANSITION_DIRECTION.left ? (this.x + this.radius < 0) : (this.x - this.radius > canvas.width))
         {
-            this.x = canvas.width - this.x;
+            this.x = transitionDirection === TRANSITION_DIRECTION.left ? canvas.width - this.x : 0 - (this.x - canvas.width);
             this.y = getRandomFloat(0, canvas.height);
         }
     }

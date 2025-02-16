@@ -36,7 +36,7 @@ class Planet extends SpaceObject
         // loop through all the suns that currently need planets
         for (const sun of currSuns)
         {
-            const amount = getRandomFloat(planetConfig.amount.min, planetConfig.amount.max)
+            const amount = getRandomFromConfig(planetConfig.amount);
     
             // planets orbiting around the same sun should have the same orbit direction
             const orbitDirection = Math.random() < 0.5 ? 1 : -1

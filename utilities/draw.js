@@ -17,23 +17,23 @@ function setHomepageSlideshow()
     }, homePageSlideshowDelta)
 }
 
-function goToProjects()
+function goToSection(hideSectionId, transitionDirection)
 {
-    const aboutMeSection = document.getElementById("aboutMeContainer");
+    const hideSection = document.getElementById(hideSectionId);
 
     // hide all child elements
-    aboutMeSection.querySelectorAll("*").forEach(element => {
+    hideSection.querySelectorAll("*").forEach(element => {
         element.style.display = "none";
     });
 
     // begin transition of shrinking
-    aboutMeSection.style.width = "0px";
-    aboutMeSection.style.height = "0px";
+    hideSection.style.width = "0px";
+    hideSection.style.height = "0px";
     
     // hide when shrinking is done
     setTimeout(() => {
-        aboutMeSection.style.display = "none";
-        startTransition();
+        hideSection.style.display = "none";
+        startTransition(transitionDirection);
     }, homePageSectionTransitionDuration);
 }
 
