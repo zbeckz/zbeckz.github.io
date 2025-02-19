@@ -17,6 +17,12 @@ function setHomepageSlideshow()
     }, homePageSlideshowDelta)
 }
 
+function handleAnimationToggle()
+{
+    animationState = !animationState;
+    document.getElementById('animationToggle').dataset.on = animationState ? 'true' : 'false';
+}
+
 function goToSection(hideSectionId, transitionDirection)
 {
     const hideSection = document.getElementById(hideSectionId);

@@ -30,15 +30,55 @@ body {
     font-weight: 600;
 }
 
-/* Animation Toggle Div */
-#animationToggle {
+/* Animation Control Div */
+#animationControl {
     position: absolute;
     top: 10%;
-    background-color: white;
-    border-left: 1px solid white;
-    border-right: 1px solid white;
-    border-radius: 10px;
-    padding: 0px 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 1.5rem;
+    align-items: center;
+
+    span {
+        color: var(--homePageColorOne);
+    }
+
+    button {   
+        border-top: none;
+        border-bottom: none;
+        border-left: 1px solid var(--homePageColorOne);
+        border-right: 1px solid var(--homePageColorOne);
+        background-color: var(--homePageColorOne);
+        border-radius: 20px;
+        padding: 0px 10px;
+        width: 40px;
+        height: 25px;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &::before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            border-radius: 100%;
+            background-color: var(--homePageColorTwo);
+            top: 4px;
+            right: 3px;
+            transition: all var(--homePageImageTransitionDuration);
+            border: 3px solid var(--homePageColorTwo);
+        }
+    }
+
+    button[data-on='false'] {
+        &::before {
+            right: 17px;
+            background-color: var(--homePageColorOne);
+        }
+    }
 }
 
 /* Canvas element that is essentially the background */

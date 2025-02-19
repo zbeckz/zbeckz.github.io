@@ -19,6 +19,9 @@ window.addEventListener('load', () => {
     maxWindowHeight = window.innerHeight;
     resizeCanvas();
 
+    // begin animation state
+    animationState = true;
+
     // spawn the types of space objects
     Star.Spawn()
     Sun.Spawn();
@@ -30,6 +33,8 @@ window.addEventListener('load', () => {
 
     // set interval to update canvas background
     setInterval(() => {
+        if (!animationState) return;
+
         switch (pageState)
         {
             case PAGE_STATE.home:

@@ -188,6 +188,9 @@ const TRANSITION_DIRECTION = {
     right: 1,
 }
 
+// boolean, either on or off
+let animationState;
+
 // GLOBAL CLASSES
 
 // Represents common functionality accross all space objects (asteroid, star, sun, sunSpot, planet, planetDot)
