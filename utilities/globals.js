@@ -184,7 +184,7 @@ let transitionAcceleration;
 
 let transitionDirection;
 const TRANSITION_DIRECTION = {
-    left: 0,
+    left: -1,
     right: 1,
 }
 
@@ -214,12 +214,12 @@ class SpaceObject {
 
     transition()
     {
-        this.x += transitionSpeed * (transitionDirection === TRANSITION_DIRECTION.left ? -1 : 1);
+        this.x += transitionSpeed * transitionDirection;
 
         // if off screen, loop back onto screen with a random height
         if (transitionDirection === TRANSITION_DIRECTION.left ? (this.x + this.radius < 0) : (this.x - this.radius > canvas.width))
         {
-            this.x = transitionDirection === TRANSITION_DIRECTION.left ? canvas.width - this.x : 0 - (this.x - canvas.width);
+            this.x = canvas.width - this.x;
             this.y = getRandomFloat(0, canvas.height);
         }
     }
