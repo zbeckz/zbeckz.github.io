@@ -39,6 +39,7 @@ body {
     gap: 10px;
     font-size: 1.5rem;
     align-items: center;
+    justify-content: center;
 
     span {
         color: var(--homePageColorOne);
@@ -167,7 +168,13 @@ body {
         background-color: rgba(50, 50, 50, 0.9);
         box-shadow: 0px 0px 30px white;
 
-        .animatedBorder, .line {
+        .animatedBorder {
+            width: calc(var(--homePageSectionWidth) * 1.2);
+            height: calc(var(--homePageSectionHeight) * 1.2);
+            opacity: 100%;
+        }
+
+        .line[data-animate='true'] {
             width: calc(var(--homePageSectionWidth) * 1.2);
             height: calc(var(--homePageSectionHeight) * 1.2);
             opacity: 100%;

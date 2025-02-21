@@ -19,9 +19,6 @@ window.addEventListener('load', () => {
     maxWindowHeight = window.innerHeight;
     resizeCanvas();
 
-    // begin animation state
-    animationState = true;
-
     // spawn the types of space objects
     Star.Spawn()
     Sun.Spawn();
@@ -49,6 +46,15 @@ window.addEventListener('load', () => {
     // create dummy asteroid
     asteroid = new Asteroid(-1 * asteroidConfig.radius.max, -1 * asteroidConfig.radius.max, 0, 0, 0);
     setAsteroidTimeout();
+
+    // begin animation state from cookie
+    handleAnimationToggle(localStorage.getItem('animation') === 'true' ? true : false);
+    
+    // if the animation state is already off (from cookie), make sure animation toggle matches and draw 1 frame of background
+    if (!animationState)
+    {
+        staticCanvasUpdate();
+    }
 });
 
 // fires when window is resized

@@ -17,10 +17,22 @@ function setHomepageSlideshow()
     }, homePageSlideshowDelta)
 }
 
-function handleAnimationToggle()
+function handleAnimationToggle(newState)
 {
-    animationState = !animationState;
-    document.getElementById('animationToggle').dataset.on = animationState ? 'true' : 'false';
+    // use given state or just toggle if none is passed in
+    animationState = newState !== undefined ? newState : !animationState;
+    const newString = animationState ? 'true' : 'false';
+
+    // update html toggle element and stored cookie accordingly
+    document.getElementById('animationToggle').dataset.on = newString;
+
+    // update the cookie
+    localStorage.setItem("animation", newString);
+
+    // update the animated borders
+    document.querySelectorAll(".line").forEach(element => {
+        element.dataset.animate = newString;
+    })
 }
 
 function goToSection(hideSectionId, transitionDirection)
