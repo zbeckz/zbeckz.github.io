@@ -46,18 +46,17 @@ body {
     }
 
     button {   
-        border-top: none;
-        border-bottom: none;
-        border-left: 1px solid var(--homePageColorOne);
-        border-right: 1px solid var(--homePageColorOne);
+        border: 2px solid var(--homePageColorOne);
         background-color: var(--homePageColorOne);
         border-radius: 20px;
         padding: 0px 10px;
         width: 40px;
         height: 25px;
+        transition: all var(--homePageTransitionDuration);
 
         &:hover {
             cursor: pointer;
+            border: 2px solid var(--homePageColorTwo);
         }
 
         &::before {
