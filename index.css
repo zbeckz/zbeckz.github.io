@@ -40,45 +40,43 @@ body {
     font-size: 1.5rem;
     align-items: center;
     justify-content: center;
+}
 
-    span {
-        color: var(--homePageColorOne);
-    }
+#animationControl > span {
+    color: var(--homePageColorOne);
+}
 
-    button {   
-        border: 2px solid var(--homePageColorOne);
-        background-color: var(--homePageColorOne);
-        border-radius: 20px;
-        padding: 0px 10px;
-        width: 40px;
-        height: 24px;
-        transition: all var(--homePageTransitionDuration);
+#animationControl > button {
+    border: 2px solid var(--homePageColorOne);
+    background-color: var(--homePageColorOne);
+    border-radius: 20px;
+    padding: 0px 10px;
+    width: 40px;
+    height: 24px;
+    transition: all var(--homePageTransitionDuration);
+}
 
-        &:hover {
-            cursor: pointer;
-            border: 2px solid var(--homePageColorTwo);
-        }
+#animationControl > button:hover {
+    cursor: pointer;
+    border: 2px solid var(--homePageColorTwo);
+}
 
-        &::before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            border-radius: 100%;
-            background-color: var(--homePageColorTwo);
-            top: 5px;
-            right: 4px;
-            transition: all var(--homePageImageTransitionDuration);
-            border: 2px solid var(--homePageColorTwo);
-        }
-    }
+#animationControl > button::before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    border-radius: 100%;
+    background-color: var(--homePageColorTwo);
+    top: 5px;
+    right: 4px;
+    transition: all var(--homePageImageTransitionDuration);
+    border: 2px solid var(--homePageColorTwo);
+}
 
-    button[data-on='false'] {
-        &::before {
-            right: 18px;
-            background-color: var(--homePageColorOne);
-        }
-    }
+#animationControl > button[data-on='false']::before {
+    right: 18px;
+    background-color: var(--homePageColorOne);
 }
 
 /* Canvas element that is essentially the background */
@@ -115,75 +113,68 @@ body {
     gap: 20px;
     opacity: 100%;
     box-shadow: 0px 0px 20px var(--homePageColorOne);
+}
 
-    /* Div within that has image border */
-    .homePageImageContainer {
-        border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
-        border: 4px solid var(--homePageColorOne);
-        width: 70%;
-        transition: all var(--homePageTransitionDuration);
-    }
+.homePageSection > .homePageImageContainer {
+    border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
+    border: 4px solid var(--homePageColorOne);
+    width: 70%;
+    transition: all var(--homePageTransitionDuration);
+}
 
-    /* Image itself */
-    img {
-        width: 100%;
-        height: 100%;
-        transition: all var(--homePageTransitionDuration), opacity var(--homePageImageTransitionDuration);
-    }
+.homePageSection img {
+    width: 100%;
+    height: 100%;
+    transition: all var(--homePageTransitionDuration), opacity var(--homePageImageTransitionDuration);
+}
 
-    /* About me and projects button */
-    button {
-        z-index: 1;
-        width: 50%;
-        height: calc(var(--homePageSectionHeight) * 0.075);
-        border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
-        background: var(--homePageColorOne);
-        border: none;
-        font-size: 1.25rem;
-        transition: all var(--homePageTransitionDuration);
-        font-weight: 500;
+.homePageSection button {
+    z-index: 1;
+    width: 50%;
+    height: calc(var(--homePageSectionHeight) * 0.075);
+    border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
+    background: var(--homePageColorOne);
+    border: none;
+    font-size: 1.25rem;
+    transition: all var(--homePageTransitionDuration);
+    font-weight: 500;
+}
 
-        /* On hover, change own color and other border colors */
-        &:hover {
-            cursor: pointer;
-            background: var(--homePageColorTwo);
+.homePageSection button:hover {
+    cursor: pointer;
+    background: var(--homePageColorTwo);
+}
 
-            ~ .animatedBorder {
-                .line {
-                    stroke: var(--homePageColorTwo);
-                }
-            }
+.homePageSection button:hover ~ .animatedBorder .line {
+    stroke: var(--homePageColorTwo);
+}
 
-            ~ .homePageImageContainer {
-                border-color: var(--homePageColorTwo);
-            }
-        }
-    }
+.homePageSection button:hover ~ .homePageImageContainer {
+    border-color: var(--homePageColorTwo);
+}
 
-    /* Make bigger on section hover, cause border to appear */
-    &:hover {
-        width: calc(var(--homePageSectionWidth) * 1.2);
-        height: calc(var(--homePageSectionHeight) * 1.2);
-        background-color: rgba(50, 50, 50, 0.9);
-        box-shadow: 0px 0px 30px white;
+.homePageSection:hover {
+    width: calc(var(--homePageSectionWidth) * 1.2);
+    height: calc(var(--homePageSectionHeight) * 1.2);
+    background-color: rgba(50, 50, 50, 0.9);
+    box-shadow: 0px 0px 30px white;
+}
 
-        .animatedBorder {
-            width: calc(var(--homePageSectionWidth) * 1.2);
-            height: calc(var(--homePageSectionHeight) * 1.2);
-            opacity: 100%;
-        }
+.homePageSection:hover .animatedBorder {
+    width: calc(var(--homePageSectionWidth) * 1.2);
+    height: calc(var(--homePageSectionHeight) * 1.2);
+    opacity: 100%;
+}
 
-        .line[data-animate='true'] {
-            width: calc(var(--homePageSectionWidth) * 1.2);
-            height: calc(var(--homePageSectionHeight) * 1.2);
-            opacity: 100%;
-            animation: borderAnimation 5.0s linear infinite;
-        }
+.homePageSection:hover .line[data-animate='true'] {
+    width: calc(var(--homePageSectionWidth) * 1.2);
+    height: calc(var(--homePageSectionHeight) * 1.2);
+    opacity: 100%;
+    animation: borderAnimation 5.0s linear infinite;
+}
 
-        button {
-            font-size: 1.5rem;
-        }
-    }
+.homePageSection:hover button {
+    font-size: 1.5rem;
 }
 
 /* Allows the other section to shrink when one section is hovered on */
