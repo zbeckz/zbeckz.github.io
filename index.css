@@ -25,21 +25,32 @@ body {
 /* Title */
 #homePageTitle {
     position: absolute;
-    top: 2.5%;
-    font-size: 2.5rem;
+    top: 15px;
+    font-size: 3.5rem;
     font-weight: 600;
+
+    @media screen and (max-width: 1300px) {
+        top: 2.5%;
+        font-size: 2.5rem;
+    }
 }
 
 /* Animation Control Div */
 #animationControl {
     position: absolute;
-    top: 10%;
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    font-size: 1.5rem;
     align-items: center;
     justify-content: center;
+    top: 85px;
+    gap: 20px;
+    font-size: 2.5rem;
+
+    @media screen and (max-width: 1300px) {
+        top: 10%;
+        gap: 10px;
+        font-size: 1.5rem;
+    }
 }
 
 /* Animation control label */
@@ -49,39 +60,63 @@ body {
 
 /* Animation control toggle button */
 #animationControl > button {
-    border: 2px solid var(--homePageColorOne);
     background-color: var(--homePageColorOne);
-    border-radius: 20px;
-    padding: 0px 10px;
-    width: 40px;
-    height: 24px;
     transition: all var(--homePageTransitionDuration);
+    padding: 0px 15px;
+    width: 60px;
+    height: 36px;
+    border-radius: 30px;
+    border: 3px solid var(--homePageColorOne);
+    
+    @media screen and (max-width: 1300px) {
+        padding: 0px 20px;
+        width: 40px;
+        height: 24px;
+        border-radius: 20px;
+        border: 2px solid var(--homePageColorOne);
+    }
 }
 
 /* When hovering on the toggle button */
 #animationControl > button:hover {
     cursor: pointer;
-    border: 2px solid var(--homePageColorTwo);
+    border: 3px solid var(--homePageColorTwo);
+    
+    @media screen and (max-width: 1300px) {
+        border: 2px solid var(--homePageColorTwo);
+    }
 }
 
 /* Psuedo element which is the circle that actually slides back and forth for the animation toggle */
 #animationControl > button::before {
     position: absolute;
     content: "";
-    height: 14px;
-    width: 14px;
+    transition: all var(--homePageImageTransitionDuration);
     border-radius: 100%;
     background-color: var(--homePageColorTwo);
-    top: 5px;
-    right: 4px;
-    transition: all var(--homePageImageTransitionDuration);
-    border: 2px solid var(--homePageColorTwo);
+    height: 21px;
+    width: 21px;
+    top: 9px;
+    right: 6px;
+    border: 3px solid var(--homePageColorTwo);
+
+    @media screen and (max-width: 1300px) {
+        height: 14px;
+        width: 14px;
+        top: 5px;
+        right: 4px;
+        border: 2px solid var(--homePageColorTwo);
+    }
 }
 
 /* Allows the psuedo element to slide when data attribute updates */
 #animationControl > button[data-on='false']::before {
-    right: 18px;
+    right: 28px;
     background-color: var(--homePageColorOne);
+
+    @media screen and (max-width: 1300px) {
+        right: 22px
+    }
 }
 
 /* Canvas element that is essentially the background */
@@ -95,8 +130,12 @@ body {
     grid-area: 1 / 1 / 1 / 1;
     display: flex;
     flex-direction: row;
-    gap: 60px;
     align-items: center;
+    gap: 90px;
+
+    @media screen and (max-width: 1300px) {
+        gap: 60px;
+    }
 }
 
 /* Both projects and about me window */
@@ -104,29 +143,46 @@ body {
     display: flex;
     flex-direction: column-reverse;
     background-color: rgba(50, 50, 50, 0.9);
-    border-radius: var(--homePageSectionBorderRadius);
     transition: all var(--homePageTransitionDuration);
     position: relative;
-    width: var(--homePageSectionWidth);
-    height: var(--homePageSectionHeight);
     justify-content: center;
     align-items: center;
-    gap: 20px;
     opacity: 100%;
-    box-shadow: 0px 0px 20px var(--homePageColorOne);
+    border-radius: 18px;
+    width: 450px;
+    height:  600px;
+    gap: 30px;
+    box-shadow: 0px 0px 30px var(--homePageColorOne);
+
+    @media screen and (max-width: 1300px) {
+        border-radius: 12px;
+        width: 300px;
+        height:  400px;
+        gap: 20px;
+        opacity: 100%;
+        box-shadow: 0px 0px 20px var(--homePageColorOne);
+    }
 }
 
 /* When hovering on the button within home page section, add bigger box shadow */
 .homePageSection:has(button:hover) {
-    box-shadow: 0px 0px 30px var(--homePageColorTwo);
+    box-shadow: 0px 0px 40px var(--homePageColorTwo);
+
+    @media screen and (max-width: 1300px) {
+        box-shadow: 0px 0px 30px var(--homePageColorTwo);
+    }
 }
 
 /* The div surrounding an image within home page section */
 .homePageSection > .homePageImageContainer {
-    border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
+    border-radius: 9px;
     border: 4px solid var(--homePageColorOne);
     width: 70%;
     transition: all var(--homePageTransitionDuration);
+
+    @media screen and (max-width: 1300px) {
+        border-radius: 6px;
+    }
 }
 
 /* The image itself */
@@ -140,13 +196,19 @@ body {
 .homePageSection button {
     z-index: 1;
     width: 50%;
-    height: calc(var(--homePageSectionHeight) * 0.075);
-    border-radius: calc(var(--homePageSectionBorderRadius) * 0.5);
+    height: 50px;
+    border-radius: 9px;
     background: var(--homePageColorOne);
     border: none;
-    font-size: 1.25rem;
+    font-size: 1.75rem;
     transition: all var(--homePageTransitionDuration);
     font-weight: 500;
+
+    @media screen and (max-width: 1300px) {
+        font-size: 1.25rem;
+        height: 40px;
+        border-radius: 6px;
+    }
 }
 
 /* When the button is hovered, change it */
@@ -167,62 +229,113 @@ body {
 
 /* When the homne page section is hovered, make bigger */
 .homePageSection:hover {
-    width: calc(var(--homePageSectionWidth) * 1.2);
-    height: calc(var(--homePageSectionHeight) * 1.2);
+    width: 540px;
+    height: 720px;
     background-color: rgba(50, 50, 50, 0.9);
     box-shadow: 0px 0px 30px white;
+
+    @media screen and (max-width: 1300px) {
+        width: 360px;
+        height: 480px;
+        box-shadow: 0px 0px 30px white;
+    }
 }
 
 /* When the home page section is hovered, make border bigger */
 .homePageSection:hover .animatedBorder {
-    width: calc(var(--homePageSectionWidth) * 1.2);
-    height: calc(var(--homePageSectionHeight) * 1.2);
+    width: 540px;
+    height: 720px;
     opacity: 100%;
+
+    @media screen and (max-width: 1300px) {
+        width: 360px;
+        height: 480px;
+    }
 }
 
 /* When the home page section is hovered, make border bigger, appear, and animate */
 .homePageSection:hover .line[data-animate='true'] {
-    width: calc(var(--homePageSectionWidth) * 1.2);
-    height: calc(var(--homePageSectionHeight) * 1.2);
+    width: 540px;
+    height: 720px;
     opacity: 100%;
     animation: borderAnimation 5.0s linear infinite;
+
+    @media screen and (max-width: 1300px) {
+        width: 360px;
+        height: 480px;
+    }
 }
 
 /* home page button styling */
 .homePageSection:hover button {
-    font-size: 1.5rem;
+    font-size: 2.25rem;
+    height: 60px;
+
+    @media screen and (max-width: 1300px) {
+        font-size: 1.5rem;
+        height: 50px;
+    }
 }
 
 /* Allows the other section to shrink when one section is hovered on */
 #homePageContent:has(#aboutMeContainer:hover) #projectsContainer,
 #homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
-    width: calc(var(--homePageSectionWidth) * 0.8);
-    height: calc(var(--homePageSectionHeight) * 0.8);
+    width: 360px;
+    height: 480px;
     opacity: 50%;
+
+    @media screen and (max-width: 1300px) {
+        width: 240px;
+        height: 320px;
+    }
+}
+
+#homePageContent:has(#aboutMeContainer:hover) #projectsContainer button,
+#homePageContent:has(#projectsContainer:hover) #aboutMeContainer button{
+    height: 40px !important;
+
+    @media screen and (max-width: 1300px) {
+        height: 30px !important;
+    }
 }
 
 /* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
 .animatedBorder, .line {
-    width: var(--homePageSectionWidth);
-    height: var(--homePageSectionHeight);
+    width: 450px;
+    height: 600px;
     transition: all var(--homePageTransitionDuration);
     opacity: 0%;
+
+    @media screen and (max-width: 1300px) {
+        width: 300px;
+        height: 400px;
+    }
 }
 
 .animatedBorder {
     position: absolute;
     z-index: 0;
-    border-radius: var(--homePageSectionBorderRadius);
+    border-radius: 18px;
+
+    @media screen and (max-width: 1300px) {
+        border-radius: 12px
+    }
 }
 
 .line {
-    rx: var(--homePageSectionBorderRadius);
-    ry: var(--homePageSectionBorderRadius);
+    rx: 18px;
+    ry: 18px;
     stroke-linejoin: round;
     stroke-dasharray: 50;
-    stroke-width: 10px;
+    stroke-width: 15px;
     fill: transparent;
     stroke: var(--homePageColorOne);
+
+    @media screen and (max-width: 1300px) {
+        rx: 12px;
+        ry: 12px;
+        stroke-width: 10px;
+    }
 }
 
 @keyframes borderAnimation {
