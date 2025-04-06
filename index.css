@@ -5,6 +5,8 @@
     --homePageImageTransitionDuration: 0.5s;
 }
 
+/* BELOW CSS IS MEANT FOR STANDARD DESKTOP MONITOR SCREEN SIZE*/
+
 /* Allows canvas to take up full window */
 html, body {
     margin: 0px;
@@ -25,11 +27,6 @@ body {
     top: 15px;
     font-size: 3.5rem;
     font-weight: 600;
-
-    @media screen and (max-width: 1300px) {
-        top: 2.5%;
-        font-size: 2.5rem;
-    }
 }
 
 /* Animation Control Div */
@@ -42,12 +39,6 @@ body {
     top: 85px;
     gap: 20px;
     font-size: 2.5rem;
-
-    @media screen and (max-width: 1300px) {
-        top: 10%;
-        gap: 10px;
-        font-size: 1.5rem;
-    }
 }
 
 /* Animation control label */
@@ -64,24 +55,12 @@ body {
     height: 36px;
     border-radius: 30px;
     border: 3px solid var(--homePageColorOne);
-    
-    @media screen and (max-width: 1300px) {
-        padding: 0px 20px;
-        width: 40px;
-        height: 24px;
-        border-radius: 20px;
-        border: 2px solid var(--homePageColorOne);
-    }
 }
 
 /* When hovering on the toggle button */
 #animationControl > button:hover {
     cursor: pointer;
     border: 3px solid var(--homePageColorTwo);
-    
-    @media screen and (max-width: 1300px) {
-        border: 2px solid var(--homePageColorTwo);
-    }
 }
 
 /* Psuedo element which is the circle that actually slides back and forth for the animation toggle */
@@ -96,24 +75,12 @@ body {
     top: 9px;
     right: 6px;
     border: 3px solid var(--homePageColorTwo);
-
-    @media screen and (max-width: 1300px) {
-        height: 14px;
-        width: 14px;
-        top: 5px;
-        right: 4px;
-        border: 2px solid var(--homePageColorTwo);
-    }
 }
 
 /* Allows the psuedo element to slide when data attribute updates */
 #animationControl > button[data-on='false']::before {
     right: 28px;
     background-color: var(--homePageColorOne);
-
-    @media screen and (max-width: 1300px) {
-        right: 22px
-    }
 }
 
 /* Canvas element that is essentially the background */
@@ -129,10 +96,6 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 90px;
-
-    @media screen and (max-width: 1300px) {
-        gap: 60px;
-    }
 }
 
 /* Both projects and about me window */
@@ -150,24 +113,11 @@ body {
     height:  600px;
     gap: 30px;
     box-shadow: 0px 0px 30px var(--homePageColorOne);
-
-    @media screen and (max-width: 1300px) {
-        border-radius: 12px;
-        width: 300px;
-        height:  400px;
-        gap: 20px;
-        opacity: 100%;
-        box-shadow: 0px 0px 20px var(--homePageColorOne);
-    }
 }
 
 /* When hovering on the button within home page section, add bigger box shadow */
 .homePageSection:has(button:hover) {
     box-shadow: 0px 0px 40px var(--homePageColorTwo);
-
-    @media screen and (max-width: 1300px) {
-        box-shadow: 0px 0px 30px var(--homePageColorTwo);
-    }
 }
 
 /* The div surrounding an image within home page section */
@@ -176,10 +126,6 @@ body {
     border: 4px solid var(--homePageColorOne);
     width: 70%;
     transition: all var(--homePageTransitionDuration);
-
-    @media screen and (max-width: 1300px) {
-        border-radius: 6px;
-    }
 }
 
 /* The image itself */
@@ -200,12 +146,6 @@ body {
     font-size: 1.75rem;
     transition: all var(--homePageTransitionDuration);
     font-weight: 500;
-
-    @media screen and (max-width: 1300px) {
-        font-size: 1.25rem;
-        height: 40px;
-        border-radius: 6px;
-    }
 }
 
 /* When the button is hovered, change it */
@@ -230,12 +170,6 @@ body {
     height: 720px;
     background-color: rgba(50, 50, 50, 0.9);
     box-shadow: 0px 0px 30px white;
-
-    @media screen and (max-width: 1300px) {
-        width: 360px;
-        height: 480px;
-        box-shadow: 0px 0px 30px white;
-    }
 }
 
 /* When the home page section is hovered, make border bigger */
@@ -243,11 +177,6 @@ body {
     width: 540px;
     height: 720px;
     opacity: 100%;
-
-    @media screen and (max-width: 1300px) {
-        width: 360px;
-        height: 480px;
-    }
 }
 
 /* When the home page section is hovered, make border bigger, appear, and animate */
@@ -256,22 +185,12 @@ body {
     height: 720px;
     opacity: 100%;
     animation: borderAnimation 5.0s linear infinite;
-
-    @media screen and (max-width: 1300px) {
-        width: 360px;
-        height: 480px;
-    }
 }
 
 /* home page button styling */
 .homePageSection:hover button {
     font-size: 2.25rem;
     height: 60px;
-
-    @media screen and (max-width: 1300px) {
-        font-size: 1.5rem;
-        height: 50px;
-    }
 }
 
 /* Allows the other section to shrink when one section is hovered on */
@@ -280,20 +199,11 @@ body {
     width: 360px;
     height: 480px;
     opacity: 50%;
-
-    @media screen and (max-width: 1300px) {
-        width: 240px;
-        height: 320px;
-    }
 }
 
 #homePageContent:has(#aboutMeContainer:hover) #projectsContainer button,
 #homePageContent:has(#projectsContainer:hover) #aboutMeContainer button{
     height: 40px !important;
-
-    @media screen and (max-width: 1300px) {
-        height: 30px !important;
-    }
 }
 
 /* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
@@ -302,21 +212,12 @@ body {
     height: 600px;
     transition: all var(--homePageTransitionDuration);
     opacity: 0%;
-
-    @media screen and (max-width: 1300px) {
-        width: 300px;
-        height: 400px;
-    }
 }
 
 .animatedBorder {
     position: absolute;
     z-index: 0;
     border-radius: 18px;
-
-    @media screen and (max-width: 1300px) {
-        border-radius: 12px
-    }
 }
 
 .line {
@@ -327,12 +228,6 @@ body {
     stroke-width: 15px;
     fill: transparent;
     stroke: var(--homePageColorOne);
-
-    @media screen and (max-width: 1300px) {
-        rx: 12px;
-        ry: 12px;
-        stroke-width: 10px;
-    }
 }
 
 @keyframes borderAnimation {
@@ -343,6 +238,138 @@ body {
         stroke-dashoffset: 500;
     }
 }
+/* ---------------------------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------------------------- */
+/* BELOW CSS IS MEANT FOR STANDARD LAPTOP SCREEN SIZE*/
+@media screen and (max-width: 1300px) {    
+    /* Title */
+    #homePageTitle {
+        top: 2.5%;
+        font-size: 2.5rem;
+    }
+    
+    /* Animation Control Div */
+    #animationControl {
+        top: 10%;
+        gap: 10px;
+        font-size: 1.5rem;
+    }
+    
+    /* Animation control toggle button */
+    #animationControl > button {
+        padding: 0px 20px;
+        width: 40px;
+        height: 24px;
+        border-radius: 20px;
+        border: 2px solid var(--homePageColorOne);
+    }
+    
+    /* When hovering on the toggle button */
+    #animationControl > button:hover {
+        border: 2px solid var(--homePageColorTwo);
+    }
+    
+    /* Psuedo element which is the circle that actually slides back and forth for the animation toggle */
+    #animationControl > button::before {
+        height: 14px;
+        width: 14px;
+        top: 5px;
+        right: 4px;
+        border: 2px solid var(--homePageColorTwo);
+    }
+    
+    /* Allows the psuedo element to slide when data attribute updates */
+    #animationControl > button[data-on='false']::before {
+        right: 22px;
+    }
+    
+    /* Centered in window, contains both projects and about me windows */
+    #homePageContent {
+        gap: 60px;
+    }
+    
+    /* Both projects and about me window */
+    .homePageSection {
+        border-radius: 12px;
+        width: 300px;
+        height:  400px;
+        gap: 20px;
+        opacity: 100%;
+        box-shadow: 0px 0px 20px var(--homePageColorOne);
+    }
+    
+    /* When hovering on the button within home page section, add bigger box shadow */
+    .homePageSection:has(button:hover) {
+        box-shadow: 0px 0px 30px var(--homePageColorTwo);
+    }
+    
+    /* The div surrounding an image within home page section */
+    .homePageSection > .homePageImageContainer {
+        border-radius: 6px;
+    }
+    
+    /* Button in home page section */
+    .homePageSection button {
+        font-size: 1.25rem;
+        height: 40px;
+        border-radius: 6px;
+    }
+    
+    /* When the homne page section is hovered, make bigger */
+    .homePageSection:hover {
+        width: 360px;
+        height: 480px;
+        box-shadow: 0px 0px 30px white;
+    }
+    
+    /* When the home page section is hovered, make border bigger */
+    .homePageSection:hover .animatedBorder {
+        width: 360px;
+        height: 480px;
+    }
+    
+    /* When the home page section is hovered, make border bigger, appear, and animate */
+    .homePageSection:hover .line[data-animate='true'] {
+        width: 360px;
+        height: 480px;
+    }
+    
+    /* home page button styling */
+    .homePageSection:hover button {
+        font-size: 1.5rem;
+        height: 50px;
+    }
+    
+    /* Allows the other section to shrink when one section is hovered on */
+    #homePageContent:has(#aboutMeContainer:hover) #projectsContainer,
+    #homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
+        width: 240px;
+        height: 320px;
+    }
+    
+    #homePageContent:has(#aboutMeContainer:hover) #projectsContainer button,
+    #homePageContent:has(#projectsContainer:hover) #aboutMeContainer button{
+        height: 30px !important;
+    }
+
+    .animatedBorder, .line {
+        width: 300px;
+        height: 400px;
+    }
+
+    .animatedBorder {
+        border-radius: 12px
+    }
+
+    .line {
+        rx: 12px;
+        ry: 12px;
+        stroke-width: 10px;
+    }
+}
+
+
 /* ---------------------------------------------------------------------------------------------- */
 
 /* BELOW CSS IS MODIFIED FROM https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025 */
