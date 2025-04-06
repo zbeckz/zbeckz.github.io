@@ -1,7 +1,4 @@
 :root {
-    --homePageSectionWidth: 300px;
-    --homePageSectionHeight: 400px;
-    --homePageSectionBorderRadius: 12px;
     --homePageColorOne: white;
     --homePageColorTwo: rgb(125, 125, 255);
     --homePageTransitionDuration: 0.3s;
