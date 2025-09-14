@@ -1,0 +1,54 @@
+body {
+  display: flex;
+  justify-content: center;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+canvas {
+  border: 1px solid black;
+}
+
+table {
+  width: 800px;
+  padding-top: 30px;
+}
+
+.mediaTablePhoto img {
+  height: 300px;
+  width: 200px;
+}
+
+.mediaTableHeadCell {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  background-color: lightgray;
+  border: 1px solid black;
+}
+
+.mediaTableDate {
+  width: 200px;
+  text-align: center;
+}
+
+.mediaTableDescription {
+  width: 400px;
+  text-align: center;
+}
+
+.mediaTableDate, .mediaTableDescription {
+  background-color: white;
+  border: 1px solid transparent;
+  transition: 0.1s ease-in-out;
+}
+
+.mediaTableDate:hover, .mediaTableDescription:hover {
+  background-color: rgb(255, 222, 222);
+  border: 1px solid black;
+}
+
+#finale {
+  width: 900px;
+  height: 600px;
+}

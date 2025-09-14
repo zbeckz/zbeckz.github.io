@@ -90,7 +90,7 @@ body {
 }
 
 /* Centered in window, contains both projects and about me windows */
-#homePageContent {
+#homePageContent, #aboutMePageContent {
     grid-area: 1 / 1 / 1 / 1;
     display: flex;
     flex-direction: row;
@@ -98,9 +98,47 @@ body {
     gap: 90px;
 }
 
+#aboutMePageImage {
+    width: 300px;
+    border: 1px solid white;
+    border-radius: 12px;
+}
+
+#aboutMeInfoContainer {
+    width: 300px;
+    height: 400px;
+    background-color: rgba(50, 50, 50, 0.9);
+    border-radius: 12px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px;
+}
+
+#aboutMeInfoContainer p {
+    text-wrap: balance;
+}
+
+/* Buttons in about me section */
+#aboutMeInfoContainer button {
+    z-index: 1;
+    border-radius: 9px;
+    background: var(--homePageColorOne);
+    border: none;
+    font-size: 1.75rem;
+    transition: all var(--homePageTransitionDuration);
+    font-weight: 500;
+}
+
+#aboutMeInfoContainer button:hover {
+    cursor: pointer;
+    background: var(--homePageColorTwo);
+}
+
 /* Both projects and about me window */
 .homePageSection {
     display: flex;
+    display: none;
     flex-direction: column-reverse;
     background-color: rgba(50, 50, 50, 0.9);
     transition: all var(--homePageTransitionDuration);
