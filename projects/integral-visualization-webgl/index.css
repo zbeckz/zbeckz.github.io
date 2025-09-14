@@ -1,3 +1,43 @@
 canvas {
     border: 2px solid blue;
 }
+
+#main {
+    display: flex;
+    align-items: center;
+}
+
+.integral > span {
+    font-size: 48px;
+}
+
+.integral > sub {
+    position: relative;
+    left: -8px;
+    top: 2px;
+}
+
+.integral > sup {
+    position: relative;
+    top: -30px;
+    left: -14px;
+}
+
+.integral:not(:first-of-type), .integration-component {
+    margin-left: -14px;
+}
+
+.integration-component {
+    display: flex;
+    align-items: baseline;
+    gap: 1px;
+}
+
+.differential {
+    font-style: italic;
+}
+
+.integrand {
+    margin-right: 4px;
+    font-size: 20px;
+}
