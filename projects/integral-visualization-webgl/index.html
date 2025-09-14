@@ -3,16 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <title>Zach Becker: Interactive World</title>
-  </head>
 
-  <body onload="main()" onresize="drawResize()">
-    <canvas id="HTML5_canvas" width="1250" height="550" style="border: 2px solid blue;">
-    Please use a browser that supports HTML-5 "canvas" objects
-    </canvas>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="index.css" />
+
+    <!-- Utility Scripts -->
     <script src="lib/webgl-utils.js"></script>
     <script src="lib/webgl-debug.js"></script>
     <script src="lib/cuon-utils.js"></script>
     <script src="lib/cuon-matrix-quat03.js"></script>
-    <script src="BeckerZach_ProjB.js"></script>
+
+    <!-- Main Script -->
+    <script src="index.js"></script>
+  </head>
+
+  <body onload="main()" onresize="drawResize()">
+    <canvas id="HTML5_canvas" width="0" height="0">
+    Please use a browser that supports HTML-5 "canvas" objects
+    </canvas>
   </body>
 </html>
