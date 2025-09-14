@@ -309,17 +309,11 @@ function drawAll()
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Left view (perspective)
-    gl.viewport(0, 0, g_canvas.width/2, g_canvas.height);
     g_modelMatrix.setIdentity();
     pushMatrix(g_modelMatrix);
     g_modelMatrix.perspective(angle, 1, near, far);        // perspective(angle, aspect ratio, near, far)
     drawScene();
     g_modelMatrix = popMatrix();
-
-    // Right view (orthographic)
-    gl.viewport(g_canvas.width/2, 0, g_canvas.width/2, g_canvas.height);
-    g_modelMatrix.setOrtho(-5, 5, -5, 5, near, far);	// orthographic(left, right, bottom, top, near, far)
-    drawScene();
 }
 
 function drawScene()
@@ -711,8 +705,9 @@ function myMouseDown(ev)
 
   function drawResize()
   {
-      g_canvas.width = window.innerWidth - 20;
-      g_canvas.height = window.innerHeight * 2 / 3;
+    const newSize = window.innerHeight * 0.9;
+    g_canvas.width = newSize;
+    g_canvas.height = newSize;
   }
 
   function makeGroundGrid() 
