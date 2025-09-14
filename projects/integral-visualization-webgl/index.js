@@ -54,6 +54,8 @@ var g_nVerts;             // # of vertices in VBO; value set in main()
 var g_modelMatrix;		  // 4x4 matrix in JS; sets 'uniform' in GPU
 var g_modelLoc;		      // GPU location where this uniform is stored.
 
+var integralCount;
+
 function main()
 {
     // keyboard event handler
@@ -117,27 +119,73 @@ function main()
     gl.uniformMatrix4fv(g_modelLoc, false, g_modelMatrix.elements);
     
     // DRAW STUFF!
+    integralCount = 1;
     var tick = function() 
     {
+        if (integralCount > 101*101*101)
+        {
+            integralCount = 1
+        }
+        else
+        {
+            integralCount++;
+        }
         drawAll();
         requestAnimationFrame(tick, g_canvas);                                               
     };
     
     // AFTER that, call the function (infinite loop)
     tick();							
-}     
+}
+
+function makeIntegralPath()
+{
+    var arr = new Float32Array(7*101*101*101);
+    var i = 0;
+    for (let z = 0; z <= 1; z += 0.01)
+    {
+        for (let theta = 0; theta <= Math.PI * 2; theta += Math.PI*2/100)
+        {
+            for (let r = 0; r <= 1; r += 0.01)
+            {
+                arr[i] = r * Math.cos(theta);
+                i++;
+                arr[i] = r * Math.sin(theta);
+                i++;
+                arr[i] = z;
+                i++
+                arr[i] = 1.0;
+                i++
+                arr[i] = 0.5;
+                i++
+                arr[i] = 0.5;
+                i++
+                arr[i] = 0.5;
+                i++
+            }
+        }
+    }
+    return arr;
+}
 
 function initVertexBuffer() 
 {
     var groundVerts = makeGroundGrid();
-    
-    var nn = groundVerts.length
+    var integralVerts = makeIntegralPath();  
+    var nn = groundVerts.length + integralVerts.length;
 
     var colorShapes = new Float32Array(nn);
 
     for (var i = 0; i < nn; i++)
     {
-        colorShapes[i] = groundVerts[i];
+        if (i < groundVerts.length)
+        {
+            colorShapes[i] = groundVerts[i];
+        }
+        else
+        {
+            colorShapes[i] = integralVerts[i - groundVerts.length];
+        }
     }
 
     
@@ -232,6 +280,12 @@ function drawScene()
     g_modelMatrix.lookAt(g_eyeX, g_eyeY, g_eyeZ,
                          g_aimX, g_aimY, g_aimZ,
                               0,      0,      1);
+
+    pushMatrix(g_modelMatrix);
+    gl.uniformMatrix4fv(g_modelLoc, false, g_modelMatrix.elements);
+    gl.drawArrays(gl.POINTS, 401, integralCount); 
+    g_modelMatrix = popMatrix();
+    
     // draw ground grid
     pushMatrix(g_modelMatrix)	
   	g_modelMatrix.scale(0.1, 0.1, 0.1);				
