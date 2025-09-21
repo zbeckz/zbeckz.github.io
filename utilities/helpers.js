@@ -73,6 +73,7 @@ function handleDeccelTransition()
         Planet.Spawn();
         planetDots = [];
         PlanetDot.Spawn();
+        showNewPage();
     }
 }
 
@@ -97,5 +98,34 @@ function transitionCanvasUpdate()
             spaceObj.transition();
             spaceObj.draw();
         }
+    }
+}
+
+function setQueryParam(k, v)
+{
+    const url = new URL(window.location.href);
+    url.searchParams.set(k, v);
+    window.history.pushState(null, '', url.toString());
+}
+
+function getQueryParam(k)
+{
+    const url = new URL(window.location.href);
+    return url.searchParams.get(k);
+}
+
+function showNewPage()
+{
+    const newPage = getQueryParam(localStorageConfig.PAGE);
+    
+    if (newPage === "about-me")
+    {
+        document.getElementById('homePageContent').style.display = "none";
+        document.getElementById('aboutMePageContent').style.display = "grid";
+        resizeCanvas();
+        Star.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
+        Sun.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
+        sunSpots = [];
+        SunSpot.Spawn();
     }
 }

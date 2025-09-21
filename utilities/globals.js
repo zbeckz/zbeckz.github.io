@@ -143,6 +143,11 @@ const transitionConfig = {
     loopTime: 2000 // 2 seconds
 }
 
+const localStorageConfig = {
+    ANIMATION: "animation",
+    PAGE: "page"
+}
+
 
 // GLOBAL VARS
 let projectData; // array of project data fetched from the project-info.json

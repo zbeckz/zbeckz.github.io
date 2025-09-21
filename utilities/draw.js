@@ -27,7 +27,7 @@ function handleAnimationToggle(newState)
     document.getElementById('animationToggle').dataset.on = newString;
 
     // update the cookie
-    localStorage.setItem("animation", newString);
+    localStorage.setItem(localStorageConfig.ANIMATION, newString);
 
     // update the animated borders
     document.querySelectorAll(".line").forEach(element => {
@@ -35,8 +35,11 @@ function handleAnimationToggle(newState)
     })
 }
 
-function goToSection(hideSectionId, transitionDirection)
+function goToSection(hideSectionId, transitionDirection, newPath)
 {
+    // update query parameter of url to new path
+    setQueryParam(localStorageConfig.PAGE, newPath);
+
     const hideSection = document.getElementById(hideSectionId);
 
     // hide all child elements
@@ -58,7 +61,7 @@ function goToSection(hideSectionId, transitionDirection)
 // Sets the canvas to the size of the window
 function resizeCanvas()
 {
-    canvas.width = document.body.scrollWidth - 1;
+    canvas.width = window.innerWidth;
     canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
 }
 

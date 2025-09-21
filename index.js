@@ -48,7 +48,7 @@ window.addEventListener('load', () => {
     setAsteroidTimeout();
 
     // begin animation state from cookie
-    handleAnimationToggle(localStorage.getItem('animation') === 'true' ? true : false);
+    handleAnimationToggle(localStorage.getItem(localStorageConfig.ANIMATION) === 'true' ? true : false);
     
     // if the animation state is already off (from cookie), make sure animation toggle matches and draw 1 frame of background
     if (!animationState)

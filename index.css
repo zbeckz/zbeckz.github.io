@@ -11,6 +11,8 @@
 html, body {
     margin: 0px;
     padding: 0px;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 /* Allows the content in the body to be centered even with the weird canvas stuff */
@@ -101,7 +103,13 @@ body {
 
 #aboutMePageContent {
     grid-area: 1 / 1 / 1 / 1;
-    /* position: absolute; */
+    display: none;
+    grid-template: auto auto / auto auto;
+    row-gap: 50px;
+    column-gap: 90px;
+    padding: 120px 0px;
+    align-items: center;
+    justify-items: center;
 }
 
 .aboutMePageImage {
@@ -145,7 +153,6 @@ body {
 /* Both projects and about me window */
 .homePageSection {
     display: flex;
-    display: none;
     flex-direction: column-reverse;
     background-color: rgba(50, 50, 50, 0.9);
     transition: all var(--homePageTransitionDuration);

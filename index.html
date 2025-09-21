@@ -52,7 +52,7 @@
 
       <!-- About me image, button, and border -->
       <div id="aboutMeContainer" class="homePageSection">
-        <button onclick="goToSection('projectsContainer', TRANSITION_DIRECTION.right)">About Me</button>
+        <button onclick="goToSection('projectsContainer', TRANSITION_DIRECTION.right, 'about-me')">About Me</button>
         <div class="homePageImageContainer">
           <img id="aboutMeImage" src="assets/headshot.jpg"/>
         </div>
@@ -63,7 +63,7 @@
 
       <!-- Projects image, button, and border -->
       <div id="projectsContainer" class="homePageSection">
-        <button onclick="goToSection('aboutMeContainer', TRANSITION_DIRECTION.left)">Projects</button>
+        <button onclick="goToSection('aboutMeContainer', TRANSITION_DIRECTION.left, 'project-list')">Projects</button>
         <div class="homePageImageContainer">
           <img id="projectsImage" src="assets/code-snippet.png"/>
         </div>
