@@ -58,8 +58,8 @@ function goToSection(hideSectionId, transitionDirection)
 // Sets the canvas to the size of the window
 function resizeCanvas()
 {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = document.body.scrollWidth - 1;
+    canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
 }
 
 // Draws a circle on the canvas at a given location, with given radius and color

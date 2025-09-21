@@ -19,6 +19,7 @@ body {
     grid-template: 1fr / 1fr;
     justify-items: center;
     align-items: center;
+    background-color: black;
 }
 
 /* Title */
@@ -90,7 +91,7 @@ body {
 }
 
 /* Centered in window, contains both projects and about me windows */
-#homePageContent, #aboutMePageContent {
+#homePageContent {
     grid-area: 1 / 1 / 1 / 1;
     display: flex;
     flex-direction: row;
@@ -98,13 +99,18 @@ body {
     gap: 90px;
 }
 
-#aboutMePageImage {
+#aboutMePageContent {
+    grid-area: 1 / 1 / 1 / 1;
+    /* position: absolute; */
+}
+
+.aboutMePageImage {
     width: 300px;
     border: 1px solid white;
     border-radius: 12px;
 }
 
-#aboutMeInfoContainer {
+.aboutMeInfoContainer {
     width: 300px;
     height: 400px;
     background-color: rgba(50, 50, 50, 0.9);
@@ -112,15 +118,16 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
-    padding: 0px 10px;
+    padding: 10px 10px;
+    gap: 10px;
 }
 
-#aboutMeInfoContainer p {
-    text-wrap: balance;
+.aboutMeInfoContainer p {
+    margin: 0px 5px;
 }
 
 /* Buttons in about me section */
-#aboutMeInfoContainer button {
+.aboutMeInfoContainer button {
     z-index: 1;
     border-radius: 9px;
     background: var(--homePageColorOne);
@@ -130,7 +137,7 @@ body {
     font-weight: 500;
 }
 
-#aboutMeInfoContainer button:hover {
+.aboutMeInfoContainer button:hover {
     cursor: pointer;
     background: var(--homePageColorTwo);
 }
@@ -138,7 +145,7 @@ body {
 /* Both projects and about me window */
 .homePageSection {
     display: flex;
-    /* display: none; */
+    display: none;
     flex-direction: column-reverse;
     background-color: rgba(50, 50, 50, 0.9);
     transition: all var(--homePageTransitionDuration);
