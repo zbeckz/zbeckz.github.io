@@ -55,6 +55,8 @@ window.addEventListener('load', () => {
     {
         staticCanvasUpdate();
     }
+
+    showNewPage();
 });
 
 // fires when window is resized
