@@ -114,19 +114,21 @@ body {
 
 .aboutMePageImage {
     width: 300px;
-    border: 1px solid white;
     border-radius: 12px;
+}
+
+.aboutMePageImage.small {
+    width: 150px;
 }
 
 .aboutMeInfoContainer {
     width: 300px;
-    height: 400px;
     background-color: rgba(50, 50, 50, 0.9);
     border-radius: 12px;
     color: white;
     display: flex;
     flex-direction: column;
-    padding: 10px 10px;
+    padding: 15px 10px;
     gap: 10px;
 }
 
@@ -472,3 +474,33 @@ body {
     }
 }
 /* ---------------------------------------------------------------------------------- */
+
+.link {
+    transition: all var(--homePageTransitionDuration);
+    color: var(--homePageColorOne);
+}
+
+.link:hover {
+    color: var(--homePageColorTwo);
+}
+
+.linkButton {
+    z-index: 1;
+    border-radius: 9px;
+    background: var(--homePageColorOne);
+    border: none;
+    font-size: 1.75rem;
+    transition: all var(--homePageTransitionDuration);
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+
+    /* TEMPORARY, WILL CLEAN UP FONTS LATER */
+    font-family: Arial, Helvetica, sans-serif; 
+}
+
+.linkButton:hover {
+    cursor: pointer;
+    background: var(--homePageColorTwo);
+}
