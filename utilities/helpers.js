@@ -120,7 +120,7 @@ function showNewPage()
     
     if (newPage === "about-me")
     {
-        document.getElementById('homePageTitle').textContent = 'Zach Becker\s Portfolio: About Me'
+        document.getElementById('homePageTitle').textContent = 'Zach Becker\s Portfolio: About Me (WORK IN PROGRESS)!'
         document.getElementById('homePageContent').style.display = "none";
         document.getElementById('aboutMePageContent').style.display = "grid";
         resizeCanvas();
