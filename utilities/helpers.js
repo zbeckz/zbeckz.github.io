@@ -104,7 +104,17 @@ function transitionCanvasUpdate()
 function setQueryParam(k, v)
 {
     const url = new URL(window.location.href);
-    url.searchParams.set(k, v);
+
+    // If there is a value to set, set it
+    if (v)
+    {
+        url.searchParams.set(k, v);
+    }
+    else
+    {
+        // Otherwise, delete the param
+        url.searchParams.delete(k);
+    }
     window.history.pushState(null, '', url.toString());
 }
 
@@ -116,12 +126,18 @@ function getQueryParam(k)
 
 function showNewPage()
 {
+    // Get the new page param
     const newPage = getQueryParam(localStorageConfig.PAGE);
-    
-    if (newPage === "about-me")
+
+    if (!newPage)
+    {
+        document.getElementById('homePageTitle').textContent = 'Zach Becker\s Portfolio (WORK IN PROGRESS)!';
+        resizeCanvas(true);
+        document.getElementById('homePageContent').style.display = "flex";
+    }
+    else if (newPage === "about-me")
     {
         document.getElementById('homePageTitle').textContent = 'Zach Becker\s Portfolio: About Me (WORK IN PROGRESS)!'
-        document.getElementById('homePageContent').style.display = "none";
         document.getElementById('aboutMePageContent').style.display = "grid";
         resizeCanvas();
         Star.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
@@ -129,4 +145,5 @@ function showNewPage()
         sunSpots = [];
         SunSpot.Spawn();
     }
+    
 }

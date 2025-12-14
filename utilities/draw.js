@@ -40,29 +40,21 @@ function goToSection(hideSectionId, transitionDirection, newPath)
     // update query parameter of url to new path
     setQueryParam(localStorageConfig.PAGE, newPath);
 
+    // Grab the element to hide
     const hideSection = document.getElementById(hideSectionId);
 
-    // hide all child elements
-    hideSection.querySelectorAll("*").forEach(element => {
-        element.style.display = "none";
-    });
+    // Hide the element
+    hideSection.style.display = "none";
 
-    // begin transition of shrinking
-    hideSection.style.width = "0px";
-    hideSection.style.height = "0px";
-    
-    // hide when shrinking is done
-    setTimeout(() => {
-        hideSection.style.display = "none";
-        startTransition(transitionDirection);
-    }, homePageSectionTransitionDuration);
+    // Start transition
+    startTransition(transitionDirection);
 }
 
 // Sets the canvas to the size of the window
-function resizeCanvas()
+function resizeCanvas(forceWindow=false)
 {
     canvas.width = window.innerWidth;
-    canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
+    canvas.height = forceWindow ? window.innerHeight : Math.max(document.body.scrollHeight, window.innerHeight);
 }
 
 // Draws a circle on the canvas at a given location, with given radius and color
