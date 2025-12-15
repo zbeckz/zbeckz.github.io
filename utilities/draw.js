@@ -70,3 +70,9 @@ function drawCircle(x, y, radius, color)
     context.fillStyle = color;
     context.fill();
 }
+
+function clearOffScreenObjects()
+{
+    stars = stars.filter(isOnScreen);
+    suns = suns.filter(isOnScreen);
+}

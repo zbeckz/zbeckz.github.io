@@ -134,6 +134,7 @@ function showNewPage()
         document.getElementById('homePageTitle').textContent = 'Zach Becker\'s Portfolio (WORK IN PROGRESS)!';
         resizeCanvas(true);
         document.getElementById('homePageContent').style.display = "flex";
+        clearOffScreenObjects();
     }
     else if (newPage === "about-me")
     {
@@ -144,12 +145,22 @@ function showNewPage()
         Sun.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
         sunSpots = [];
         SunSpot.Spawn();
+        clearOffScreenObjects();
     }
     else if (newPage === "project-list")
     {
         document.getElementById('homePageTitle').textContent = "Zach Becker's Portfolio: Projects (WORK IN PROGRESS)!"
         document.getElementById('projectListPageContent').style.display = "grid";
         resizeCanvas();
+        clearOffScreenObjects();
     }
-    
+}
+
+function isOnScreen(s)
+{
+    if (s.x < 0) return false;
+    if (s.x > canvas.width) return false;
+    if (s.y < 0) return false;
+    if (s.y > canvas.height) return false;
+    return true;
 }
