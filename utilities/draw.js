@@ -76,3 +76,16 @@ function clearOffScreenObjects()
     stars = stars.filter(isOnScreen);
     suns = suns.filter(isOnScreen);
 }
+
+function populateProjectList()
+{
+    // Grab container
+    const container = document.getElementById("projectListContainer");
+
+    // Create a div for each project
+    projectData.forEach(p => {
+        const newProjectDiv = document.createElement("div");
+        newProjectDiv.className = "projectDiv"
+        container.appendChild(newProjectDiv);
+    })
+}

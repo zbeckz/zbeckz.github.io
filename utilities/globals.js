@@ -1,3 +1,77 @@
+const projectData = 
+[
+    {
+        title: "Animations",
+        url: "/projects/animations",
+        previewImg: "/assets/animations.png"
+    },
+    {
+        title: "Brushes",
+        url: "/projects/brushes",
+        previewImg: "/assets/brushes.png",
+    },
+    {
+        title: "3D Animation",
+        url: "/projects/3d-animation-webgl",
+        previewImg: "/assets/3d-animation-webgl.png"
+    },
+    {
+        title:"Chat Bots",
+        url: "/projects/chat-bots",
+        previewImg: "/assets/chat-bots.png"
+    },
+    {
+        title: "Computational Lighting",
+        url: "/projects/computational-lighting-webgl",
+        previewImg: "/assets/computational-lighting-webgl.png"
+    },
+    {
+        title: "Face Tracking",
+        url: "/projects/face-tracking",
+        previewImg: "/assets/face-tracking.png"
+    },
+    {
+        title: "Generative Art",
+        url: "/projects/generative-art",
+        previewImg: "/assets/generative-art.png"
+    },
+    {
+        title: "Idle Game",
+        url: "/projects/idle-game",
+        previewImg: "/assets/idle-game.png"
+    },
+    {
+        title: "Interactive World",
+        url: "/projects/interactive-world-webgl",
+        previewImg: "/assets/interactive-world-webgl.png"
+    },
+    {
+        title: "Machine Learning",
+        url: "/projects/machine-learning",
+        previewImg: "/assets/machine-learning.png"
+    },
+    {
+        title: "Particle Systems",
+        url: "/projects/particle-systems",
+        previewImg: "/assets/particle-systems.png"
+    },
+    {
+        title: "Virtual Reality Game",
+        url: "/projects/virtual-reality-game",
+        previewImg: "/assets/virtual-reality-game.png"
+    },
+    {
+        title: "Virtual Reality Space",
+        url: "/projects/virtual-reality-space",
+        previewImg: "/assets/virtual-reality-space.png"
+    },
+    {
+        title: "Data Visualization",
+        url: "/projects/data-visualization",
+        previewImg: "/assets/data-visualization.png"
+    }
+]
+
 // GLOBAL CONSTS
 const TwoPi = 2 * Math.PI;
 
@@ -150,8 +224,6 @@ const localStorageConfig = {
 
 
 // GLOBAL VARS
-let projectData; // array of project data fetched from the project-info.json
-
 let canvas; // canvas element
 let context; // context part of canvas element
 

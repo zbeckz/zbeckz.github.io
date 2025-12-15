@@ -508,5 +508,18 @@ body {
 #projectListPageContent {
     display: none;
     grid-area: 1 / 1 / 1 / 1;
-    color: white;
+}
+
+#projectListContainer {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-top: 200px;
+}
+
+.projectDiv {
+    width: 100px;
+    height: 200px;
+    background-color: #fff;
 }

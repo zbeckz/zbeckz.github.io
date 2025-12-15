@@ -141,10 +141,7 @@ function showNewPage()
         document.getElementById('homePageTitle').textContent = 'Zach Becker\'s Portfolio: About Me (WORK IN PROGRESS)!'
         document.getElementById('aboutMePageContent').style.display = "grid";
         resizeCanvas();
-        Star.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
-        Sun.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
-        sunSpots = [];
-        SunSpot.Spawn();
+        spawnObjectsNewScreen();
         clearOffScreenObjects();
     }
     else if (newPage === "project-list")
@@ -152,6 +149,7 @@ function showNewPage()
         document.getElementById('homePageTitle').textContent = "Zach Becker's Portfolio: Projects (WORK IN PROGRESS)!"
         document.getElementById('projectListPageContent').style.display = "grid";
         resizeCanvas();
+        spawnObjectsNewScreen();
         clearOffScreenObjects();
     }
 }
@@ -163,4 +161,18 @@ function isOnScreen(s)
     if (s.y < 0) return false;
     if (s.y > canvas.height) return false;
     return true;
+}
+
+// given a min and max number, returns a random decimal number within that range. [min, max)
+function getRandomFloat(min, max)
+{
+    return Math.random() * (max - min) + min;
+}
+
+function spawnObjectsNewScreen()
+{
+    Star.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
+    Sun.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
+    sunSpots = [];
+    SunSpot.Spawn();
 }

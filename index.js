@@ -9,8 +9,11 @@ window.addEventListener('load', () => {
     homePageSectionTransitionDuration = 
         window.getComputedStyle(document.documentElement).getPropertyValue('--homePageTransitionDuration').split('s')[0] * 1000;
 
-    // begin data load, start home page slide show upon completion
-    getProjectInfo().then(() => setHomepageSlideshow());
+    // Set home page slideshow based on project data
+    setHomepageSlideshow();
+
+    // Populate project list based on project data
+    populateProjectList();
 
     // get the canvas element and set to window size
     canvas = document.getElementById('backgroundScene');
