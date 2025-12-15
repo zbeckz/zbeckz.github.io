@@ -131,19 +131,25 @@ function showNewPage()
 
     if (!newPage)
     {
-        document.getElementById('homePageTitle').textContent = 'Zach Becker\s Portfolio (WORK IN PROGRESS)!';
+        document.getElementById('homePageTitle').textContent = 'Zach Becker\'s Portfolio (WORK IN PROGRESS)!';
         resizeCanvas(true);
         document.getElementById('homePageContent').style.display = "flex";
     }
     else if (newPage === "about-me")
     {
-        document.getElementById('homePageTitle').textContent = 'Zach Becker\s Portfolio: About Me (WORK IN PROGRESS)!'
+        document.getElementById('homePageTitle').textContent = 'Zach Becker\'s Portfolio: About Me (WORK IN PROGRESS)!'
         document.getElementById('aboutMePageContent').style.display = "grid";
         resizeCanvas();
         Star.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
         Sun.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
         sunSpots = [];
         SunSpot.Spawn();
+    }
+    else if (newPage === "project-list")
+    {
+        document.getElementById('homePageTitle').textContent = "Zach Becker's Portfolio: Projects (WORK IN PROGRESS)!"
+        document.getElementById('projectListPageContent').style.display = "grid";
+        resizeCanvas();
     }
     
 }

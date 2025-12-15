@@ -95,7 +95,7 @@ body {
 /* Centered in window, contains both projects and about me windows */
 #homePageContent {
     grid-area: 1 / 1 / 1 / 1;
-    display: flex;
+    display: none;
     flex-direction: row;
     align-items: center;
     gap: 90px;
@@ -503,4 +503,10 @@ body {
 .linkButton:hover {
     cursor: pointer;
     background: var(--homePageColorTwo);
+}
+
+#projectListPageContent {
+    display: none;
+    grid-area: 1 / 1 / 1 / 1;
+    color: white;
 }
