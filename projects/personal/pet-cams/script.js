@@ -2,10 +2,22 @@
 var currentBackgroundIndex = 1;
 var backgroundUrls = 
 [   
-    'https://cdn.glitch.global/7375188f-d48b-40c4-b44b-5838fd149d46/freddy.jpg',
-    'https://cdn.glitch.global/7375188f-d48b-40c4-b44b-5838fd149d46/teddy.jpg',
-    'https://cdn.glitch.global/7375188f-d48b-40c4-b44b-5838fd149d46/elphie.jpg',
-    'https://cdn.glitch.global/7375188f-d48b-40c4-b44b-5838fd149d46/gus.jpg'
+    'assets/TeddyFreddy0.jpg',
+    'assets/TeddyFreddy1.jpg',
+    'assets/TeddyFreddy2.jpg',
+    'assets/TeddyFreddy3.jpg',
+    'assets/TeddyFreddy4.jpg',
+    'assets/TeddyFreddy5.jpg',
+    'assets/TeddyFreddy6.jpg',
+    'assets/TeddyFreddy7.jpg',
+    'assets/Gus0.jpg',
+    'assets/Gus1.jpg',
+    'assets/Gus2.jpg',
+    'assets/Gus3.jpg',
+    'assets/Elphie0.jpeg',
+    'assets/Elphie1.jpg',
+    'assets/Elphie2.jpeg',
+    'assets/Elphie3.jpeg',
 ]
 
 // OPEN OR CLOSED TRACKING

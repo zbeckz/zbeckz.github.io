@@ -25,12 +25,12 @@ body {
 #content {
     grid-row: 2 / span 1;
     grid-column: 1 / span 1;
-    background-image: url('https://cdn.glitch.global/7375188f-d48b-40c4-b44b-5838fd149d46/teddy.jpg');
+    background-image: url('assets/TeddyFreddy0.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     display: grid;
     grid-template: 90% / 80% 20%;
-    transition: all 0.25s ease-in-out;
+    transition: all 0.75s ease-in-out;
 }
 
 #linkContainer {
@@ -87,7 +87,7 @@ body {
     color: lightgray;
 }
 
-.name::after {
+/* .name::after {
     content: url('https://cdn.glitch.global/7375188f-d48b-40c4-b44b-5838fd149d46/caret?v=1709488711189');
     display: inline-block;
     width: 10px;
@@ -106,7 +106,7 @@ body {
     position: relative;
     top: 2px;
     left: 4px;
-}
+} */
 
 .link {
     color: white;
