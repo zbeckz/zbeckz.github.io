@@ -147,7 +147,7 @@ function showNewPage()
     else if (newPage === "project-list")
     {
         document.getElementById('homePageTitle').textContent = "Zach Becker's Portfolio: Projects (WORK IN PROGRESS)!"
-        document.getElementById('projectListPageContent').style.display = "grid";
+        document.getElementById('projectListPageContent').style.display = "flex";
         resizeCanvas();
         spawnObjectsNewScreen();
         clearOffScreenObjects();

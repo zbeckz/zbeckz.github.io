@@ -508,6 +508,9 @@ body {
 #projectListPageContent {
     display: none;
     grid-area: 1 / 1 / 1 / 1;
+    flex-direction: column;
+    padding: 200px 0px;
+    gap: 40px;
 }
 
 #projectListContainer {
@@ -515,7 +518,6 @@ body {
     grid-template-columns: auto auto auto;
     row-gap: 80px;
     column-gap: 80px;
-    padding: 200px 0px;
 }
 
 .projectDiv {
@@ -541,6 +543,9 @@ body {
     width: 70%;
 }
 
-.projectDiv a {
-    
+#projectListControls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }

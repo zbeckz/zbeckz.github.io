@@ -3,77 +3,92 @@ const projectData =
     {
         title: "Data Visualization",
         url: "/projects/data-visualization",
-        previewImg: "/assets/data-visualization.png"
+        previewImg: "/assets/data-visualization.png",
+        date: "12/05/23"
     },
     {
         title: "Simulated Evolution",
         url: "https://github.com/zbeckz/cs396-ludobots",
-        previewImg: "/assets/simulated-evolution.png"
+        previewImg: "/assets/simulated-evolution.png",
+        date: "03/14/23"
     },
     {
         title: "Computational Lighting",
         url: "/projects/computational-lighting-webgl",
-        previewImg: "/assets/computational-lighting-webgl.png"
+        previewImg: "/assets/computational-lighting-webgl.png",
+        date: "06/14/22"
     },
     {
         title: "Generative Art",
         url: "/projects/generative-art",
-        previewImg: "/assets/generative-art.png"
+        previewImg: "/assets/generative-art.png",
+        date: "10/25/23"
     },
     {
         title: "Particle Systems",
         url: "/projects/particle-systems",
-        previewImg: "/assets/particle-systems.png"
+        previewImg: "/assets/particle-systems.png",
+        date: "10/19/23"
     },
     {
         title: "Brushes",
         url: "/projects/brushes",
         previewImg: "/assets/brushes.png",
+        date: "10/15/23"
     },
         {
         title: "Virtual Reality Game",
         url: "/projects/virtual-reality-game",
-        previewImg: "/assets/virtual-reality-game.png"
+        previewImg: "/assets/virtual-reality-game.png",
+        date: "06/04/23"
     },
     {
         title: "3D Animation",
         url: "/projects/3d-animation-webgl",
-        previewImg: "/assets/3d-animation-webgl.png"
+        previewImg: "/assets/3d-animation-webgl.png",
+        date: "04/20/22"
     },
     {
         title: "Animations",
         url: "/projects/animations",
-        previewImg: "/assets/animations.png"
+        previewImg: "/assets/animations.png",
+        date: "10/09/23"
     },
     {
         title:"Chat Bots",
         url: "/projects/chat-bots",
-        previewImg: "/assets/chat-bots.png"
+        previewImg: "/assets/chat-bots.png",
+        date: "11/03/23"
     },
     {
         title: "Face Tracking",
         url: "/projects/face-tracking",
-        previewImg: "/assets/face-tracking.png"
+        previewImg: "/assets/face-tracking.png",
+        date: "11/15/23"
     },
     {
         title: "Idle Game",
         url: "/projects/idle-game",
-        previewImg: "/assets/idle-game.png"
+        previewImg: "/assets/idle-game.png",
+        date: "04/09/23"
     },
     {
         title: "Interactive World",
         url: "/projects/interactive-world-webgl",
-        previewImg: "/assets/interactive-world-webgl.png"
+        previewImg: "/assets/interactive-world-webgl.png",
+        date: "05/13/22"
     },
     {
         title: "Machine Learning",
         url: "/projects/machine-learning",
-        previewImg: "/assets/machine-learning.png"
+        previewImg: "/assets/machine-learning.png",
+        date: "11/26/23"
     },
     {
         title: "Virtual Reality Space",
         url: "/projects/virtual-reality-space",
-        previewImg: "/assets/virtual-reality-space.png"
+        previewImg: "/assets/virtual-reality-space.png",
+        date: "05/21/23"
     },
 ]
 

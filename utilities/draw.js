@@ -77,13 +77,34 @@ function clearOffScreenObjects()
     suns = suns.filter(isOnScreen);
 }
 
-function populateProjectList()
+function populateProjectList(sort="default")
 {
     // Grab container
     const container = document.getElementById("projectListContainer");
 
+    // Clear current container contents
+    while (container.firstChild) 
+    {
+        container.removeChild(container.firstChild);
+    }
+
     // Create each project
-    projectData.forEach(p => {
+    projectData.toSorted((a, b) =>{
+        switch (sort)
+        {
+            case "atoz":
+                return a.title.localeCompare(b.title);
+            case "ztoa":
+                return b.title.localeCompare(a.title);
+            case "newest":
+                return a.date < b.date ? 1 : -1;
+            case "oldest":    
+                return a.date < b.date ? -1 : 1;
+            case "default":
+            default:
+                return 0;
+        }
+    }).forEach(p => {
         // Create the overall container for the project
         const newProjectDiv = document.createElement("div");
         newProjectDiv.className = "projectDiv"
@@ -105,12 +126,5 @@ function populateProjectList()
         newProjectLink.textContent = "Project";
         newProjectLink.className = "linkButton";
         newProjectDiv.appendChild(newProjectLink);
-        /*
-            {
-                "title": "Animations",
-                "url": "/projects/animations",
-                "previewImg": "/assets/animations.png"
-            }
-        */
     })
 }
