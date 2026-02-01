@@ -82,10 +82,35 @@ function populateProjectList()
     // Grab container
     const container = document.getElementById("projectListContainer");
 
-    // Create a div for each project
+    // Create each project
     projectData.forEach(p => {
+        // Create the overall container for the project
         const newProjectDiv = document.createElement("div");
         newProjectDiv.className = "projectDiv"
         container.appendChild(newProjectDiv);
+
+        // Add the title of the project as a span
+        const newProjectTitle = document.createElement("span");
+        newProjectTitle.textContent = p.title;
+        newProjectDiv.appendChild(newProjectTitle);
+
+        // Add the image of the project
+        const newProjectImage = document.createElement("img");
+        newProjectImage.src = p.previewImg;
+        newProjectDiv.appendChild(newProjectImage);
+
+        // Add a link to the project
+        const newProjectLink = document.createElement("a");
+        newProjectLink.href = p.url;
+        newProjectLink.textContent = "Project";
+        newProjectLink.className = "linkButton";
+        newProjectDiv.appendChild(newProjectLink);
+        /*
+            {
+                "title": "Animations",
+                "url": "/projects/animations",
+                "previewImg": "/assets/animations.png"
+            }
+        */
     })
 }
