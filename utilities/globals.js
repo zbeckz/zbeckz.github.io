@@ -1,24 +1,14 @@
 const projectData = 
 [
     {
-        title: "Animations",
-        url: "/projects/animations",
-        previewImg: "/assets/animations.png"
+        title: "Data Visualization",
+        url: "/projects/data-visualization",
+        previewImg: "/assets/data-visualization.png"
     },
     {
-        title: "Brushes",
-        url: "/projects/brushes",
-        previewImg: "/assets/brushes.png",
-    },
-    {
-        title: "3D Animation",
-        url: "/projects/3d-animation-webgl",
-        previewImg: "/assets/3d-animation-webgl.png"
-    },
-    {
-        title:"Chat Bots",
-        url: "/projects/chat-bots",
-        previewImg: "/assets/chat-bots.png"
+        title: "Simulated Evolution",
+        url: "https://github.com/zbeckz/cs396-ludobots",
+        previewImg: "/assets/simulated-evolution.png"
     },
     {
         title: "Computational Lighting",
@@ -26,14 +16,44 @@ const projectData =
         previewImg: "/assets/computational-lighting-webgl.png"
     },
     {
-        title: "Face Tracking",
-        url: "/projects/face-tracking",
-        previewImg: "/assets/face-tracking.png"
-    },
-    {
         title: "Generative Art",
         url: "/projects/generative-art",
         previewImg: "/assets/generative-art.png"
+    },
+    {
+        title: "Particle Systems",
+        url: "/projects/particle-systems",
+        previewImg: "/assets/particle-systems.png"
+    },
+    {
+        title: "Brushes",
+        url: "/projects/brushes",
+        previewImg: "/assets/brushes.png",
+    },
+        {
+        title: "Virtual Reality Game",
+        url: "/projects/virtual-reality-game",
+        previewImg: "/assets/virtual-reality-game.png"
+    },
+    {
+        title: "3D Animation",
+        url: "/projects/3d-animation-webgl",
+        previewImg: "/assets/3d-animation-webgl.png"
+    },
+    {
+        title: "Animations",
+        url: "/projects/animations",
+        previewImg: "/assets/animations.png"
+    },
+    {
+        title:"Chat Bots",
+        url: "/projects/chat-bots",
+        previewImg: "/assets/chat-bots.png"
+    },
+    {
+        title: "Face Tracking",
+        url: "/projects/face-tracking",
+        previewImg: "/assets/face-tracking.png"
     },
     {
         title: "Idle Game",
@@ -51,25 +71,10 @@ const projectData =
         previewImg: "/assets/machine-learning.png"
     },
     {
-        title: "Particle Systems",
-        url: "/projects/particle-systems",
-        previewImg: "/assets/particle-systems.png"
-    },
-    {
-        title: "Virtual Reality Game",
-        url: "/projects/virtual-reality-game",
-        previewImg: "/assets/virtual-reality-game.png"
-    },
-    {
         title: "Virtual Reality Space",
         url: "/projects/virtual-reality-space",
         previewImg: "/assets/virtual-reality-space.png"
     },
-    {
-        title: "Data Visualization",
-        url: "/projects/data-visualization",
-        previewImg: "/assets/data-visualization.png"
-    }
 ]
 
 // GLOBAL CONSTS
