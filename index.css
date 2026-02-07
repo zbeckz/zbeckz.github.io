@@ -511,17 +511,21 @@ body {
     flex-direction: column;
     padding: 200px 0px;
     gap: 40px;
+    align-items: center;
+    width: 80%;
+    height: 80%;
 }
 
 #projectListContainer {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
     row-gap: 80px;
     column-gap: 80px;
+    width: 100%;
 }
 
 .projectDiv {
-    width: 250px;
+    /* width: 250px; */
     height: 350px;
     background-color: rgba(50, 50, 50, 0.9);
     box-shadow: 0px 0px 30px var(--homePageColorOne);
@@ -548,4 +552,43 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+}
+
+#filter-title {
+    color: white;
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.filterTag {
+    color: white;
+    border: 1px solid white;
+    text-align: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+}
+
+.filterTag[data-selected='true'] {
+    color: var(--homePageColorTwo);
+    border-color: var(--homePageColorTwo);
+}
+
+.filterTag:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 10px var(--homePageColorTwo);
+}
+
+#filters-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+#filter-tag-container {
+    display: grid;
+    gap: 10px;
 }

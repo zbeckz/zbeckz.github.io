@@ -77,7 +77,7 @@ function clearOffScreenObjects()
     suns = suns.filter(isOnScreen);
 }
 
-function populateProjectList(sort="default")
+function populateProjectList()
 {
     // Grab container
     const container = document.getElementById("projectListContainer");
@@ -88,9 +88,12 @@ function populateProjectList(sort="default")
         container.removeChild(container.firstChild);
     }
 
-    // Create each project
-    projectData.toSorted((a, b) =>{
-        switch (sort)
+    // Filter, sort, then create each project
+    projectData.filter(p => {
+        if (projectListFilters.length === 0) return true;
+        return p.tags.some(projectTag => projectListFilters.includes(projectTag));
+    }).sort((a, b) =>{
+        switch (projectListSort)
         {
             case "atoz":
                 return a.title.localeCompare(b.title);
@@ -126,5 +129,65 @@ function populateProjectList(sort="default")
         newProjectLink.textContent = "Project";
         newProjectLink.className = "linkButton";
         newProjectDiv.appendChild(newProjectLink);
+    })
+}
+
+function sortProjectList(newSort)
+{
+    projectListSort = newSort;
+    populateProjectList();
+}
+
+function filterProjectList(newFilter)
+{
+    // if new filter is not in list, add it. Otherwise, remove it
+    if (projectListFilters.includes(newFilter))
+    {
+        projectListFilters.splice(projectListFilters.indexOf(newFilter))
+        document.getElementById(`${newFilter}-filter-button`).dataset.selected = "false";
+    }
+    else
+    {
+        projectListFilters.push(newFilter);
+        document.getElementById(`${newFilter}-filter-button`).dataset.selected = "true";
+    } 
+
+    // populate
+    populateProjectList();
+}
+
+function populateTags()
+{
+    // Loop through project data to create an array of unique tags
+    const uniqueTags = projectData.reduce((accumulator, project) => {
+        project.tags.forEach(tag => {
+            if (!accumulator.includes(tag)) accumulator.push(tag);
+        })
+        return accumulator;
+    }, [])
+
+    // Grab container
+    const container = document.getElementById("filter-tag-container");
+
+    // Add styles to container for tag grid to always have 2 rows and as many columns as needed
+    const numTagCols = Math.round(uniqueTags.length / 2);
+    let colString = "";
+    for (let i = 0; i < numTagCols; i++)
+    {
+        colString += "1fr "
+    }
+    container.style.gridTemplate = `1fr 1fr / ${colString}`
+
+    // Sort tags alphabetically and add each to tag container
+    uniqueTags.sort().forEach(tag => {
+        // Create the overall span for the tag
+        const newFilterTag = document.createElement("button");
+        newFilterTag.id = `${tag}-filter-button`
+        newFilterTag.className = "filterTag"
+        newFilterTag.textContent = tag;
+        newFilterTag.onclick = () => {
+            filterProjectList(tag);
+        }
+        container.appendChild(newFilterTag);
     })
 }

@@ -4,93 +4,111 @@ const projectData =
         title: "Data Visualization",
         url: "/projects/data-visualization",
         previewImg: "/assets/data-visualization.png",
-        date: "12/05/23"
+        date: "12/05/23",
+        tags: ["Javascript", "HTML", "CSS", "D3.js"]
     },
     {
         title: "Simulated Evolution",
         url: "https://github.com/zbeckz/cs396-ludobots",
         previewImg: "/assets/simulated-evolution.png",
-        date: "03/14/23"
+        date: "03/14/23",
+        tags: ["Python", "AI/ML"]
     },
     {
         title: "Computational Lighting",
         url: "/projects/computational-lighting-webgl",
         previewImg: "/assets/computational-lighting-webgl.png",
-        date: "06/14/22"
+        date: "06/14/22",
+        tags: ["Javascript", "HTML", "WebGL"]
     },
     {
         title: "Generative Art",
         url: "/projects/generative-art",
         previewImg: "/assets/generative-art.png",
-        date: "10/25/23"
+        date: "10/25/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title: "Particle Systems",
         url: "/projects/particle-systems",
         previewImg: "/assets/particle-systems.png",
-        date: "10/19/23"
+        date: "10/19/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title: "Brushes",
         url: "/projects/brushes",
         previewImg: "/assets/brushes.png",
-        date: "10/15/23"
+        date: "10/15/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
         {
         title: "Virtual Reality Game",
         url: "/projects/virtual-reality-game",
         previewImg: "/assets/virtual-reality-game.png",
-        date: "06/04/23"
+        date: "06/04/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title: "3D Animation",
         url: "/projects/3d-animation-webgl",
         previewImg: "/assets/3d-animation-webgl.png",
-        date: "04/20/22"
+        date: "04/20/22",
+        tags: ["Javascript", "HTML", "WebGL"]
     },
     {
         title: "Animations",
         url: "/projects/animations",
         previewImg: "/assets/animations.png",
-        date: "10/09/23"
+        date: "10/09/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title:"Chat Bots",
         url: "/projects/chat-bots",
         previewImg: "/assets/chat-bots.png",
-        date: "11/03/23"
+        date: "11/03/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title: "Face Tracking",
         url: "/projects/face-tracking",
         previewImg: "/assets/face-tracking.png",
-        date: "11/15/23"
+        date: "11/15/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title: "Idle Game",
         url: "/projects/idle-game",
         previewImg: "/assets/idle-game.png",
-        date: "04/09/23"
+        date: "04/09/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
     {
         title: "Interactive World",
         url: "/projects/interactive-world-webgl",
         previewImg: "/assets/interactive-world-webgl.png",
-        date: "05/13/22"
+        date: "05/13/22",
+        tags: ["Javascript", "HTML", "WebGL"]
     },
     {
         title: "Machine Learning",
         url: "/projects/machine-learning",
         previewImg: "/assets/machine-learning.png",
-        date: "11/26/23"
+        date: "11/26/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js", "AI/ML"]
     },
     {
         title: "Virtual Reality Space",
         url: "/projects/virtual-reality-space",
         previewImg: "/assets/virtual-reality-space.png",
-        date: "05/21/23"
+        date: "05/21/23",
+        tags: ["Javascript", "HTML", "CSS", "Vue.js"]
     },
 ]
+
+let projectListSort = "default";
+let projectListFilters = [];
 
 // GLOBAL CONSTS
 const TwoPi = 2 * Math.PI;

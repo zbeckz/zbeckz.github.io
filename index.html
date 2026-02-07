@@ -137,10 +137,11 @@
 
     <div id="projectListPageContent">
       <div id="projectListControls">
-        <select id="project-filter-select">
-          <option>Filter</option>
-        </select>
-        <select id="project-sort-select" onchange="populateProjectList(this.value)">
+        <div id="filters-container">
+          <span id="filter-title">Filter:</span>
+          <div id="filter-tag-container"></div>
+        </div>
+        <select id="project-sort-select" onchange="sortProjectList(this.value)">
           <option disabled>Sort By</option>
           <option value="default">Default</option>
           <option value="atoz">A to Z</option>

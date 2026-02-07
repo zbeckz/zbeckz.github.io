@@ -15,6 +15,9 @@ window.addEventListener('load', () => {
     // Populate project list based on project data
     populateProjectList();
 
+    // Populate project tag filters based on project data
+    populateTags();
+
     // get the canvas element and set to window size
     canvas = document.getElementById('backgroundScene');
     context = canvas.getContext('2d');
