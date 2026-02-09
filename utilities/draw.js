@@ -89,10 +89,7 @@ function populateProjectList()
     }
 
     // Filter, sort, then create each project
-    projectData.filter(p => {
-        if (projectListFilters.length === 0) return true;
-        return p.tags.some(projectTag => projectListFilters.includes(projectTag));
-    }).sort((a, b) =>{
+    projectData.sort((a, b) =>{
         switch (projectListSort)
         {
             case "atoz":
@@ -111,6 +108,7 @@ function populateProjectList()
         // Create the overall container for the project
         const newProjectDiv = document.createElement("div");
         newProjectDiv.className = "projectDiv"
+        newProjectDiv.id = `${p.title}-div`
         container.appendChild(newProjectDiv);
 
         // Add the title of the project as a span
@@ -143,7 +141,7 @@ function filterProjectList(newFilter)
     // if new filter is not in list, add it. Otherwise, remove it
     if (projectListFilters.includes(newFilter))
     {
-        projectListFilters.splice(projectListFilters.indexOf(newFilter))
+        projectListFilters.splice(projectListFilters.indexOf(newFilter), 1)
         document.getElementById(`${newFilter}-filter-button`).dataset.selected = "false";
     }
     else
@@ -152,8 +150,21 @@ function filterProjectList(newFilter)
         document.getElementById(`${newFilter}-filter-button`).dataset.selected = "true";
     } 
 
-    // populate
-    populateProjectList();
+    // update project style based on new filter list
+    projectData.forEach(p => {
+        // get the project div
+        const projectDiv = document.getElementById(`${p.title}-div`);
+
+        // if there are no filters, or any project tag is in the filter list, show it. Otherwise hide
+        if (projectListFilters.length === 0 || p.tags.some(t => projectListFilters.includes(t)))
+        {
+            projectDiv.style.display = "flex";
+        }
+        else
+        {
+            projectDiv.style.display = "none";
+        }
+    })
 }
 
 function populateTags()
