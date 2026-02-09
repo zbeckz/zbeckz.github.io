@@ -88,23 +88,8 @@ function populateProjectList()
         container.removeChild(container.firstChild);
     }
 
-    // Filter, sort, then create each project
-    projectData.sort((a, b) =>{
-        switch (projectListSort)
-        {
-            case "atoz":
-                return a.title.localeCompare(b.title);
-            case "ztoa":
-                return b.title.localeCompare(a.title);
-            case "newest":
-                return a.date < b.date ? 1 : -1;
-            case "oldest":    
-                return a.date < b.date ? -1 : 1;
-            case "default":
-            default:
-                return 0;
-        }
-    }).forEach(p => {
+    // create each project
+    projectData.forEach(p => {
         // Create the overall container for the project
         const newProjectDiv = document.createElement("div");
         newProjectDiv.className = "projectDiv"
@@ -133,7 +118,30 @@ function populateProjectList()
 function sortProjectList(newSort)
 {
     projectListSort = newSort;
-    populateProjectList();
+
+    // update order based on new sort
+    projectData.toSorted((a, b) => {
+        switch (projectListSort)
+        {
+            case "atoz":
+                return a.title.localeCompare(b.title);
+            case "ztoa":
+                return b.title.localeCompare(a.title);
+            case "newest":
+                return a.date < b.date ? 1 : -1;
+            case "oldest":    
+                return a.date < b.date ? -1 : 1;
+            case "default":
+            default:
+                return 0;
+        }
+    }).forEach((p, index) => {
+        // get project div
+        const projectDiv = document.getElementById(`${p.title}-div`);
+
+        // update sort order
+        projectDiv.style.order = index;
+    });
 }
 
 function filterProjectList(newFilter)
