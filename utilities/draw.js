@@ -94,6 +94,7 @@ function populateProjectList()
         const newProjectDiv = document.createElement("div");
         newProjectDiv.className = "projectDiv"
         newProjectDiv.id = `${p.title}-div`
+        newProjectDiv.style.viewTransitionName = `${p.title.replace(/\d/g, '').replaceAll(' ', '-').toLowerCase()}-view-transition`
         container.appendChild(newProjectDiv);
 
         // Add the title of the project as a span
@@ -115,9 +116,21 @@ function populateProjectList()
     })
 }
 
+function startProjectListSort(newSort)
+{
+    if (!document.startViewTransition) {
+        sortProjectList(newSort);
+        return;
+    }
+    document.startViewTransition(() => sortProjectList(newSort));
+}
+
 function sortProjectList(newSort)
 {
     projectListSort = newSort;
+
+    // get parent
+    const parent = document.getElementById("projectListContainer");
 
     // update order based on new sort
     projectData.toSorted((a, b) => {
@@ -135,12 +148,14 @@ function sortProjectList(newSort)
             default:
                 return 0;
         }
-    }).forEach((p, index) => {
+    }).forEach(p => {
         // get project div
         const projectDiv = document.getElementById(`${p.title}-div`);
 
-        // update sort order
-        projectDiv.style.order = index;
+        // remove it from parent, then re-append so it will be in correct order
+        // doing this instead of order style so view transitions look nicer
+        projectDiv.remove();
+        parent.appendChild(projectDiv);
     });
 }
 
@@ -205,7 +220,11 @@ function populateTags()
         newFilterTag.className = "filterTag"
         newFilterTag.textContent = tag;
         newFilterTag.onclick = () => {
-            filterProjectList(tag);
+            if (!document.startViewTransition) {
+                filterProjectList(tag);
+                return;
+            }
+            document.startViewTransition(() => filterProjectList(tag));
         }
         container.appendChild(newFilterTag);
     })
