@@ -47,7 +47,7 @@ body {
 
 /* Title */
 #homePageTitle {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     font-weight: 600;
     text-align: center;
 }
@@ -58,8 +58,8 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    font-size: 2.5rem;
+    gap: 10px;
+    font-size: 1.5rem;
 }
 
 /* Animation control label */
@@ -72,17 +72,17 @@ body {
 #animationControl > button {
     background-color: var(--homePageColorOne);
     transition: all var(--homePageTransitionDuration);
-    padding: 0px 15px;
-    width: 60px;
-    height: 36px;
-    border-radius: 30px;
-    border: 3px solid var(--homePageColorOne);
+    padding: 0px 20px;
+    width: 40px;
+    height: 24px;
+    border-radius: 20px;
+    border: 2px solid var(--homePageColorOne);
 }
 
 /* When hovering on the toggle button */
 #animationControl > button:hover {
     cursor: pointer;
-    border: 3px solid var(--homePageColorTwo);
+    border: 2px solid var(--homePageColorTwo);
 }
 
 /* Psuedo element which is the circle that actually slides back and forth for the animation toggle */
@@ -92,17 +92,17 @@ body {
     transition: all var(--homePageImageTransitionDuration);
     border-radius: 100%;
     background-color: var(--homePageColorTwo);
-    height: 21px;
-    width: 21px;
     top: 0px;
     right: 0px;
     display: block;
-    border: 3px solid var(--homePageColorTwo);
+    height: 14px;
+    width: 14px;
+    border: 2px solid var(--homePageColorTwo);
 }
 
 /* Allows the psuedo element to slide when data attribute updates */
 #animationControl > button[data-on='false']::before {
-    right: 28px;
+    right: 18px;
     background-color: var(--homePageColorOne);
 }
 
@@ -118,8 +118,9 @@ body {
     align-items: center;
     display: none;
     flex-direction: row;
-    gap: 90px;
     justify-content: center;
+    gap: 60px;
+
 }
 
 #aboutMePageContent {
@@ -182,22 +183,22 @@ body {
     position: relative;
     justify-content: center;
     align-items: center;
+    border-radius: 12px;
+    width: 300px;
+    height:  400px;
+    gap: 20px;
     opacity: 100%;
-    border-radius: 18px;
-    width: 450px;
-    height:  600px;
-    gap: 30px;
-    box-shadow: 0px 0px 30px var(--homePageColorOne);
+    box-shadow: 0px 0px 20px var(--homePageColorOne);
 }
 
-/* When hovering on the button within home page section, add bigger box shadow */
+/* When hovering on the button within home page section, add blue box shadow */
 .homePageSection:has(button:hover) {
     box-shadow: 0px 0px 40px var(--homePageColorTwo);
 }
 
 /* The div surrounding an image within home page section */
 .homePageSection > .homePageImageContainer {
-    border-radius: 9px;
+    border-radius: 6px;
     border: 4px solid var(--homePageColorOne);
     width: 70%;
     transition: all var(--homePageTransitionDuration);
@@ -214,13 +215,13 @@ body {
 .homePageSection button {
     z-index: 1;
     width: 50%;
-    height: 50px;
-    border-radius: 9px;
     background: var(--homePageColorOne);
     border: none;
-    font-size: 1.75rem;
     transition: all var(--homePageTransitionDuration);
     font-weight: 500;
+    font-size: 1.25rem;
+    height: 40px;
+    border-radius: 6px;
 }
 
 /* When the button is hovered, change it */
@@ -239,11 +240,6 @@ body {
     border-color: var(--homePageColorTwo);
 }
 
-/* When the homne page section is hovered, make bigger */
-.homePageSection:hover {
-    box-shadow: 0px 0px 30px white;
-}
-
 /* When the home page section is hovered, make border bigger */
 .homePageSection:hover .animatedBorder {
     opacity: 100%;
@@ -257,8 +253,8 @@ body {
 
 /* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
 .animatedBorder, .line {
-    width: 450px;
-    height: 600px;
+    width: 300px;
+    height: 400px;
     transition: all var(--homePageTransitionDuration);
     opacity: 0%;
 }
@@ -266,15 +262,15 @@ body {
 .animatedBorder {
     position: absolute;
     z-index: 0;
-    border-radius: 18px;
+    border-radius: 12px;
 }
 
 .line {
-    rx: 18px;
-    ry: 18px;
+    rx: 12px;
+    ry: 12px;
     stroke-linejoin: round;
     stroke-dasharray: 50;
-    stroke-width: 15px;
+    stroke-width: 10px;
     fill: transparent;
     stroke: var(--homePageColorOne);
 }
@@ -288,96 +284,6 @@ body {
     }
 }
 /* ---------------------------------------------------------------------------------------------- */
-
-/* ---------------------------------------------------------------------------------------------- */
-/* BELOW CSS IS MEANT FOR STANDARD LAPTOP SCREEN SIZE*/
-@media screen and (max-width: 1300px) {    
-    /* Title */
-    #homePageTitle {
-        top: 2.5%;
-        font-size: 2.5rem;
-    }
-    
-    /* Animation Control Div */
-    #animationControl {
-        top: 10%;
-        gap: 10px;
-        font-size: 1.5rem;
-    }
-    
-    /* Animation control toggle button */
-    #animationControl > button {
-        padding: 0px 20px;
-        width: 40px;
-        height: 24px;
-        border-radius: 20px;
-        border: 2px solid var(--homePageColorOne);
-    }
-    
-    /* When hovering on the toggle button */
-    #animationControl > button:hover {
-        border: 2px solid var(--homePageColorTwo);
-    }
-    
-    /* Psuedo element which is the circle that actually slides back and forth for the animation toggle */
-    #animationControl > button::before {
-        height: 14px;
-        width: 14px;
-        border: 2px solid var(--homePageColorTwo);
-    }
-    
-    /* Allows the psuedo element to slide when data attribute updates */
-    #animationControl > button[data-on='false']::before {
-        right: 18px;
-    }
-    
-    /* Centered in window, contains both projects and about me windows */
-    #homePageContent {
-        gap: 60px;
-    }
-    
-    /* Both projects and about me window */
-    .homePageSection {
-        border-radius: 12px;
-        width: 300px;
-        height:  400px;
-        gap: 20px;
-        opacity: 100%;
-        box-shadow: 0px 0px 20px var(--homePageColorOne);
-    }
-    
-    /* When hovering on the button within home page section, add bigger box shadow */
-    .homePageSection:has(button:hover) {
-        box-shadow: 0px 0px 40px var(--homePageColorTwo);
-    }
-    
-    /* The div surrounding an image within home page section */
-    .homePageSection > .homePageImageContainer {
-        border-radius: 6px;
-    }
-    
-    /* Button in home page section */
-    .homePageSection button {
-        font-size: 1.25rem;
-        height: 40px;
-        border-radius: 6px;
-    }
-
-    .animatedBorder, .line {
-        width: 300px;
-        height: 400px;
-    }
-
-    .animatedBorder {
-        border-radius: 12px
-    }
-
-    .line {
-        rx: 12px;
-        ry: 12px;
-        stroke-width: 10px;
-    }
-}
 
 
 /* ---------------------------------------------------------------------------------------------- */
