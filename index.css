@@ -24,22 +24,29 @@ body {
     background-color: black;
 }
 
-/* Title */
-#homePageTitle {
+#header-container {
+    width: 100%;
     position: absolute;
     top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Title */
+#homePageTitle {
     font-size: 3.5rem;
     font-weight: 600;
+    text-align: center;
 }
 
 /* Animation Control Div */
 #animationControl {
-    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    top: 85px;
     gap: 20px;
     font-size: 2.5rem;
 }
@@ -47,6 +54,7 @@ body {
 /* Animation control label */
 #animationControl > span {
     color: var(--homePageColorOne);
+    font-weight: 600;
 }
 
 /* Animation control toggle button */
@@ -68,15 +76,16 @@ body {
 
 /* Psuedo element which is the circle that actually slides back and forth for the animation toggle */
 #animationControl > button::before {
-    position: absolute;
+    position: relative;
     content: "";
     transition: all var(--homePageImageTransitionDuration);
     border-radius: 100%;
     background-color: var(--homePageColorTwo);
     height: 21px;
     width: 21px;
-    top: 9px;
-    right: 6px;
+    top: 0px;
+    right: 0px;
+    display: block;
     border: 3px solid var(--homePageColorTwo);
 }
 
@@ -328,14 +337,12 @@ body {
     #animationControl > button::before {
         height: 14px;
         width: 14px;
-        top: 5px;
-        right: 4px;
         border: 2px solid var(--homePageColorTwo);
     }
     
     /* Allows the psuedo element to slide when data attribute updates */
     #animationControl > button[data-on='false']::before {
-        right: 22px;
+        right: 18px;
     }
     
     /* Centered in window, contains both projects and about me windows */
@@ -555,10 +562,11 @@ body {
     width: 100%;
 }
 
-#filter-title {
+#filter-title, #sort-title {
     color: white;
     margin-right: 10px;
     font-weight: 600;
+    font-size: 2rem;
 }
 
 .filterTag {
@@ -569,6 +577,7 @@ body {
     border-radius: 6px;
     background-color: rgba(255, 255, 255, 0.15);
     font-weight: 600;
+    font-size: 1rem;
 }
 
 .filterTag[data-selected='true'] {
@@ -588,7 +597,17 @@ body {
     gap: 10px;
 }
 
+#sort-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 #filter-tag-container {
     display: grid;
     gap: 10px;
+}
+
+#project-sort-select {
+    font-size: 1rem;
 }
