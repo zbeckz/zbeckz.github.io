@@ -171,8 +171,11 @@ function getRandomFloat(min, max)
 
 function spawnObjectsNewScreen()
 {
-    Star.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
-    const newSuns = Sun.Spawn(0, window.innerWidth, window.innerHeight, document.body.scrollHeight);
+    // grab main container
+    const mainContainer = document.getElementById("main-container");
+
+    Star.Spawn(0, window.innerWidth, window.innerHeight, mainContainer.scrollHeight);
+    const newSuns = Sun.Spawn(0, window.innerWidth, window.innerHeight, mainContainer.scrollHeight);
     sunSpots = [];
     SunSpot.Spawn();
     Planet.Spawn(newSuns);
@@ -241,8 +244,11 @@ function goToSection(hideSectionId, transitionDirection, newPath)
 // Sets the canvas to the size of the window
 function resizeCanvas(forceWindow=false)
 {
+    // grab main container
+    const mainContainer = document.getElementById("main-container");
+
     canvas.width = window.innerWidth;
-    canvas.height = forceWindow ? window.innerHeight : Math.max(document.body.scrollHeight, window.innerHeight);
+    canvas.height = forceWindow ? window.innerHeight : Math.max(mainContainer.scrollHeight, window.innerHeight);
 }
 
 // Draws a circle on the canvas at a given location, with given radius and color

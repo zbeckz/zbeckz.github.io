@@ -37,7 +37,7 @@
     <canvas id="backgroundScene"></canvas>
 
     <!-- Header container -->
-    <div id="header-container">
+    <div id="main-container">
       <!-- Title -->
       <span id="homePageTitle">Zach Becker's Portfolio (WORK IN PROGRESS!)</span>
 
@@ -46,116 +46,116 @@
         <span>Background Animations:</span>
         <button id="animationToggle" data-on="true" onclick="handleAnimationToggle()"></input>
       </div>
-    </div>
 
-    <!-- Main container for the home page content-->
-    <div id="homePageContent">
+      <!-- Main container for the home page content-->
+      <div id="homePageContent">
 
-      <!-- About me image, button, and border -->
-      <div id="aboutMeContainer" class="homePageSection">
-        <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.right, 'about-me', true)">About Me</button>
-        <div class="homePageImageContainer">
-          <img id="aboutMeImage" src="assets/headshot.jpg"/>
+        <!-- About me image, button, and border -->
+        <div id="aboutMeContainer" class="homePageSection">
+          <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.right, 'about-me', true)">About Me</button>
+          <div class="homePageImageContainer">
+            <img id="aboutMeImage" src="assets/headshot.jpg"/>
+          </div>
+          <svg class="animatedBorder">
+            <rect class="line"/>
+          </svg>
         </div>
-        <svg class="animatedBorder">
-          <rect class="line"/>
-        </svg>
-      </div>
 
-      <!-- Projects image, button, and border -->
-      <div id="projectsContainer" class="homePageSection">
-        <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.left, 'project-list', true)">Projects</button>
-        <div class="homePageImageContainer">
-          <img id="projectsImage" src="assets/code-snippet.png"/>
+        <!-- Projects image, button, and border -->
+        <div id="projectsContainer" class="homePageSection">
+          <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.left, 'project-list', true)">Projects</button>
+          <div class="homePageImageContainer">
+            <img id="projectsImage" src="assets/code-snippet.png"/>
+          </div>
+          <svg class="animatedBorder">
+            <rect class="line"/>
+          </svg>
         </div>
-        <svg class="animatedBorder">
-          <rect class="line"/>
-        </svg>
+
       </div>
 
-    </div>
-
-    <div id="aboutMePageContent">
-      <!-- Row 1: Introduction -->
-      <img class="aboutMePageImage" src="assets/headshot.jpg">
-      <div class="aboutMeInfoContainer">
-        <p>
-          Hi! I am Zach Becker, a 23 year old computer programmer. I have professional experience in web development, but enjoy anything coding related.
-        </p>
-        <p>
-          Scroll down on this page to follow my journey as a developer, past to present!
-        </p>
-        <button onclick="goToSection('aboutMePageContent', TRANSITION_DIRECTION.left, '')">Home</button>
-        <button onclick="goToSection('aboutMePageContent', TRANSITION_DIRECTION.left, 'project-list')">Projects</button>
-      </div>
-
-      <!-- Row 2: Scratch -->
-      <div class="aboutMeInfoContainer">
-        <p>
-          My father is a computer programmer as well, and he introduced me to coding on <a class="link" href="https://scratch.mit.edu/about" target="_blank">Scratch</a> when I was nine. I spent countless hours over many years creating projects in my free time.
-        </p>
-        <p>
-          This was where I learned the fundamentals of computer programming. Scratch includes conditional blocks to build if statements and loops, and the ability to store and modify named variables. As an adult software developer, I've also come to appreciate the years of debugging experience that helped me hone my error-finding instincts.
-        </p>
-      </div>
-      <img class="aboutMePageImage" src="assets/scratch-code.png">
-
-      <!-- Row 3: Pre-College Education -->
-      <img class="aboutMePageImage" src="assets/sunrise.jpg">
-      <div class="aboutMeInfoContainer">
-        <p>
-          Throughout my childhood in the suburbs north of Chicago, I continued to learn more about computer programming, both in school and on my own time.
-        </p>
-        <p>
-          During middle school and high school, I learned popular languages like Python, C#, Java, and SQL alongside high level programming concepts like object oriented programming and relational databases.
-        </p>
-      </div>
-       
-      <!-- Row 4: College -->
-      <div class="aboutMeInfoContainer">
-        <p>
-          I continued my education at Northwestern University, where I majored in Computer Science in the McCormick School of Engineering.
-        </p>
-        <p>
-          My coursework in college gave me a deep understanding of how a computer works from low-level to high-lovel. It covered transistors and logic gates, binary, assembly language, compilers, C/C++, garbage collection, etc.
-        </p>
-        <p>
-          It was also during this time where I fell in love with UI development in javascript as I learned computer graphics in WebGL, modern frameworks like Vue, and the principles of human computer interaction.
-        </p>
-      </div>
-      <img class="aboutMePageImage small" src="assets/northwestern_logo.png">
-
-      <!-- Row 5: Blick -->
-      <img class="aboutMePageImage small" src="assets/Blick_logo.jpg">
-      <div class="aboutMeInfoContainer">
-        <p>
-          Soon after graduating college, I joined Blick Art Materials, where I am still happily employed as a front-end web developer. I picked up React and NextJS, honed my html/css skills, and have gained valuable experience working with a team to ship high-quality products to customers
-        </p>
-        <p>
-          Blick has retail stores all accross the United States, and the website serves customers all over the world. I've learned how to best utilize technical skills in a business setting, and effectively communicate with teams throughout the company.
-        </p>
-      </div>
-    </div>
-
-    <div id="projectListPageContent">
-      <div id="projectListControls">
-        <div id="filters-container">
-          <span id="filter-title">Filter:</span>
-          <div id="filter-tag-container"></div>
+      <div id="aboutMePageContent">
+        <!-- Row 1: Introduction -->
+        <img class="aboutMePageImage" src="assets/headshot.jpg">
+        <div class="aboutMeInfoContainer">
+          <p>
+            Hi! I am Zach Becker, a 23 year old computer programmer. I have professional experience in web development, but enjoy anything coding related.
+          </p>
+          <p>
+            Scroll down on this page to follow my journey as a developer, past to present!
+          </p>
+          <button onclick="goToSection('aboutMePageContent', TRANSITION_DIRECTION.left, '')">Home</button>
+          <button onclick="goToSection('aboutMePageContent', TRANSITION_DIRECTION.left, 'project-list')">Projects</button>
         </div>
-        <div id="sort-container">
-          <span id="sort-title">Sort:</span>
-          <select id="project-sort-select" onchange="startProjectListSort(this.value)">
-            <option disabled>Sort By</option>
-            <option value="default">Default</option>
-            <option value="atoz">A to Z</option>
-            <option value="ztoa">Z to A</option>
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-          </select>
+
+        <!-- Row 2: Scratch -->
+        <div class="aboutMeInfoContainer">
+          <p>
+            My father is a computer programmer as well, and he introduced me to coding on <a class="link" href="https://scratch.mit.edu/about" target="_blank">Scratch</a> when I was nine. I spent countless hours over many years creating projects in my free time.
+          </p>
+          <p>
+            This was where I learned the fundamentals of computer programming. Scratch includes conditional blocks to build if statements and loops, and the ability to store and modify named variables. As an adult software developer, I've also come to appreciate the years of debugging experience that helped me hone my error-finding instincts.
+          </p>
+        </div>
+        <img class="aboutMePageImage" src="assets/scratch-code.png">
+
+        <!-- Row 3: Pre-College Education -->
+        <img class="aboutMePageImage" src="assets/sunrise.jpg">
+        <div class="aboutMeInfoContainer">
+          <p>
+            Throughout my childhood in the suburbs north of Chicago, I continued to learn more about computer programming, both in school and on my own time.
+          </p>
+          <p>
+            During middle school and high school, I learned popular languages like Python, C#, Java, and SQL alongside high level programming concepts like object oriented programming and relational databases.
+          </p>
+        </div>
+        
+        <!-- Row 4: College -->
+        <div class="aboutMeInfoContainer">
+          <p>
+            I continued my education at Northwestern University, where I majored in Computer Science in the McCormick School of Engineering.
+          </p>
+          <p>
+            My coursework in college gave me a deep understanding of how a computer works from low-level to high-lovel. It covered transistors and logic gates, binary, assembly language, compilers, C/C++, garbage collection, etc.
+          </p>
+          <p>
+            It was also during this time where I fell in love with UI development in javascript as I learned computer graphics in WebGL, modern frameworks like Vue, and the principles of human computer interaction.
+          </p>
+        </div>
+        <img class="aboutMePageImage small" src="assets/northwestern_logo.png">
+
+        <!-- Row 5: Blick -->
+        <img class="aboutMePageImage small" src="assets/Blick_logo.jpg">
+        <div class="aboutMeInfoContainer">
+          <p>
+            Soon after graduating college, I joined Blick Art Materials, where I am still happily employed as a front-end web developer. I picked up React and NextJS, honed my html/css skills, and have gained valuable experience working with a team to ship high-quality products to customers
+          </p>
+          <p>
+            Blick has retail stores all accross the United States, and the website serves customers all over the world. I've learned how to best utilize technical skills in a business setting, and effectively communicate with teams throughout the company.
+          </p>
         </div>
       </div>
-      <div id="projectListContainer"></div>
+
+      <div id="projectListPageContent">
+        <div id="projectListControls">
+          <div id="filters-container">
+            <span id="filter-title">Filter:</span>
+            <div id="filter-tag-container"></div>
+          </div>
+          <div id="sort-container">
+            <span id="sort-title">Sort:</span>
+            <select id="project-sort-select" onchange="startProjectListSort(this.value)">
+              <option disabled>Sort By</option>
+              <option value="default">Default</option>
+              <option value="atoz">A to Z</option>
+              <option value="ztoa">Z to A</option>
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+            </select>
+          </div>
+        </div>
+        <div id="projectListContainer"></div>
+      </div>
     </div>
   </body>
 
