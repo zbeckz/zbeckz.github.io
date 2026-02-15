@@ -27,13 +27,22 @@ body {
 #main-container {
     width: 100%;
     position: absolute;
-    top: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    padding-bottom: 100px;
+    top: 0px;
+}
+
+#header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(50, 50, 50, 0.6);
+    width: 100%;
+    padding: 10px 0px;
 }
 
 /* Title */
@@ -118,10 +127,10 @@ body {
     grid-template: auto auto / auto auto;
     row-gap: 50px;
     margin-top: 20px;
-    column-gap: 90px;
     align-items: center;
     justify-items: center;
     width: 80%;
+    padding-bottom: 100px;
 }
 
 .aboutMePageImage {
@@ -232,44 +241,18 @@ body {
 
 /* When the homne page section is hovered, make bigger */
 .homePageSection:hover {
-    width: 540px;
-    height: 720px;
-    background-color: rgba(50, 50, 50, 0.9);
     box-shadow: 0px 0px 30px white;
 }
 
 /* When the home page section is hovered, make border bigger */
 .homePageSection:hover .animatedBorder {
-    width: 540px;
-    height: 720px;
     opacity: 100%;
 }
 
 /* When the home page section is hovered, make border bigger, appear, and animate */
 .homePageSection:hover .line[data-animate='true'] {
-    width: 540px;
-    height: 720px;
     opacity: 100%;
     animation: borderAnimation 5.0s linear infinite;
-}
-
-/* home page button styling */
-.homePageSection:hover button {
-    font-size: 2.25rem;
-    height: 60px;
-}
-
-/* Allows the other section to shrink when one section is hovered on */
-#homePageContent:has(#aboutMeContainer:hover) #projectsContainer,
-#homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
-    width: 360px;
-    height: 480px;
-    opacity: 50%;
-}
-
-#homePageContent:has(#aboutMeContainer:hover) #projectsContainer button,
-#homePageContent:has(#projectsContainer:hover) #aboutMeContainer button{
-    height: 40px !important;
 }
 
 /* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
@@ -365,7 +348,7 @@ body {
     
     /* When hovering on the button within home page section, add bigger box shadow */
     .homePageSection:has(button:hover) {
-        box-shadow: 0px 0px 30px var(--homePageColorTwo);
+        box-shadow: 0px 0px 40px var(--homePageColorTwo);
     }
     
     /* The div surrounding an image within home page section */
@@ -378,43 +361,6 @@ body {
         font-size: 1.25rem;
         height: 40px;
         border-radius: 6px;
-    }
-    
-    /* When the homne page section is hovered, make bigger */
-    .homePageSection:hover {
-        width: 360px;
-        height: 480px;
-        box-shadow: 0px 0px 30px white;
-    }
-    
-    /* When the home page section is hovered, make border bigger */
-    .homePageSection:hover .animatedBorder {
-        width: 360px;
-        height: 480px;
-    }
-    
-    /* When the home page section is hovered, make border bigger, appear, and animate */
-    .homePageSection:hover .line[data-animate='true'] {
-        width: 360px;
-        height: 480px;
-    }
-    
-    /* home page button styling */
-    .homePageSection:hover button {
-        font-size: 1.5rem;
-        height: 50px;
-    }
-    
-    /* Allows the other section to shrink when one section is hovered on */
-    #homePageContent:has(#aboutMeContainer:hover) #projectsContainer,
-    #homePageContent:has(#projectsContainer:hover) #aboutMeContainer {
-        width: 240px;
-        height: 320px;
-    }
-    
-    #homePageContent:has(#aboutMeContainer:hover) #projectsContainer button,
-    #homePageContent:has(#projectsContainer:hover) #aboutMeContainer button{
-        height: 30px !important;
     }
 
     .animatedBorder, .line {
@@ -522,7 +468,7 @@ body {
     gap: 40px;
     align-items: center;
     width: 80%;
-    height: 80%;
+    padding-bottom: 100px;
 }
 
 #projectListContainer {
