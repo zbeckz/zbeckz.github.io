@@ -33,6 +33,14 @@ function handleAnimationToggle(newState)
     document.querySelectorAll(".line").forEach(element => {
         element.dataset.animate = newString;
     })
+
+    // if turning animation off, and transition currently happening, switch to next page immediately
+    if (!newState && (pageState !== PAGE_STATE.home))
+    {
+        showNewPage();
+        pageState = PAGE_STATE.home;
+        transitionSpeed = 0;
+    }
 }
 
 function goToSection(hideSectionId, transitionDirection, newPath)
@@ -46,8 +54,8 @@ function goToSection(hideSectionId, transitionDirection, newPath)
     // Hide the element
     hideSection.style.display = "none";
 
-    // Start transition
-    startTransition(transitionDirection);
+    // Start transition if animation is on, otherwise just jump straight to new page
+    animationState ? startTransition(transitionDirection) : showNewPage();
 }
 
 // Sets the canvas to the size of the window
