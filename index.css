@@ -153,22 +153,6 @@ body {
     margin: 0px 5px;
 }
 
-/* Buttons in about me section */
-.aboutMeInfoContainer button {
-    z-index: 1;
-    border-radius: 9px;
-    background: var(--homePageColorOne);
-    border: none;
-    font-size: 1.75rem;
-    transition: all var(--homePageTransitionDuration);
-    font-weight: 500;
-}
-
-.aboutMeInfoContainer button:hover {
-    cursor: pointer;
-    background: var(--homePageColorTwo);
-}
-
 /* Both projects and about me window */
 .homePageSection {
     width: 300px;
@@ -190,7 +174,7 @@ body {
 }
 
 /* When hovering on the button within home page section, add blue box shadow */
-.homePageSection:has(button:hover) {
+.animatedBorderContainer:has(button:hover) {
     box-shadow: 0px 0px 40px var(--homePageColorTwo);
 }
 
@@ -210,8 +194,7 @@ body {
 }
 
 /* Button in home page section */
-.homePageSection button {
-    z-index: 1;
+.myButton {
     width: 50%;
     background: var(--homePageColorOne);
     border: none;
@@ -223,18 +206,22 @@ body {
 }
 
 /* When the button is hovered, change it */
-.animatedBorderContainer button:hover {
+.myButton:hover {
     cursor: pointer;
     background: var(--homePageColorTwo);
 }
 
+.animatedBorderContainer * {
+    z-index: 1;
+}
+
 /* When the button is hovered, change the animated border */
-.animatedBorderContainer button:hover ~ .animatedBorder .line {
+.animatedBorderContainer .myButton:hover ~ .animatedBorder .line {
     stroke: var(--homePageColorTwo);
 }
 
 /* When the button is hovered, change the container */
-.homePageSection button:hover ~ .homePageImageContainer {
+.animatedBorderContainer button:hover ~ .homePageImageContainer {
     border-color: var(--homePageColorTwo);
 }
 
@@ -343,27 +330,6 @@ body {
 
 .link:hover {
     color: var(--homePageColorTwo);
-}
-
-.linkButton {
-    z-index: 1;
-    border-radius: 9px;
-    background: var(--homePageColorOne);
-    border: none;
-    font-size: 1.75rem;
-    transition: all var(--homePageTransitionDuration);
-    font-weight: 500;
-    color: black;
-    text-decoration: none;
-    text-align: center;
-
-    /* TEMPORARY, WILL CLEAN UP FONTS LATER */
-    font-family: Arial, Helvetica, sans-serif; 
-}
-
-.linkButton:hover {
-    cursor: pointer;
-    background: var(--homePageColorTwo);
 }
 
 #projectListPageContent {

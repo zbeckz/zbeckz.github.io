@@ -57,7 +57,7 @@
           <div class="homePageImageContainer">
             <img id="aboutMeImage" src="assets/headshot.jpg"/>
           </div>
-          <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.right, 'about-me', true)">About Me</button>
+          <button class="myButton" onclick="goToSection('homePageContent', TRANSITION_DIRECTION.right, 'about-me', true)">About Me</button>
         </div>
 
         <!-- Projects image, button, and border -->
@@ -65,7 +65,7 @@
           <div class="homePageImageContainer">
             <img id="projectsImage" src="assets/code-snippet.png"/>
           </div>
-          <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.left, 'project-list', true)">Projects</button>
+          <button class="myButton" onclick="goToSection('homePageContent', TRANSITION_DIRECTION.left, 'project-list', true)">Projects</button>
         </div>
 
       </div>
@@ -80,8 +80,6 @@
           <p>
             Scroll down on this page to follow my journey as a developer, past to present!
           </p>
-          <button onclick="goToSection('aboutMePageContent', TRANSITION_DIRECTION.left, '')">Home</button>
-          <button onclick="goToSection('aboutMePageContent', TRANSITION_DIRECTION.left, 'project-list')">Projects</button>
         </div>
 
         <!-- Row 2: Scratch -->

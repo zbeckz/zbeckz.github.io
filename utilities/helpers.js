@@ -302,10 +302,10 @@ function populateProjectList()
         newProjectDiv.appendChild(newProjectImage);
 
         // Add a link to the project
-        const newProjectLink = document.createElement("a");
-        newProjectLink.href = p.url;
-        newProjectLink.textContent = "Project";
-        newProjectLink.className = "linkButton";
+        const newProjectLink = document.createElement("button");
+        newProjectLink.onclick = () => window.open(p.url, "_blank");
+        newProjectLink.textContent = "Visit";
+        newProjectLink.className = "myButton";
         newProjectDiv.appendChild(newProjectLink);
     })
 }
