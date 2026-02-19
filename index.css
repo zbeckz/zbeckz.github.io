@@ -114,7 +114,7 @@ body {
 
 /* Centered in window, contains both projects and about me windows */
 #homePageContent {
-    margin-top: 20px;
+    margin-top: 40px;
     align-items: center;
     display: none;
     flex-direction: row;
@@ -224,14 +224,18 @@ body {
     border-radius: 6px;
 }
 
+.animatedBorderContainer {
+    position: relative;
+}
+
 /* When the button is hovered, change it */
-.homePageSection button:hover {
+.animatedBorderContainer button:hover {
     cursor: pointer;
     background: var(--homePageColorTwo);
 }
 
 /* When the button is hovered, change the animated border */
-.homePageSection button:hover ~ .animatedBorder .line {
+.animatedBorderContainer button:hover ~ .animatedBorder .line {
     stroke: var(--homePageColorTwo);
 }
 
@@ -241,20 +245,20 @@ body {
 }
 
 /* When the home page section is hovered, make border bigger */
-.homePageSection:hover .animatedBorder {
+.animatedBorderContainer:hover .animatedBorder {
     opacity: 100%;
 }
 
 /* When the home page section is hovered, make border bigger, appear, and animate */
-.homePageSection:hover .line[data-animate='true'] {
+.animatedBorderContainer:hover .line[data-animate='true'] {
     opacity: 100%;
     animation: borderAnimation 5.0s linear infinite;
 }
 
 /* BELOW CSS IS MODIFIED FROM https://www.letsbuildui.dev/articles/how-to-animate-borders-in-css/ */
 .animatedBorder, .line {
-    width: 300px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
     transition: all var(--homePageTransitionDuration);
     opacity: 0%;
 }
@@ -263,6 +267,8 @@ body {
     position: absolute;
     z-index: 0;
     border-radius: 12px;
+    top: 0px;
+    right: 0px;
 }
 
 .line {

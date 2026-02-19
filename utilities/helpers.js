@@ -286,7 +286,7 @@ function populateProjectList()
     projectData.forEach(p => {
         // Create the overall container for the project
         const newProjectDiv = document.createElement("div");
-        newProjectDiv.className = "projectDiv"
+        newProjectDiv.setAttribute("class", "projectDiv animatedBorderContainer")
         newProjectDiv.id = `${p.title}-div`
         newProjectDiv.style.viewTransitionName = `${p.title.replace(/\d/g, '').replaceAll(' ', '-').toLowerCase()}-view-transition`
         container.appendChild(newProjectDiv);
@@ -421,5 +421,26 @@ function populateTags()
             document.startViewTransition(() => filterProjectList(tag));
         }
         container.appendChild(newFilterTag);
+    })
+}
+
+function populateAnimatedBorders()
+{
+    // Define the SVG namespace
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    // Loop through all elements that are animated border containers
+    document.querySelectorAll(".animatedBorderContainer").forEach(element => {
+        // create the inner rect
+        const rect = document.createElementNS(svgNS, "rect");
+        rect.setAttribute("class", "line");
+
+        // create the inner svg
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("class", "animatedBorder");
+
+        // append rect to svg, then append svg to container
+        svg.appendChild(rect);
+        element.appendChild(svg);
     })
 }

@@ -53,25 +53,19 @@
       <div id="homePageContent">
 
         <!-- About me image, button, and border -->
-        <div id="aboutMeContainer" class="homePageSection">
+        <div id="aboutMeContainer" class="homePageSection animatedBorderContainer">
           <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.right, 'about-me', true)">About Me</button>
           <div class="homePageImageContainer">
             <img id="aboutMeImage" src="assets/headshot.jpg"/>
           </div>
-          <svg class="animatedBorder">
-            <rect class="line"/>
-          </svg>
         </div>
 
         <!-- Projects image, button, and border -->
-        <div id="projectsContainer" class="homePageSection">
+        <div id="projectsContainer" class="homePageSection animatedBorderContainer">
           <button onclick="goToSection('homePageContent', TRANSITION_DIRECTION.left, 'project-list', true)">Projects</button>
           <div class="homePageImageContainer">
             <img id="projectsImage" src="assets/code-snippet.png"/>
           </div>
-          <svg class="animatedBorder">
-            <rect class="line"/>
-          </svg>
         </div>
 
       </div>
@@ -79,7 +73,7 @@
       <div id="aboutMePageContent">
         <!-- Row 1: Introduction -->
         <img class="aboutMePageImage" src="assets/headshot.jpg">
-        <div class="aboutMeInfoContainer">
+        <div class="aboutMeInfoContainer animatedBorderContainer">
           <p>
             Hi! I am Zach Becker, a 23 year old computer programmer. I have professional experience in web development, but enjoy anything coding related.
           </p>
@@ -91,7 +85,7 @@
         </div>
 
         <!-- Row 2: Scratch -->
-        <div class="aboutMeInfoContainer">
+        <div class="aboutMeInfoContainer animatedBorderContainer">
           <p>
             My father is a computer programmer as well, and he introduced me to coding on <a class="link" href="https://scratch.mit.edu/about" target="_blank">Scratch</a> when I was nine. I spent countless hours over many years creating projects in my free time.
           </p>
@@ -103,7 +97,7 @@
 
         <!-- Row 3: Pre-College Education -->
         <img class="aboutMePageImage" src="assets/sunrise.jpg">
-        <div class="aboutMeInfoContainer">
+        <div class="aboutMeInfoContainer animatedBorderContainer">
           <p>
             Throughout my childhood in the suburbs north of Chicago, I continued to learn more about computer programming, both in school and on my own time.
           </p>
@@ -113,7 +107,7 @@
         </div>
         
         <!-- Row 4: College -->
-        <div class="aboutMeInfoContainer">
+        <div class="aboutMeInfoContainer animatedBorderContainer">
           <p>
             I continued my education at Northwestern University, where I majored in Computer Science in the McCormick School of Engineering.
           </p>
@@ -128,7 +122,7 @@
 
         <!-- Row 5: Blick -->
         <img class="aboutMePageImage small" src="assets/Blick_logo.jpg">
-        <div class="aboutMeInfoContainer">
+        <div class="aboutMeInfoContainer animatedBorderContainer">
           <p>
             Soon after graduating college, I joined Blick Art Materials, where I am still happily employed as a front-end web developer. I picked up React and NextJS, honed my html/css skills, and have gained valuable experience working with a team to ship high-quality products to customers
           </p>

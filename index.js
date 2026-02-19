@@ -18,6 +18,9 @@ window.addEventListener('load', () => {
     // Populate project tag filters based on project data
     populateTags();
 
+    // Add animated line borders to appropriate elements
+    populateAnimatedBorders();
+
     // get the canvas element and set to window size
     canvas = document.getElementById('backgroundScene');
     context = canvas.getContext('2d');
