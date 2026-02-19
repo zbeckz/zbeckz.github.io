@@ -152,6 +152,12 @@ function showNewPage()
         spawnObjectsNewScreen();
         clearOffScreenObjects();
     }
+
+    // draw one frame of background if animation is off
+    if (!animationState)
+    {
+        staticCanvasUpdate();
+    }
 }
 
 function isOnScreen(s)
