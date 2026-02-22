@@ -232,16 +232,40 @@ function handleAnimationToggle(newState)
     }
 }
 
-function goToSection(hideSectionId, transitionDirection, newPath)
+function goToSection(newPath)
 {
-    // update query parameter of url to new path
-    setQueryParam(localStorageConfig.PAGE, newPath);
+    // get the current page
+    const currentPage = getQueryParam(localStorageConfig.PAGE)
+
+    // do nothing if already on page
+    if (currentPage === newPath || (!currentPage && !newPath)) return;
+    
+    // get section id to hide based on current page
+    const hideSectionId = 
+        !currentPage 
+            ? "homePageContent" 
+            : (currentPage === "about-me" 
+                ? "aboutMePageContent" 
+                : "projectListPageContent");
 
     // Grab the element to hide
     const hideSection = document.getElementById(hideSectionId);
 
     // Hide the element
     hideSection.style.display = "none";
+
+    // update query parameter of url to new path
+    setQueryParam(localStorageConfig.PAGE, newPath);
+
+    // figure out what direction to transition based on current page and new page
+    const transitionDirection = 
+        newPath === "about-me" 
+            ? TRANSITION_DIRECTION.right 
+            : (newPath === "project-list" 
+                ? TRANSITION_DIRECTION.left 
+                : currentPage === "about-me" 
+                    ? TRANSITION_DIRECTION.left 
+                    : TRANSITION_DIRECTION.right)
 
     // Start transition if animation is on, otherwise just jump straight to new page
     animationState ? startTransition(transitionDirection) : showNewPage();

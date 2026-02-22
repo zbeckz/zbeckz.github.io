@@ -42,10 +42,14 @@
         <!-- Title -->
         <span id="homePageTitle">Zach Becker's Portfolio (WORK IN PROGRESS!)</span>
 
-        <!-- Animation Toggle -->
-        <div id="animationControl">
-          <span>Background Animations:</span>
-          <button id="animationToggle" data-on="true" onclick="handleAnimationToggle()"></input>
+        <div id="header-controls">
+          <div id="animationControl">
+            <span>Background Animations:</span>
+            <button id="animationToggle" data-on="true" onclick="handleAnimationToggle()"></input>
+          </div>
+          <button class="myButton" onclick="goToSection('')">Home</button>
+          <button class="myButton" onclick="goToSection('about-me')">About Me</button>
+          <button class="myButton" onclick="goToSection('project-list')">Projects</button>
         </div>
       </div>
 
@@ -57,7 +61,7 @@
           <div class="homePageImageContainer">
             <img id="aboutMeImage" src="assets/headshot.jpg"/>
           </div>
-          <button class="myButton" onclick="goToSection('homePageContent', TRANSITION_DIRECTION.right, 'about-me', true)">About Me</button>
+          <button class="myButton" onclick="goToSection('about-me')">About Me</button>
         </div>
 
         <!-- Projects image, button, and border -->
@@ -65,7 +69,7 @@
           <div class="homePageImageContainer">
             <img id="projectsImage" src="assets/code-snippet.png"/>
           </div>
-          <button class="myButton" onclick="goToSection('homePageContent', TRANSITION_DIRECTION.left, 'project-list', true)">Projects</button>
+          <button class="myButton" onclick="goToSection('project-list')">Projects</button>
         </div>
 
       </div>

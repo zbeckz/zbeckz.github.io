@@ -5,8 +5,6 @@
     --homePageImageTransitionDuration: 0.5s;
 }
 
-/* BELOW CSS IS MEANT FOR STANDARD DESKTOP MONITOR SCREEN SIZE*/
-
 /* Allows canvas to take up full window */
 html, body {
     margin: 0px;
@@ -50,6 +48,14 @@ body {
     font-size: 2.5rem;
     font-weight: 600;
     text-align: center;
+}
+
+#header-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
 }
 
 /* Animation Control Div */
@@ -195,7 +201,6 @@ body {
 
 /* Button in home page section */
 .myButton {
-    width: 50%;
     background: var(--homePageColorOne);
     border: none;
     transition: all var(--homePageTransitionDuration);
@@ -213,6 +218,10 @@ body {
 
 .animatedBorderContainer * {
     z-index: 1;
+}
+
+.animatedBorderContainer .myButton {
+    width: 50%;
 }
 
 /* When the button is hovered, change the animated border */
