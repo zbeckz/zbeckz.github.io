@@ -323,6 +323,7 @@ function populateProjectList()
 
         // Add the title of the project as a span
         const newProjectTitle = document.createElement("span");
+        newProjectTitle.className = 'project-title';
         newProjectTitle.textContent = p.title;
         newProjectDiv.appendChild(newProjectTitle);
 
@@ -330,6 +331,17 @@ function populateProjectList()
         const newProjectImage = document.createElement("img");
         newProjectImage.src = p.previewImg;
         newProjectDiv.appendChild(newProjectImage);
+
+        // Add a div container of tags for the project
+        const newProjectTagContainer = document.createElement("div");
+        newProjectTagContainer.className = "project-tag-container"
+        p.tags.forEach(t => {
+            const newTag = document.createElement("span");
+            newTag.className = "project-tag"
+            newTag.textContent = t;
+            newProjectTagContainer.appendChild(newTag)
+        })
+        newProjectDiv.appendChild(newProjectTagContainer);
 
         // Add a link to the project
         const newProjectLink = document.createElement("button");
@@ -390,11 +402,21 @@ function filterProjectList(newFilter)
     {
         projectListFilters.splice(projectListFilters.indexOf(newFilter), 1)
         document.getElementById(`${newFilter}-filter-button`).dataset.selected = "false";
+        document.querySelectorAll(".project-tag").forEach(t => {
+            if (t.textContent === newFilter) {
+                t.dataset.selected = "false";
+            }
+        })
     }
     else
     {
         projectListFilters.push(newFilter);
         document.getElementById(`${newFilter}-filter-button`).dataset.selected = "true";
+        document.querySelectorAll(".project-tag").forEach(t => {
+            if (t.textContent === newFilter) {
+                t.dataset.selected = "true";
+            }
+        })
     } 
 
     // update project style based on new filter list
