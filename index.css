@@ -143,10 +143,19 @@ body {
 .aboutMePageImage {
     width: 300px;
     border-radius: 12px;
+    transition: all 0.3s;
 }
 
 .aboutMePageImage.small {
     width: 150px;
+}
+
+.aboutMePageImage:hover {
+    width: 375px;
+}
+
+.aboutMePageImage.small:hover {
+    width: 200px;
 }
 
 .aboutMeInfoContainer {
@@ -417,6 +426,10 @@ body {
     display: flex;
     flex-direction: row;
     gap: 10px;
+}
+
+#sort-container select {
+    border-radius: 8px;
 }
 
 #filter-tag-container {
