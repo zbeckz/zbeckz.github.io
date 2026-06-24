@@ -58,6 +58,7 @@ div.tooltip {
     border-radius: 5px;
     padding: 3px;
     box-shadow: 0px 0px 5px black;
+    pointer-events: none;
   }
 
 th {

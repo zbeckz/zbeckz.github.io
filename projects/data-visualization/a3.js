@@ -944,7 +944,6 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
         {
             // highlight, add tooltip
             d3.select(this)
-                .raise()
                 .attr("opacity", 1)
 
             tooltip.style("left", (e.pageX + 25) + "px")
@@ -954,7 +953,6 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
 
             // highlight all the circles on this path
             newSvg.selectAll("circle")
-                .raise()
                 .attr("opacity", 1)
 
         })
@@ -968,7 +966,6 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
 
             // fade all the circles too
             newSvg.selectAll("circle")
-                .raise()
                 .attr("opacity", 0.2)
         })
 
@@ -988,7 +985,6 @@ function drawTimeline(svg, specs, data, xFunc, yFunc, colorFunc, tooltipFunc, la
             {
                 // add new tooltip
                 d3.select(this)
-                    .raise()
                     .attr("opacity", 1)
                     .attr("r", specs.markSize * 1.5)
                     .attr("stroke-width", 0.5)
@@ -1248,7 +1244,6 @@ function interactScatterplotCircles(svg, specs, colorScale)
 
             // add new tooltip
             d3.select(this)
-              .raise()
               .attr("r", specs.markSize*1.5)
               .attr("stroke", "yellow")
               .attr("stroke-width", specs.strokeWidth * 1.5)
